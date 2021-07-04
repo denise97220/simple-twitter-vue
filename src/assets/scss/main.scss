@@ -42,4 +42,12 @@ table {
 	border-spacing: 0;
 }
 
+* {
+  font-family: Noto Sans TC;
+}
+
+input:focus {
+  outline: none;
+}
+
 $mainColor: #FF6600;
