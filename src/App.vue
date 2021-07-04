@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss">
-$mainColor: #FF6600;
+
 </style>
 
 <script>
