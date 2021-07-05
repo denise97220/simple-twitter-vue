@@ -39,7 +39,7 @@
       </div>
 
       <button
-        class="login-btn"
+        class="main-btn login-btn"
         type="submit"
         :disabled="isProcessing"
       >
@@ -61,7 +61,6 @@
 @import "./src/assets/scss/main.scss";
 
 * {
-  font-style: normal;
   font-weight: bold;
 }
 
@@ -98,8 +97,8 @@ form {
   }
 
   .email-input, .password-input {
-    width: 540px;
-    height: 50px;
+    width: 530px;
+    height: 26px;
     background: #F5F8FA;
     border: none;
     border-bottom: solid 3px #657786;
@@ -107,26 +106,19 @@ form {
     margin-top: 20px;
     padding-top: 24px;
     padding-left: 10px;
+    font-size: 16px;
   }
 
   .login-btn {
     width: 540px;
     height: 50px;
-    background-color: $mainColor;
-    border: none;
     border-radius: 50px;
-    color: #FFFFFF;
     margin-top: 30px;
     font-size: 18px;
     line-height: 26px;
     position: relative;
-    &:hover {
-      background-color: $mainColorHover;
-      transition: background-color 0.3s ease-out;
-    }
   }
   
-
   .user-login-btn {
     color: #0099FF;
     font-size: 18px;
