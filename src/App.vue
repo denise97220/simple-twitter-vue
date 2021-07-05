@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -10,12 +10,7 @@
 </style>
 
 <script>
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
-
-export default {
-  
-}
+export default {};
 </script>
 
 
