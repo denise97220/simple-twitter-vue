@@ -8,7 +8,6 @@
       <div class="form-label account-form-label">
         <label for="account" class="label">帳號</label>
         <input
-        v-model="account"
         id="account"
         name="account"
         type="text"
@@ -22,7 +21,6 @@
       <div class="form-label name-form-label">
         <label for="name" class="label">名稱</label>
         <input
-        v-model="name"
         id="name"
         name="name"
         type="text"
@@ -35,7 +33,6 @@
       <div class="form-label email-form-label">
         <label for="email" class="label">Email</label>
         <input
-        v-model="email"
         id="email"
         name="email"
         type="email"
@@ -48,7 +45,6 @@
       <div class="form-label password-form-label">
         <label for="password" class="label">密碼</label>
         <input
-        v-model="password"
         id="password"
         name="password"
         type="password"
@@ -61,7 +57,6 @@
       <div class="form-label checkPassword-form-label">
         <label for="checkPassword" class="label">密碼確認</label>
         <input
-        v-model="checkPassword"
         id="checkPassword"
         name="checkPassword"
         type="password"
@@ -72,9 +67,8 @@
       </div>
 
       <button
-        class="login-btn"
+        class="main-btn save-btn"
         type="submit"
-        :disabled="isProcessing"
       >
         儲存
       </button>  
@@ -128,8 +122,8 @@ form {
   }
 
   .input {
-    width: 540px;
-    height: 50px;
+    width: 632px;
+    height: 26px;
     background: #F5F8FA;
     border: none;
     border-bottom: solid 3px #657786;
@@ -137,24 +131,18 @@ form {
     margin-top: 20px;
     padding-top: 24px;
     padding-left: 10px;
+    font-size: 16px;
   }
 }
 
-.login-btn {
+.save-btn {
   width: 122px;
   height: 50px;
-  background-color: $mainColor;
-  border: none;
   border-radius: 50px;
-  color: #FFFFFF;
   margin-top: 30px;
   font-size: 18px;
   line-height: 26px;
   position: relative;
-  &:hover {
-    background-color: $mainColorHover;
-    transition: background-color 0.3s ease-out;
-  }
 }
 </style>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
     <div class="navbar">
-      <Navbar />
+      <Navbar/>
     </div>
     <div class="setting-form">
       <UserSettingForm />
@@ -14,6 +14,7 @@
 
 .setting-container {
   display: flex;
+  position: relative;
 }
 
 .navbar {
@@ -34,6 +35,11 @@ export default {
   components: {
     Navbar,
     UserSettingForm
-  }
+  },
+  data () {
+    return {
+      isShowModal: false
+    } 
+  },
 }
 </script>

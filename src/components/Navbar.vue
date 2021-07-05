@@ -1,5 +1,6 @@
 <template>
   <div class="navbar-container">
+    <div class="cover" v-show="isShowModal"></div>
     <div class="navbar">
       <div class="logo">
          <svg width="50" height="50" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M30.7 23.47s-7.467 12.108-13.59 12.108c-10.707 0-.728-23.065 7.082-23.065 5.449 0 6.508 10.958 6.508 10.958z" fill="#F60"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.572 38.697a19.997 19.997 0 01-31.81-3.557c1.77 2.408 4.772 4.013 9.041 4.013 10.517 0 16.487-8.173 16.487-8.173s.516 6.46 6.27 7.717h.012zM42.722 15.745a19.98 19.98 0 01-.481 19.395 5.947 5.947 0 01-2.803-3.531l-2.282-6.837 5.566-9.027zM25.003 5.017a19.96 19.96 0 0113.537 5.28l-3.788 6.112c-1.37-3.566-4.156-7.136-9.575-7.136-11.099 0-19.325 12.116-19.325 19.712-.002.982.123 1.96.373 2.91a20 20 0 019.53-24.628A20.008 20.008 0 0125.002 5v.017z" fill="#F60"/></svg>
@@ -30,36 +31,72 @@
           </div>
         </router-link>
       </div>
-      <button class="twitter-btn" data-bs-toggle="modal" data-bs-target="#twitterModal">推文</button>
+      <button 
+        class="main-btn twitter-btn"
+        @click.stop.prevent="showModal"
+      >推文</button>
     </div>
-  <!-- Modal -->
-  <div class="modal fade" id="twitterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+
+    <!-- modal -->
+    <div class="twitter-modal" v-show="isShowModal">
+      <div class="modal-container">
+        <div class="modal-header">
+          <div 
+           class="close-btn" 
+            @click.stop.prevent="closeModal"
+          >
+            <svg
+              class="icon-close"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.414 12.0001L19.207 6.20712C19.597 5.81712 19.597 5.18412 19.207 4.79312C18.817 4.40212 18.184 4.40312 17.793 4.79312L12 10.5861L6.207 4.79312C5.817 4.40312 5.184 4.40312 4.793 4.79312C4.402 5.18312 4.403 5.81612 4.793 6.20712L10.586 12.0001L4.793 17.7931C4.403 18.1831 4.403 18.8161 4.793 19.2071C4.988 19.4021 5.243 19.5001 5.5 19.5001C5.757 19.5001 6.012 19.4021 6.207 19.2071L12 13.4141L17.793 19.2071C17.988 19.4021 18.243 19.5001 18.5 19.5001C18.757 19.5001 19.012 19.4021 19.207 19.2071C19.597 18.8171 19.597 18.1841 19.207 17.7931L13.414 12.0001Z"
+                fill="#FF6600"
+              />
+            </svg>
           </div>
         </div>
+        <div class="modal-content">
+          <div class="avatar-img"></div>
+          <textarea
+            class="twitter-text"
+            placeholder="有什麼新鮮事？"
+            maxlength="200"
+          ></textarea>
+        </div>
+        <button class="main-btn post-btn">
+          推文
+        </button>
       </div>
-  </div>
-
+    </div>
   </div>
 </template>
 
+<script>
+export default {
+  name: "Navbar",
+  data () {
+    return {
+      isShowModal: false,
+    }
+  },
+  methods: {
+    showModal() {
+      this.isShowModal = true
+    },
+    closeModal() {
+      this.isShowModal = false
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
-
-* {
-  font-style: normal;
-}
 
 .navbar-container {
   width: 378px;
@@ -104,24 +141,62 @@
 .twitter-btn {
   width: 210px;
   height: 45px;
-  background-color: $mainColor;
   border-radius: 100px;
-  color: #ffffff;
   font-weight: 500;
   font-size: 18px;
   line-height: 18px;
-  border: none;
   margin-top: 27px;
-
-  &:hover {
-    background-color: $mainColorHover;
-  }
 }
 
-#twitterModal {
+.twitter-modal {
+  width: 600px;
   position: absolute;
-  top: 100px;
-  left: 200px;
-} 
+  top: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background: #FFFFFF;
+  border-radius: 14px;  
+
+  .close-btn {
+    padding: 15px;
+    cursor: pointer;
+  }
+
+  .modal-content {
+    display: flex;
+    border-top: solid 1px #E6ECF0;
+    padding: 15px;
+  }
+
+  .avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-image: url("https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959");
+    background-size: cover;
+  }
+
+  textarea {
+    resize: none;
+    border: none;
+    width: 100%;
+    height: 200px;
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  .post-btn {
+    width: 64px;
+    height: 40px;
+    border-radius: 100px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 18px;
+  }
+}
 
 </style>

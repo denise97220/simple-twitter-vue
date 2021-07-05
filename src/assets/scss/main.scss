@@ -46,7 +46,7 @@ table {
   font-family: Noto Sans TC;
 }
 
-input:focus {
+input:focus, textarea:focus {
   outline: none;
 }
 
