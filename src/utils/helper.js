@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 
 
 export const apiHelper = axios.create({
-  baseURL: "https://private-anon-c1fcd257fb-simpletwitterapi.apiary-mock.com/api/",
+  baseURL: "https://super-simple-twitter.herokuapp.com/api",
 });
 
 export const Fire = Swal.mixin({
