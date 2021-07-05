@@ -11,14 +11,14 @@
       <div class="tweet-card">
         <div class="avatar">
           <img
-            src="http://2.bp.blogspot.com/-xfVC7SfVJo0/Vg4lPyoup6I/AAAAAAAA0fQ/UcdPbLbfZEI/s320/7849306_151617247181_2.jpg"
+            src="https://static.highsnobiety.com/thumbor/2JZ3h4ae-l9oKz9VW52-6Gmnb94=/1600x1067/static.highsnobiety.com/wp-content/uploads/2020/05/26145040/rick-morty-season-4-finale-teaser-01.jpg"
             alt=""
           />
         </div>
         <div class="tweet-content">
           <div class="user-info">
             <div class="user-name">
-              <a href="#">{{ adminTweet.name }}</a>
+              <a href="#">{{ adminTweet.User.name }}</a>
             </div>
             <div class="user-account"><a href="#">@ashley · 3小時</a></div>
           </div>
@@ -28,6 +28,7 @@
             reprehenderit elit laborum.
           </div>
         </div>
+        <div class="delete-btn">x</div>
       </div>
     </div>
   </div>
@@ -38,13 +39,11 @@
 * {
   font-style: normal;
   font-weight: bold;
-  font-size: 100px;
 }
-.wrapper {
-  display: grid;
-  grid-template-columns: 378px 1062px;
+.container {
+  height: 100%;
+  max-height: 1020px;
 }
-
 .header {
   width: 100%;
   height: 55px;
@@ -64,23 +63,25 @@
 }
 
 .tweet-card {
+  position: relative;
   display: flex;
   padding-left: 15px;
   font-style: normal;
   border: 1px #e6ecf0 solid;
   padding-top: 10px;
   padding-bottom: 20px;
+  .avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: 1px solid black;
+    background: #c4c4c4;
+  }
+  .tweet-content {
+    padding-left: 15px;
+  }
 }
-.avatar img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  border: 1px solid black;
-  background: #c4c4c4;
-}
-.tweet-content {
-  padding-left: 15px;
-}
+
 .user-info {
   display: flex;
   text-decoration: none;
@@ -100,6 +101,16 @@
 .tweet-comment {
   max-width: 902px;
   max-height: 44px;
+}
+.delete-btn {
+  position: absolute;
+  color: #657786;
+  font-size: 15px;
+  right: 19px;
+  top: 19px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
 
