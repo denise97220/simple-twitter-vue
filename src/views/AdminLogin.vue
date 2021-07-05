@@ -77,6 +77,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center; 
+  position: relative;
 
   .title {
     margin-top: 35px;
@@ -119,16 +120,21 @@ form {
     font-size: 18px;
     line-height: 26px;
     position: relative;
-    :hover {
+    &:hover {
       background-color: $mainColorHover;
+      transition: background-color 0.3s ease-out;
     }
   }
+  
 
   .user-login-btn {
     color: #0099FF;
     font-size: 18px;
     line-height: 26px;
     text-decoration-line: underline;
+    position: absolute;
+    right: 30px;
+    bottom: -70px;
   }
 }
 </style>
