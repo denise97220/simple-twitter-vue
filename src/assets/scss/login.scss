@@ -1,0 +1,86 @@
+@import "./src/assets/scss/main.scss";
+
+h1 {
+  font-weight: bold;
+}
+
+.container {
+  width: 600px;
+  margin-top: 60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: #000000;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  position: relative;
+
+  .title {
+    margin-top: 35px;
+    font-size: 23px;
+    line-height: 33px;
+    color: #1C1C1C;
+  }
+
+  .form-label {
+    position: relative;
+  }
+
+  .label {
+    position: absolute;
+    color: #657786;
+    top: 25px;
+    left: 10px;
+  }
+
+  .email-input, .password-input {
+    width: 530px;
+    height: 26px;
+    background: #F5F8FA;
+    border: none;
+    border-bottom: solid 3px #657786;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding-top: 24px;
+    padding-left: 10px;
+    font-size: 16px;
+  }
+
+  .login-btn {
+    width: 540px;
+    height: 50px;
+    border-radius: 50px;
+    margin-top: 30px;
+    font-size: 18px;
+    line-height: 26px;
+    position: relative;
+  }
+  
+  .user-login-btn, .admin-login-btn {
+    color: #0099FF;
+    font-size: 18px;
+    line-height: 26px;
+    text-decoration-line: underline;
+    position: absolute;
+    right: 30px;
+    bottom: -70px;
+  }
+
+  .admin-login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
