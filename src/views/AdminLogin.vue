@@ -47,88 +47,16 @@
       </button>  
 
       <div class="user-login-btn">
-        <p>
         <router-link to="/login">
           前台登入
         </router-link>
-        </p>
       </div>    
     </form>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/main.scss";
-
-* {
-  font-weight: bold;
-}
-
-.container {
-  width: 600px;
-  margin-top: 60px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; 
-  position: relative;
-
-  .title {
-    margin-top: 35px;
-    font-size: 23px;
-    line-height: 33px;
-    color: #1C1C1C;
-  }
-
-  .form-label {
-    position: relative;
-  }
-
-  .label {
-    position: absolute;
-    color: #657786;
-    top: 25px;
-    left: 10px;
-  }
-
-  .email-input, .password-input {
-    width: 530px;
-    height: 26px;
-    background: #F5F8FA;
-    border: none;
-    border-bottom: solid 3px #657786;
-    border-radius: 4px;
-    margin-top: 20px;
-    padding-top: 24px;
-    padding-left: 10px;
-    font-size: 16px;
-  }
-
-  .login-btn {
-    width: 540px;
-    height: 50px;
-    border-radius: 50px;
-    margin-top: 30px;
-    font-size: 18px;
-    line-height: 26px;
-    position: relative;
-  }
-  
-  .user-login-btn {
-    color: #0099FF;
-    font-size: 18px;
-    line-height: 26px;
-    text-decoration-line: underline;
-    position: absolute;
-    right: 30px;
-    bottom: -70px;
-  }
-}
+@import "./src/assets/scss/login.scss";
 </style>
 
 <script>
