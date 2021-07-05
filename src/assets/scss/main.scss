@@ -50,5 +50,13 @@ input:focus {
   outline: none;
 }
 
+a {
+  text-decoration: none;
+}
+
+.router-link-active {
+  text-decoration: none;
+}
+
 $mainColor: #FF6600;
 $mainColorHover: #ed5f00;
