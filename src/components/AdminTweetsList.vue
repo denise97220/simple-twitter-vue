@@ -3,22 +3,84 @@
     <div class="header">
       <div class="tweets-title">推文清單</div>
     </div>
-    <div
-      class="tweets-list"
-      v-for="adminTweet in adminTweets"
-      :key="adminTweet.id"
-    >
+    <div class="tweets-list">
       <div class="tweet-card">
         <div class="avatar">
           <img
-            src="https://static.highsnobiety.com/thumbor/2JZ3h4ae-l9oKz9VW52-6Gmnb94=/1600x1067/static.highsnobiety.com/wp-content/uploads/2020/05/26145040/rick-morty-season-4-finale-teaser-01.jpg"
+            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
             alt=""
           />
         </div>
         <div class="tweet-content">
           <div class="user-info">
             <div class="user-name">
-              <a href="#">{{ adminTweet.User.name }}</a>
+              <a href="#">Ashley</a>
+            </div>
+            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
+          </div>
+          <div class="tweet-comment">
+            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
+            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+            reprehenderit elit laborum.
+          </div>
+        </div>
+        <div class="delete-btn">x</div>
+      </div>
+      <div class="tweet-card">
+        <div class="avatar">
+          <img
+            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
+            alt=""
+          />
+        </div>
+        <div class="tweet-content">
+          <div class="user-info">
+            <div class="user-name">
+              <a href="#">Ashley</a>
+            </div>
+            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
+          </div>
+          <div class="tweet-comment">
+            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
+            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+            reprehenderit elit laborum.
+          </div>
+        </div>
+        <div class="delete-btn">x</div>
+      </div>
+      <div class="tweet-card">
+        <div class="avatar">
+          <img
+            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
+            alt=""
+          />
+        </div>
+        <div class="tweet-content">
+          <div class="user-info">
+            <div class="user-name">
+              <a href="#">Ashley</a>
+            </div>
+            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
+          </div>
+          <div class="tweet-comment">
+            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
+            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+            reprehenderit elit laborum.
+          </div>
+        </div>
+        <div class="delete-btn">x</div>
+      </div>
+      <div class="tweet-card">
+        <div class="avatar">
+          <img
+            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
+            alt=""
+          />
+        </div>
+        <div class="tweet-content">
+          <div class="user-info">
+            <div class="user-name">
+              <a href="#">Ashley</a>
             </div>
             <div class="user-account"><a href="#">@ashley · 3小時</a></div>
           </div>
@@ -41,6 +103,8 @@
   font-weight: bold;
 }
 .container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   max-height: 1020px;
 }
@@ -56,10 +120,6 @@
   line-height: 26.06px;
   color: #1c1c1c;
   margin: 15px auto 14px 25px;
-}
-.tweets-list {
-  display: flex;
-  flex-direction: column;
 }
 
 .tweet-card {
@@ -99,8 +159,7 @@
   color: #657786;
 }
 .tweet-comment {
-  max-width: 902px;
-  max-height: 44px;
+  width: 100%;
 }
 .delete-btn {
   position: absolute;
