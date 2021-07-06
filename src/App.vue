@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -17,7 +17,7 @@
 }
 
 .main-btn {
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: $mainColor;
   cursor: pointer;
   border: none;
@@ -27,13 +27,10 @@
     transition: background-color 0.3s ease-out;
   }
 }
-
 </style>
 
 <script>
-export default {
-  
-}
+export default {};
 </script>
 
 
