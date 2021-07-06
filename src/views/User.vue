@@ -7,8 +7,7 @@
       <div class="user-profile"><UserProfile /></div>
       <div class="user-tweets"><UsersTweets /></div>
     </div>
-
-    <div class="user-related"></div>
+    <div class="user-related"><RelatedUsers /></div>
   </div>
 </template>
 
@@ -16,6 +15,7 @@
 import Navbar from "./../components/Navbar.vue";
 import UserProfile from "./../components/UserProfile.vue";
 import UsersTweets from "./../components/UserTweets.vue";
+import RelatedUsers from "./../components/RelatedUsers.vue";
 
 export default {
   name: "User",
@@ -23,6 +23,7 @@ export default {
     Navbar,
     UserProfile,
     UsersTweets,
+    RelatedUsers,
   },
 };
 </script>
@@ -39,7 +40,7 @@ export default {
 }
 .user-container {
   width: 600px;
-
+  margin-left: 5%;
   .user-profile {
     height: 430px;
   }
