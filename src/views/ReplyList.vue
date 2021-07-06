@@ -3,7 +3,7 @@
     <div class="navbar">
       <Navbar/>
     </div>
-    <div class="reply-list">
+    <div class="user-tweet">
       <UserTweet />
     </div>
     <div class="related-users">
@@ -36,17 +36,34 @@ export default {
 
 .relpy-list-container {
   display: grid;
-  grid-template-columns: 0.6fr 600px 1fr;
-  grid-gap: 30px;
+  grid-template-columns: 0.9fr 600px 1fr;
+  grid-gap: 40px;
 
   .navbar {
     grid-column: 1 / 2;
   }
-  .relpy-list {
+  .user-tweet {
     grid-column: 2 / 3;
+    width: 100%;
   }
   .related-users {
     grid-column: 3 / 4;
+  }
+}
+
+@media screen and (max-width: 1359px) {
+  .relpy-list-container {
+    grid-template-columns: 1fr 2fr;
+
+    .navbar {
+      grid-column: 1 / 2;
+    }
+    .user-tweet {
+      grid-column: 2 / 3;
+    }
+    .related-users {
+      display: none;
+    }
   }
 }
 </style>

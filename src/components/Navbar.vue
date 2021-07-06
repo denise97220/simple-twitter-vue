@@ -38,6 +38,10 @@
         class="main-btn twitter-btn"
         @click.stop.prevent="showModal"
       >推文</button>
+      <div class="logout">
+        <svg width="20" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 13L5 9m0 0l4-4M5 9h14m-5 4v1a3 3 0 01-3 3H4a3 3 0 01-3-3V4a3 3 0 013-3h7a3 3 0 013 3v1" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="logout-text">登出</div>
+      </div>
     </div>
 
     <!-- modal -->
@@ -104,7 +108,7 @@ export default {
 @import "./src/assets/scss/main.scss";
 
 .navbar-container {
-  width: 378px;
+  width: 100%;
   height: 100%;
 }
 
@@ -151,6 +155,21 @@ export default {
   font-size: 18px;
   line-height: 18px;
   margin-top: 27px;
+}
+
+.logout {
+  position: fixed;
+  bottom: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .logout-text {
+    margin-left: 23px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 .twitter-modal {

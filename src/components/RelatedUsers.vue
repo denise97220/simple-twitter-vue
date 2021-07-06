@@ -18,7 +18,7 @@
             v-if="user.isFollowing"
           >正在跟隨</button>
           <button 
-            class="main-btn following-btn" 
+            class="follow-btn" 
             @click.stop.prevent="follow(user.id)" 
             v-else
           >跟隨</button>
@@ -159,7 +159,8 @@ export default {
   width: 335px;
   height: 517px;
   background-color: #F5F8FA;
-  border-radius: 14px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
   margin-top: 15px;
   font-style: normal;
   font-weight: bold;
@@ -172,14 +173,19 @@ export default {
     padding-left: 15px;
     border-bottom: 1px solid #E6ECF0;
   }
-  .following-btn {
+  .following-btn, .follow-btn {
     width: 92px;
     height: 30px;
     border-radius: 100px;
-    font-style: normal;
-    font-weight: bold;
     font-size: 15px;
     line-height: 15px;
+  }
+
+  .follow-btn {
+    width: 62px;
+    background: none;
+    border: solid 1px $mainColor;
+    color: $mainColor;
   }
 }
 
@@ -226,10 +232,17 @@ export default {
     background-color: #F5F8FA;
     border: solid 1px;
     line-height: 45px;
-    label {
-      width: 100%;
-      height: 100%;
-    }
   }
+}
+
+label {
+  width: 320px;
+  height: 45px;
+  background-color: #F5F8FA;
+  color: $mainColor;
+  line-height: 45px;
+  padding-left: 15px;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
 }
 </style>

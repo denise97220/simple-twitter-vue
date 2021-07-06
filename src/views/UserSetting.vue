@@ -9,6 +9,23 @@
   </div>
 </template>
 
+<script>
+import Navbar from './../components/Navbar.vue'
+import UserSettingForm from './../components/UserSettingForm.vue'
+
+export default {
+  name: 'UserSetting',
+  components: {
+    Navbar,
+    UserSettingForm
+  },
+  data () {
+    return {
+    } 
+  },
+}
+</script>
+
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
 
@@ -26,19 +43,3 @@
 }
 </style>
 
-<script>
-import Navbar from './../components/Navbar.vue'
-import UserSettingForm from './../components/UserSettingForm.vue'
-
-export default {
-  name: 'UserSetting',
-  components: {
-    Navbar,
-    UserSettingForm
-  },
-  data () {
-    return {
-    } 
-  },
-}
-</script>

@@ -83,13 +83,13 @@ export default {
         }
 
         this.isProcessing = true
-
+        
         const { data } = await adminAPI.login({
           email: this.email,
           password: this.password
         })
 
-        if (data.message !== 'OK') {
+        if (data.status !== 'success') {
           throw new Error(data.message)
         }
 

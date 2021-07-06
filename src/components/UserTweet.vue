@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header>
-      <div class="goback-btn">
+      <div class="goback-btn" @click.stop.prevent="goback">
         <svg width="17" height="14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 6H3.414l4.293-4.293A1 1 0 006.293.293l-6 6a1 1 0 000 1.414l6 6a.996.996 0 001.414 0 1 1 0 000-1.414L3.414 8H16a1 1 0 100-2z" fill="#000"/></svg>
       </div>
       <div class="header-content">推文</div>
@@ -9,13 +9,15 @@
     <!-- tweet -->
     <div class="tweet">
       <div class="author-info">
-        <div class="avatar">
-          <img class="avatar-img" src="https://pbs.twimg.com/profile_images/1378514134250176520/btBc4kpa_400x400.jpg" alt="">
-        </div>
-        <div class="name-info">
-          <div class="name">白雪巴</div>
-          <div class="account">@Tomoe_Shirayuki</div>
-        </div>
+        <router-link class="author-info-link" to="">
+          <div class="avatar">
+            <img class="avatar-img" src="https://pbs.twimg.com/profile_images/1378514134250176520/btBc4kpa_400x400.jpg" alt="">
+          </div>
+          <div class="name-info">
+            <div class="name">白雪巴</div>
+            <div class="account">@Tomoe_Shirayuki</div>
+          </div>
+        </router-link>
       </div>
       <div class="tweet-content">High-heeled shoe今夜２１：００～
         【We Were Here Together】あれデジャヴ！？協力謎解きで脱出セヨ【#女王と会長/にじさんじ】 https://youtu.be/pfC_sFKxJL4 
@@ -24,7 +26,7 @@
         でも今日は来栖の夏芽ちゃんと謎解きコラボなのでそれを楽しみにがんばるSmiling face with 3 heartsHeart exclamationHeart exclamationよろしくねSparkles
       </div>
       <div class="time">上午 10:00 2021年7月6日</div>
-      <div class="reply-info">223 回覆  1431 喜歡次數</div>
+      <div class="reply-info">223 回覆&nbsp;&nbsp;1431 喜歡次數</div>
     </div>
 
     <!-- function btn -->
@@ -38,22 +40,110 @@
     </div>
 
     <!-- tweet reply -->
-    <div class="tweet-reply">
-
+    <div class="tweet-reply" v-for="reply in replies" :key="reply.id">
+      <div class="reply-avatar">
+        <router-link to="">
+          <img class="avatar-img" :src="reply.image" alt="">
+        </router-link>
+      </div>
+      <div class="reply-info">
+        <div class="reply-user">
+          <router-link class="reply-user-link" to="">
+            <h3 class="reply-user-name">{{ reply.name }}</h3>
+            <h3 class="reply-user-account">{{ reply.account }}．</h3>
+          </router-link>
+          2小時
+        </div>
+        <div class="tweet-author">
+          <h3 class="reply-text">回覆</h3>
+          <router-link to="">
+            <h3 class="author-name">{{ reply.author }}</h3>
+          </router-link>
+        </div>
+        <div class="reply-content">{{ reply.content }}</div>
+      </div>
     </div>
-
-
   </div>
 </template>
 
 <script>
 export default {
-  name: "UserTweet"
+  name: "UserTweet",
+  data() {
+    return {
+      replies: [{
+          name: "許丹",
+          id: 1,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        },
+        {
+          name: "許丹",
+          id: 2,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        },
+        {
+          name: "許丹",
+          id: 3,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        },
+        {
+          name: "許丹",
+          id: 4,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        },
+        {
+          name: "許丹",
+          id: 5,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        },
+        {
+          name: "許丹",
+          id: 6,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        },
+        {
+          name: "許丹",
+          id: 7,
+          account: "@dandan",
+          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
+          content: "3Dおめでとうございます！！！！",
+          author: "@Tomoe_Shirayuki"
+        }
+      ]
+    }
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1)
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
+
+.router-link-active {
+  color: #1C1C1C;
+}
 
 .container {
   border: 1px solid #E6ECF0;
@@ -64,6 +154,9 @@ header {
   height: 15px;
   padding: 20px;
   border-bottom: 1px solid #E6ECF0;
+  .header-content {
+    margin-left: 43px;
+  }
 }
 
 .tweet {
@@ -73,13 +166,15 @@ header {
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
-  .author-info {
+  .author-info-link {
     display: flex;
     .name-info {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       font-size: 15px;
       line-height: 22px;
+      margin-left: 10px;
     }
     .avatar-img {
       width: 50px;
@@ -96,7 +191,7 @@ header {
     margin-top: 15px;
   }
   .reply-info {
-    width: 98%;
+    width: 99%;
     height: 68px;
     border-top: solid 1px #E6ECF0;
     border-bottom: solid 1px #E6ECF0;
@@ -109,9 +204,45 @@ header {
 .function-btn {
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 15px;
+  padding-top: 8px;
   .like-btn {
     margin-left: 155px;
+  }
+}
+
+.tweet-reply {
+  display: flex;
+  padding: 15px;
+  border-top: solid 1px #E6ECF0;
+  .reply-avatar {
+    .avatar-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+  }
+  .reply-info {
+    margin-left: 10px;
+    line-height: 22px;
+    .author-name {
+      color: $mainColor;
+    }
+  }
+  .reply-user, .tweet-author {
+    display: flex;
+    .reply-user-link {
+      display: flex;
+    }
+    .reply-user-account, .author-name {
+      margin-left: 5px;
+    }
+  }
+  .tweet-author, .reply-content {
+    margin-top: 4px;
+  }
+  .reply-user-account, .reply-text {
+    color: #657786;
   }
 }
   
