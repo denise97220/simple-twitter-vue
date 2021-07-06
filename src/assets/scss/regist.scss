@@ -1,0 +1,73 @@
+@import "./src/assets/scss/main.scss";
+h1 {
+  font-weight: bold;
+  font-size: 23px;
+  margin-top: 30px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  
+  .form-label {
+    position: relative;
+  }
+  
+  .label {
+    position: absolute;
+    color: #657786;
+    font-size: 15px;
+
+  }
+
+  input {
+    width: 540px;
+    height: 40px;
+    font-size: 20px;
+    color:#1C1C1C ;
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-bottom:-10px ;
+    border: none;
+    border-bottom: solid 3px #657786;
+    border-radius: 0px 0px 4px 4px;
+    background : #F5F8Fa;
+  }
+  .account-form-label, .name-form-label , .email-form-label ,.password-form-label, .check-password-form-label{
+    position: relative;
+
+    .label {
+      position: absolute;
+      top: 25px;
+      left: 10px;
+    }
+  }
+
+  .regist-btn {
+    width: 540px;
+    height: 50px;
+    margin-top: 30px;
+    border-radius: 50px;
+    font-size: 18px;
+
+  }
+
+  .regist-cancle-btn {
+    margin-top: 20px;
+    & a{
+      color: #0099FF;
+      text-decoration: underline;
+    }
+    
+  }
+
+}

@@ -12,19 +12,6 @@
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-@import "./src/assets/scss/main.scss";
-* {
-  font-style: normal;
-  font-weight: bold;
-}
-
-.wrapper {
-  display: grid;
-  grid-template-columns: 378px 1062px;
-  height: 100%;
-}
-</style>
 
 <script>
 import AdminNavbar from "./../components/AdminNavbar.vue";
@@ -352,3 +339,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./src/assets/scss/main.scss";
+* {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 378px 1062px;
+  height: 100%;
+}
+</style>
+
