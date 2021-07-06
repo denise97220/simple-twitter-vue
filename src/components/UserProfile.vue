@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <div class="cover" v-show="isShowModal"></div>
     <div class="user-navbar">
       <div class="icon">
         <svg
@@ -28,8 +29,8 @@
           alt="avatar"
         />
       </div>
-      <div @click.stop.prevent="showModal" class="edit-btn">
-        <button>編輯個人資料</button>
+      <div class="edit-btn">
+        <button @click.stop.prevent="showModal">編輯個人資料</button>
       </div>
       <div class="user-info">
         <div class="name">Ashley Huang</div>
@@ -45,15 +46,20 @@
       </div>
     </div>
     <!-- modal -->
-    <div class="twitter-edit-modal" v-show="isshowModal">
+    <div class="twitter-edit-modal" v-show="isShowModal">
       <div class="modal-container">
         <div class="modal-header">
-          <div class="close-btn" @click.stop.prevent="closeModal">Ｘ</div>
+          <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
           <div class="title">編輯個人資料</div>
           <div class="save-btn main-btn">儲存</div>
         </div>
         <div class="modal-form">
-          <div class="cover-photo"></div>
+          <div class="modal-cover-photo">
+            <img
+              src="https://www.momokids.com.tw/public/files/programs/1576215093-1.jpg"
+              alt=""
+            />
+          </div>
           <div class="user-avatar">
             <img
               src="https://scontent.ftpe13-2.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=ZVRGyMI7a6oAX_Aba8b&_nc_ht=scontent.ftpe13-2.fna&oh=c9ba5554c67d9ea9479b5d9c27649a0a&oe=60E8FF7C"
@@ -63,7 +69,7 @@
           <div class="user-text">
             <div class="form-label name">
               <label for="name" class="label">
-                名稱
+                <span>名稱</span>
                 <input
                   v-model="editName"
                   name="name"
@@ -76,9 +82,10 @@
             </div>
             <div class="form-label description">
               <label for="description" class="label">
-                自我介紹
+                <span>自我介紹 </span>
                 <textarea
                   v-model="editDescription"
+                  class="description"
                   name="description"
                   id="description"
                   cols="30"
@@ -99,7 +106,7 @@ export default {
   name: "UserProfile",
   data() {
     return {
-      isShowModal: true,
+      isShowModal: false,
       editName: "",
       editDescription: "",
     };
@@ -240,7 +247,7 @@ export default {
   // Modal
   .twitter-edit-modal {
     width: 600px;
-    position: absolute;
+    position: fixed;
     top: 54px;
     left: 50%;
     transform: translateX(-50%);
@@ -250,6 +257,8 @@ export default {
     background: #fff;
 
     .modal-container {
+      display: grid;
+      grid-template-rows: 55px 200px 500px;
       width: 600px;
       height: 654px;
     }
@@ -257,7 +266,6 @@ export default {
     .modal-header {
       display: flex;
       align-items: center;
-      height: 55px;
 
       .close-btn {
         width: 10px;
@@ -294,17 +302,23 @@ export default {
         color: $mainColor;
       }
     }
-
     .modal-form {
       position: relative;
       width: 100%;
-
+      .modal-cover-photo {
+        background: #657786;
+        img {
+          width: 600px;
+          height: 200px;
+          object-fit: cover;
+        }
+      }
       .user-avatar {
         position: absolute;
         width: 120px;
         height: 120px;
-        top: 50%;
-        transform: translateY(-100%);
+        top: 100%;
+        transform: translateY(-50%);
       }
       .user-text {
         margin-top: 80px;
@@ -315,31 +329,44 @@ export default {
       }
 
       .label {
-        // position: absolute;
         color: #657786;
         font-size: 15px;
+        span {
+          position: absolute;
+          top: 10px;
+        }
       }
-      input {
+      input,
+      textarea {
         width: 570px;
         height: 54px;
         font-size: 20px;
         color: #1c1c1c;
-        margin-top: 20px;
         padding-top: 15px;
         padding-bottom: -10px;
         border: none;
         border-bottom: solid 3px #657786;
         border-radius: 0px 0px 4px 4px;
         background: #f5f8fa;
-      }
-      textarea {
-        width: 570px;
-        height: 150px;
-        background: #f5f8fa;
         outline: none;
         resize: none;
       }
+      .description {
+        height: 150px;
+      }
+      .name-length,
+      .description-length {
+        height: 22px;
+        text-align: right;
+        font-size: 15px;
+        font-weight: 500;
+        color: #657786;
+      }
     }
   }
+}
+.cover {
+  position: absolute;
+  left: -100%;
 }
 </style>
