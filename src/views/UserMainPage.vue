@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/regist.scss";
+@import "./src/assets/scss/main.scss";
 
 .main-container {
   display: grid;
