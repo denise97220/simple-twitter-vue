@@ -35,7 +35,7 @@ body {
 }
 
 .disabled-btn {
-  background-color: $mainColorHover;
+  background-color: $mainColorDisabled;
 }
 </style>
 
