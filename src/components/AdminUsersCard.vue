@@ -96,9 +96,6 @@ header {
   background-color: #F6F7F8;
   border-radius: 10px;
   position: relative;
-  .router-link-active {
-    color: #1C1C1C;
-  }
   .user-card-inner-wrapper {
     height: 100%;
   }

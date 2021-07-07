@@ -28,7 +28,7 @@ const routes = [
   {
     path: "/main",
     name: "user-main",
-    component: () => import("../views/UserSetting.vue"),
+    component: () => import("../views/AdminMain.vue"),
   },
   {
     path: "/reply_list/:id",
@@ -54,6 +54,24 @@ const routes = [
     path: "/user/other/:id",
     name: "user-other",
     component: () => import("../views/OtherUser.vue"),
+    redirect: "/user/other/:id/tweet",
+    children: [
+      {
+        path: "tweet",
+        name: "user-other-tweet",
+        component: () => import("../components/UserTweets.vue"),
+      },
+      {
+        path: "reply",
+        name: "user-other-reply",
+        component: () => import("../components/UserReplies.vue"),
+      },
+      {
+        path: "like",
+        name: "user-other-like",
+        component: () => import("../components/UserLikes.vue"),
+      },
+    ],
   },
   {
     path: "/admin",

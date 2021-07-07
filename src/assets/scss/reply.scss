@@ -1,0 +1,45 @@
+@import "./src/assets/scss/main.scss";
+
+.container {
+  border-right: solid 1px #E6ECF0;
+  border-left: solid 1px #E6ECF0;
+}
+
+.router-link-active {
+  color: #1C1C1C;
+}
+
+.tweet-reply {
+  display: flex;
+  padding: 15px;
+  border-top: solid 1px #E6ECF0;
+  .reply-avatar {
+    .avatar-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+  }
+  .reply-info {
+    margin-left: 10px;
+    line-height: 22px;
+    .author-name {
+      color: $mainColor;
+    }
+  }
+  .reply-user, .tweet-author {
+    display: flex;
+    .reply-user-link {
+      display: flex;
+    }
+    .reply-user-account, .author-name {
+      margin-left: 5px;
+    }
+  }
+  .tweet-author, .reply-content {
+    margin-top: 4px;
+  }
+  .reply-user-account, .reply-text {
+    color: #657786;
+  }
+}
