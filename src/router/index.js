@@ -28,7 +28,7 @@ const routes = [
   {
     path: "/main",
     name: "user-main",
-    component: () => import("../views/AdminMain.vue"),
+    component: () => import("../views/UserMainPage.vue"),
   },
   {
     path: "/reply_list/:id",
