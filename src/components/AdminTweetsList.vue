@@ -4,97 +4,73 @@
       <div class="tweets-title">推文清單</div>
     </div>
     <div class="tweets-list">
-      <div class="tweet-card">
+      <div class="tweet-card" v-for="tweet in adminTweets" :key="tweet.id">
         <div class="avatar">
-          <img
-            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
-            alt=""
-          />
+          <img :src="tweet.User.avatar" alt="" />
         </div>
         <div class="tweet-content">
           <div class="user-info">
             <div class="user-name">
-              <a href="#">Ashley</a>
+              <a href="#">{{ tweet.User.name }}</a>
             </div>
-            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
+            <div class="user-account">
+              <a href="#">@{{ tweet.User.account }} · 3小時</a>
+            </div>
           </div>
           <div class="tweet-comment">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-            reprehenderit elit laborum.
+            {{ tweet.description }}
           </div>
         </div>
-        <div class="delete-btn">x</div>
-      </div>
-      <div class="tweet-card">
-        <div class="avatar">
-          <img
-            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
-            alt=""
-          />
+        <div @click.stop.prevent="deleteTweet(tweet.id)" class="delete-btn">
+          x
         </div>
-        <div class="tweet-content">
-          <div class="user-info">
-            <div class="user-name">
-              <a href="#">Ashley</a>
-            </div>
-            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
-          </div>
-          <div class="tweet-comment">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-            reprehenderit elit laborum.
-          </div>
-        </div>
-        <div class="delete-btn">x</div>
-      </div>
-      <div class="tweet-card">
-        <div class="avatar">
-          <img
-            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
-            alt=""
-          />
-        </div>
-        <div class="tweet-content">
-          <div class="user-info">
-            <div class="user-name">
-              <a href="#">Ashley</a>
-            </div>
-            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
-          </div>
-          <div class="tweet-comment">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-            reprehenderit elit laborum.
-          </div>
-        </div>
-        <div class="delete-btn">x</div>
-      </div>
-      <div class="tweet-card">
-        <div class="avatar">
-          <img
-            src="https://www.wazaiii.com/datas/upload/site/1620013567-2434.jpeg"
-            alt=""
-          />
-        </div>
-        <div class="tweet-content">
-          <div class="user-info">
-            <div class="user-name">
-              <a href="#">Ashley</a>
-            </div>
-            <div class="user-account"><a href="#">@ashley · 3小時</a></div>
-          </div>
-          <div class="tweet-comment">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-            cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-            reprehenderit elit laborum.
-          </div>
-        </div>
-        <div class="delete-btn">x</div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import AdminAPI from "./../apis/admin";
+import { Fire } from "./../utils/helper";
+
+export default {
+  name: "AdminTweetsList",
+  data() {
+    return {
+      adminTweets: [],
+    };
+  },
+  created() {
+    this.fetchTweets();
+  },
+  methods: {
+    async fetchTweets() {
+      try {
+        const { data } = await AdminAPI.tweets();
+        this.adminTweets = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteTweet(tweetId) {
+      try {
+        const { data } = await AdminAPI.deleteTweet({ tweetId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.adminTweets = this.adminTweets.filter(
+          (tweet) => tweet.id !== tweetId
+        );
+      } catch {
+        Fire.fire({
+          icon: "warning",
+          title: "無法刪除資料，請稍後再試",
+        });
+      }
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
@@ -173,14 +149,3 @@
 }
 </style>
 
-<script>
-export default {
-  name: "AdminTweetsList",
-  props: {
-    adminTweets: {
-      type: Array,
-      required: true,
-    },
-  },
-};
-</script>

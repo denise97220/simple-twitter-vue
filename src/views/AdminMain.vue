@@ -7,7 +7,7 @@
       </div>
       <!-- AdminTweets -->
       <div class="admin-tweets-list">
-        <AdminTweetsList :admin-tweets="adminTweets" />
+        <AdminTweetsList />
       </div>
     </div>
   </div>
@@ -16,40 +16,12 @@
 <script>
 import AdminNavbar from "./../components/AdminNavbar.vue";
 import AdminTweetsList from "./../components/AdminTweetsList.vue";
-import { Fire } from "./../utils/helper";
-import AdminAPI from "./../apis/admin";
 
 export default {
   name: "AdminMain",
   components: {
     AdminNavbar,
     AdminTweetsList,
-  },
-  data() {
-    return {
-      adminTweets: [],
-    };
-  },
-  created() {
-    this.fetchTweets();
-  },
-  methods: {
-    async fetchTweets() {
-      try {
-        // TODO : API接收不到資料...
-        const { data } = await AdminAPI.tweets();
-        if (data.status !== "success") {
-          throw new Error();
-        }
-        console.log(data);
-      } catch (error) {
-        console.error("error", error);
-        Fire.fire({
-          icon: "warning",
-          title: "無法取得資料，請稍後再試",
-        });
-      }
-    },
   },
 };
 </script>

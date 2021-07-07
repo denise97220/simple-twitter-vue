@@ -8,11 +8,12 @@ export default {
     });
   },
   tweets() {
-    return apiHelper.get('tweets', {
-      headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTYyNTU3MzkzM30.TzK09xUNSn--CJ1fXgsfavNNVfK00f-PBWVHBXipu40` }
-    })
+    return apiHelper.get('/admin/tweets')
   },
   getUsers() {
     return apiHelper.get("/admin/users");
+  },
+  deleteTweet({ tweetId }) {
+    return apiHelper.delete(`admin/tweets/${tweetId}`)
   }
 }
