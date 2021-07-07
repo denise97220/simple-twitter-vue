@@ -93,7 +93,8 @@ export default {
           throw new Error(data.message)
         }
 
-        // TODO: 儲存回傳的 token
+        localStorage.setItem("token", data.token)
+        this.$router.push("/admin_main")
 
       } catch(error) {
         console.log(error)

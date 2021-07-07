@@ -6,6 +6,12 @@
 
 <style lang="scss">
 @import "./src/assets/scss/main.scss";
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+body {
+  font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
+  font-style: normal;
+}
 
 .cover {
   width: 600%;
