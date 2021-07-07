@@ -32,7 +32,6 @@
 <script>
 import AdminAPI from "./../apis/admin";
 import { Fire } from "./../utils/helper";
-
 export default {
   name: "AdminTweetsList",
   data() {
@@ -97,7 +96,6 @@ export default {
   color: #1c1c1c;
   margin: 15px auto 14px 25px;
 }
-
 .tweet-card {
   position: relative;
   display: flex;
@@ -117,13 +115,11 @@ export default {
     padding-left: 15px;
   }
 }
-
 .user-info {
   display: flex;
   text-decoration: none;
   margin-bottom: 10px;
 }
-
 .user-name {
   font-weight: 700;
   margin-bottom: 15px;
@@ -148,4 +144,3 @@ export default {
   }
 }
 </style>
-
