@@ -33,6 +33,10 @@ body {
     transition: background-color 0.3s ease-out;
   }
 }
+
+.disabled-btn {
+  background-color: $mainColorHover;
+}
 </style>
 
 <script>

@@ -40,6 +40,7 @@
 
       <button
         class="main-btn login-btn"
+        :class="{ 'disabled-btn': isProcessing }"
         type="submit"
         :disabled="isProcessing"
       >

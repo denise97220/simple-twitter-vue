@@ -41,6 +41,7 @@
       <button
         class="main-btn login-btn"
         type="submit"
+        :class="{ 'disabled-btn': isProcessing }"
         :disabled="isProcessing"
       >
         登入
@@ -60,8 +61,55 @@
 </template>
 
 <script>
+import userAPI from './../apis/user'
+import { Fire } from './../utils/helper'
+
 export default {
-  name: "UserLogin"
+  name: "UserLogin",
+  data() {
+    return {
+      email: "",
+      password: "",
+      isProcessing: false,
+    }
+  },
+  methods: {
+    async submit() {
+      try {
+        if (!this.email || !this.password) {
+          Fire.fire({
+            icon: 'warning',
+            title: '請填入 email 和 password'
+          })
+          return
+        }
+        
+        this.isProcessing = true
+        
+        const { data } = await userAPI.login({
+          email: this.email,
+          password: this.password
+        })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        localStorage.setItem("token", data.token)
+        this.$router.push("/setting")
+
+      } catch(error) {
+        console.log(error)
+
+        this.isProcessing = false
+        this.password = ''
+        Fire.fire({
+          icon: "warning",
+          title: "登入失敗，請稍後再試"
+        })
+      }
+    }
+  }
 }
 </script>
 
