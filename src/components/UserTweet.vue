@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <div class="cover" 
+      v-show="isShowModal" 
+      @click.stop.prevent="closeModal"
+    ></div>
     <header>
       <div class="goback-btn" @click.stop.prevent="goback">
         <svg width="17" height="14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 6H3.414l4.293-4.293A1 1 0 006.293.293l-6 6a1 1 0 000 1.414l6 6a.996.996 0 001.414 0 1 1 0 000-1.414L3.414 8H16a1 1 0 100-2z" fill="#000"/></svg>
@@ -31,11 +35,11 @@
 
     <!-- function btn -->
     <div class="function-btn">
-      <div class="reply-btn">
-        <svg width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.558.803L10.373.79h-.003C4.903.79.62 5.074.62 10.542c0 5.123 3.983 9.008 9.331 9.213v4.785c0 .135.055.358.15.504a.93.93 0 001.293.286c.33-.21 8.091-5.175 10.11-6.882 2.377-2.013 3.8-4.963 3.804-7.89v-.022C25.3 5.078 21.02.803 15.558.801v.002zm4.733 16.214c-1.417 1.2-6.077 4.257-8.465 5.804v-3.984a.937.937 0 00-.937-.937h-.495c-4.575 0-7.898-3.095-7.898-7.357 0-4.418 3.46-7.878 7.875-7.878l5.184.013h.003c4.415 0 7.875 3.457 7.877 7.87-.004 2.387-1.177 4.804-3.142 6.47h-.002z" fill="#657786"/></svg>
+      <div class="reply-btn" @click.stop.prevent="showModal">
+        <img src="replyBig.svg" alt="">
       </div>
       <div class="like-btn">
-        <svg width="26" height="25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 24.047h-.018C9.755 23.987.438 15.57.438 7.597.438 3.767 3.594.405 7.19.405 10.054.405 11.98 2.38 13 3.817 14.016 2.382 15.94.405 18.805.405c3.6 0 6.755 3.362 6.755 7.194 0 7.97-9.317 16.387-12.546 16.446H13v.002zM7.192 2.281c-2.6 0-4.878 2.485-4.878 5.319 0 7.175 8.792 14.495 10.687 14.572C14.9 22.095 23.69 14.776 23.69 7.6c0-2.834-2.279-5.319-4.879-5.319-3.16 0-4.925 3.67-4.94 3.706-.287.703-1.445.703-1.734 0-.017-.037-1.781-3.706-4.942-3.706h-.002z" fill="#657786"/></svg>
+        <img src="heartBig.svg" alt="">
       </div>
     </div>
 
@@ -63,6 +67,61 @@
         <div class="reply-content">{{ reply.content }}</div>
       </div>
     </div>
+
+    <!-- reply modal -->
+    <div class="reply-modal" v-show="isShowModal">
+      <div class="modal-container">
+        <div class="modal-header">
+          <div 
+           class="close-btn" 
+            @click.stop.prevent="closeModal"
+          >
+            <img src="cross.svg" alt="">
+          </div>
+        </div>
+        <div class="replied-tweet">
+          <div class="reply-avatar">
+            <img class="avatar-img" src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/37765399_1877802215574356_4881372551156072448_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=K7VbACTwazkAX9tTTUt&_nc_ht=scontent.ftpe13-1.fna&oh=b620abf3c4829034c1431ec67a5313fb&oe=60EC9077" alt="">
+            <div class="line"></div>
+          </div>
+          <div class="replied-content">
+             <div class="reply-user-info">
+              <div class="reply-user">
+                <h3 class="reply-user-name">林琛育</h3>
+                <h3 class="reply-user-account">@jane．</h3>
+                2小時 
+              </div>
+              <div class="tweet-content">
+                <h3 class="content">
+                  なんやて工藤！！！
+                  それはてぇへんだFlushed faceFlushed faceFlushed face
+                  さ、さ、再起動...とか...
+                </h3>
+              </div>
+            </div>
+            <div class="replied-author">
+              <h3 class="reply-text">回覆給&nbsp;</h3>
+              <h3 class="replid-author-name">@jane</h3>
+            </div>
+          </div>
+         
+        </div>
+        <div class="modal-content">
+          <div class="avatar">
+            <img class="avatar-img" src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959" alt="">
+          </div>
+          <textarea
+            class="twitter-text"
+            placeholder="推你的回覆"
+            maxlength="200"
+          ></textarea>
+        </div>
+        <button class="main-btn post-btn">
+          回覆
+        </button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -127,15 +186,30 @@ export default {
           content: "3Dおめでとうございます！！！！",
           author: "@Tomoe_Shirayuki"
         }
-      ]
+      ],
+      isShowModal: false
     }
   },
+  methods: {
+    showModal() {
+      this.isShowModal = true
+    },
+    closeModal() {
+      this.isShowModal = false
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
 @import "./src/assets/scss/reply.scss";
+@import "./src/assets/scss/replyModal.scss";
+
+.cover {
+  top: -100%;
+  left: -100%;
+}
 
 .router-link-active {
   color: #1C1C1C;
@@ -187,6 +261,7 @@ header {
     margin-top: 15px;
   }
   .reply-info {
+    display: flex;
     width: 99%;
     height: 68px;
     border-top: solid 1px #E6ECF0;
