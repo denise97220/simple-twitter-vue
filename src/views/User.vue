@@ -27,16 +27,8 @@ export default {
   },
   data() {
     return {
-      nowPage: "",
+      nowPage: "self",
     };
-  },
-  created() {
-    this.renderPage();
-  },
-  methods: {
-    renderPage() {
-      this.nowPage = "user-self";
-    },
   },
 };
 </script>

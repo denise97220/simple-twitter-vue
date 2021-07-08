@@ -2,8 +2,8 @@
   <div class="follow-container">
     <div class="navbar"><Navbar /></div>
     <div class="middle-container">
-      <div class="follow-tabs"></div>
-      <div class="user-followe"><UserFollowList /></div>
+      <div class="follow-tabs"><UserFollowTabs /></div>
+      <router-view> </router-view>
     </div>
     <div class="related"><RelatedUsers /></div>
   </div>
@@ -12,14 +12,23 @@
 <script>
 import Navbar from "./../components/Navbar.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
-import UserFollowList from "./../components/UserFollowerList.vue";
+import UserFollowTabs from "./../components/UserFollowTabs.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "UserSelfFollow",
   components: {
     Navbar,
+    UserFollowTabs,
     RelatedUsers,
-    UserFollowList,
+  },
+  data() {
+    return {
+      currentUser: [],
+    };
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
 };
 </script>

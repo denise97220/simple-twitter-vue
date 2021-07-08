@@ -24,7 +24,9 @@
 export default {
   name: "UserTweets",
   data() {
-    return {};
+    return {
+      nowPage: "",
+    };
   },
 };
 </script>
