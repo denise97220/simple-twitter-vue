@@ -43,13 +43,13 @@ const routes = [
     redirect: '/user/self/tweet',
     children: [
       {
-        path: 'tweet',
-        name: 'user-self-tweet',
-        component: () => import('../components/UserTweets.vue')
+        path: "tweet",
+        name: "user-self-tweet",
+        component: () => import("../components/UserTweets.vue"),
       },
       {
         path: "reply",
-        name: "use-self-reply",
+        name: "user-self-reply",
         component: () => import("../components/UserReplies.vue"),
       },
       {
