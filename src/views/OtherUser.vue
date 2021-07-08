@@ -1,14 +1,14 @@
 <template>
   <div class="relpy-list-container">
     <div class="navbar">
-      <Navbar/>
+      <Navbar />
     </div>
     <div class="middle-container">
       <div class="user-profile">
         <UserProfile />
       </div>
       <div class="user-tweets">
-        <UserNavtabs />
+        <UserNavtabs :nowPage="nowPage" />
       </div>
       <router-view :userId="userId"></router-view>
     </div>
@@ -19,25 +19,26 @@
 </template>
 
 <script>
-import Navbar from './../components/Navbar.vue'
-import RelatedUsers from './../components/RelatedUsers.vue'
-import UserNavtabs from '../components/UserNavtabs.vue'
-import UserProfile from './../components/UserProfile.vue'
+import Navbar from "./../components/Navbar.vue";
+import RelatedUsers from "./../components/RelatedUsers.vue";
+import UserNavtabs from "../components/UserNavtabs.vue";
+import UserProfile from "./../components/UserProfile.vue";
 
 export default {
-  name: 'OtherUser',
+  name: "OtherUser",
   components: {
     Navbar,
     UserProfile,
     UserNavtabs,
     RelatedUsers,
   },
-  data () {
+  data() {
     return {
-      userId: 4
-    } 
+      userId: 4,
+      nowPage: "other",
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

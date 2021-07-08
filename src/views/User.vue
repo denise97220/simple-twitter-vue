@@ -5,7 +5,8 @@
     </div>
     <div class="middle-container">
       <div class="user-profile"><UserProfile /></div>
-      <div class="user-tweets"><UsersTweets /></div>
+      <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
+      <router-view></router-view>
     </div>
     <div class="user-related"><RelatedUsers /></div>
   </div>
@@ -14,7 +15,7 @@
 <script>
 import Navbar from "./../components/Navbar.vue";
 import UserProfile from "./../components/UserProfile.vue";
-import UsersTweets from "../components/UserNavtabs.vue";
+import UserNavtabs from "../components/UserNavtabs.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
 
 export default {
@@ -22,7 +23,7 @@ export default {
   components: {
     Navbar,
     UserProfile,
-    UsersTweets,
+    UserNavtabs,
     RelatedUsers,
   },
   data() {
@@ -32,7 +33,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 * {
