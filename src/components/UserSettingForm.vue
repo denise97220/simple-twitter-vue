@@ -15,6 +15,7 @@
         autocomplete="username"
         required
         autofocus
+        v-model="currentUser.account"
         >
       </div>
 
@@ -27,6 +28,7 @@
         class="input name-input"
         autocomplete="current-name"
         required
+        v-model="currentUser.name"
         >
       </div>
 
@@ -39,6 +41,7 @@
         class="input email-input"
         autocomplete="current-email"
         required
+        v-model="currentUser.email"
         >
       </div>
 
@@ -76,6 +79,17 @@
     </form>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  name: 'UserSettingForm',
+  computed: {
+    ...mapState(['currentUser'])
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
@@ -146,8 +160,3 @@ form {
 }
 </style>
 
-<script>
-export default {
-  name: 'UserSettingForm'
-}
-</script>
