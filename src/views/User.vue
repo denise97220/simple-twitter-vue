@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <div class="user-navbar">
+  <div class="user-container">
+    <div class="navbar">
       <Navbar />
     </div>
-    <div class="user-container">
+    <div class="middle-container">
       <div class="user-profile"><UserProfile /></div>
       <div class="user-tweets"><UsersTweets /></div>
     </div>
@@ -25,27 +25,37 @@ export default {
     UsersTweets,
     RelatedUsers,
   },
+  data() {
+    return {
+      nowPage: "",
+    };
+  },
+  created() {
+    this.renderPage();
+  },
+  methods: {
+    renderPage() {
+      this.nowPage = "user-self";
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/main.scss";
 * {
   font-style: normal;
   font-weight: bold;
 }
-.container {
-  display: flex;
-  height: 100%;
-}
 .user-container {
-  width: 600px;
-  margin-left: 5%;
-  .user-profile {
-    height: 430px;
+  display: grid;
+  grid-template-columns: 0.9fr 600px 1fr;
+  grid-gap: 40px;
+
+  .navbar {
+    grid-column: 1 / 2;
   }
-  .user-tweets {
-    max-height: 720px;
+  .middle-container {
+    grid-column: 2 / 3;
   }
 }
 </style>

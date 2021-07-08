@@ -19,38 +19,3 @@
     </router-link>
   </div>
 </template>
-
-<script>
-export default {
-  name: "UserTweets",
-  data() {
-    return {};
-  },
-};
-</script>
-
-<style lang="scss" scoped>
-@import "./src/assets/scss/main.scss";
-.container {
-  display: flex;
-  height: 54px;
-  line-height: 54px;
-  font-weight: bold;
-  font-size: 15px;
-  color: #657786;
-  border: solid 1px #e6ecf0;
-  border-top: none;
-}
-.router-link {
-  color: #657786;
-}
-.router-link-active {
-  color: $mainColor;
-  border-bottom: solid 2px $mainColor;
-}
-.list {
-  width: 130px;
-  display: flex;
-  justify-content: center;
-}
-</style>
