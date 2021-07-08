@@ -4,7 +4,7 @@
       <h1>帳戶設定</h1>
     </div>
     
-    <form>
+    <form @submit.prevent.stop="saveAccount($event)">
       <div class="form-label account-form-label">
         <label for="account" class="label">帳號</label>
         <input
@@ -82,11 +82,35 @@
 
 <script>
 import { mapState } from 'vuex'
+import userAPI from './../apis/user'
+import { Fire } from './../utils/helper'
+
 
 export default {
   name: 'UserSettingForm',
   computed: {
     ...mapState(['currentUser'])
+  },
+  methods: {
+    async saveAccount(e) {
+      try {
+        const userId = this.currentUser.id
+        const form = e.target
+        const formData = new FormData(form)
+        const { data } = await userAPI.saveAccount({userId, formData})
+       
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "儲存失敗，請稍後再試"
+        })
+      }
+    }
   }
 }
 </script>
