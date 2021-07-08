@@ -104,6 +104,12 @@
 <script>
 export default {
   name: "UserTweet",
+  props: {
+    userId: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
       replies: [{

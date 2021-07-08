@@ -10,7 +10,7 @@
       <div class="user-tweets">
         <UserNavtabs />
       </div>
-      <router-view></router-view>
+      <router-view :userId="userId"></router-view>
     </div>
     <div class="related-users">
       <RelatedUsers />
@@ -25,7 +25,7 @@ import UserNavtabs from '../components/UserNavtabs.vue'
 import UserProfile from './../components/UserProfile.vue'
 
 export default {
-  name: 'ReplyList',
+  name: 'OtherUser',
   components: {
     Navbar,
     UserProfile,
@@ -34,6 +34,7 @@ export default {
   },
   data () {
     return {
+      userId: 4
     } 
   },
 }
