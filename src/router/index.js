@@ -40,16 +40,42 @@ const routes = [
     path: "/user/self",
     name: "user-self",
     component: () => import("../views/User.vue"),
+    redirect: '/user/self/tweet',
+    children: [
+      {
+        path: 'tweet',
+        name: 'user-self-tweet',
+        component: () => import('../components/UserTweets.vue')
+      },
+      {
+        path: "reply",
+        name: "use-self-reply",
+        component: () => import("../components/UserReplies.vue"),
+      },
+      {
+        path: "like",
+        name: "user-self-like",
+        component: () => import("../components/UserTweets.vue"),
+      },
+    ]
   },
   {
-    path: "/user/self/follower",
-    name: "user-self-follower",
-    component: () => import("../views/UserSelfFollower.vue"),
-  },
-  {
-    path: "/user/self/following",
-    name: "user-self-following",
-    component: () => import("../views/UserSelfFollowing.vue"),
+    path: "/user/self/follow",
+    name: "user-self-follow",
+    component: () => import("../views/UserSelfFollow.vue"),
+    redirect: '/user/self/follow/follower',
+    children: [
+      {
+        path: 'follower',
+        name: 'user-follower-list',
+        component: () => import('../components/UserFollowerList.vue')
+      },
+      {
+        path: 'following',
+        name: 'user-following-list',
+        component: () => import('../components/UserFollowingList.vue')
+      }
+    ]
   },
   {
     path: "/user/other/:id",
