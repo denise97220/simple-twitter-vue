@@ -4,7 +4,9 @@
       <Navbar />
     </div>
     <div class="middle-container">
-      <div class="user-profile"><UserProfile :nowPage="nowPage" /></div>
+      <div class="user-profile">
+        <UserProfile :nowPage="nowPage" :currentUser="currentUser" />
+      </div>
       <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
       <router-view></router-view>
     </div>
@@ -17,6 +19,7 @@ import Navbar from "./../components/Navbar.vue";
 import UserProfile from "./../components/UserProfile.vue";
 import UserNavtabs from "../components/UserNavtabs.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "User",
@@ -30,6 +33,9 @@ export default {
     return {
       nowPage: "self",
     };
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
 };
 </script>

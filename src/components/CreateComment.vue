@@ -5,10 +5,7 @@
       <!-- CreateComment   -->
       <div class="create-tweet">
         <div class="user-avatar">
-          <img
-            src="https://img.shoplineapp.com/media/image_clips/5f803796cb32120038c61202/original.jpg?1602238358"
-            alt=""
-          />
+          <img :src="currentUser.avatar" alt="avatar" />
         </div>
         <div class="created">
           <div class="user-text">
@@ -18,6 +15,7 @@
               id=""
               cols="30"
               rows="10"
+              maxlength="140"
               placeholder="有什麼新鮮事?"
             ></textarea>
           </div>
@@ -45,20 +43,43 @@ import tweetAPI from "./../apis/tweet";
 
 export default {
   name: "CreateComment",
+  props: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       description: "",
       isProcessing: false,
+      User: {},
     };
   },
+  mounted() {
+    this.fetchUser();
+  },
   methods: {
+    fetchUser() {
+      this.User = this.currentUser;
+    },
     async createTweet() {
       try {
         this.isProcessing = true;
+        if (!this.description.length) {
+          Fire.fire({
+            icon: "info",
+            title: "請輸入推文...",
+          });
+          this.isProcessing = false;
+          return;
+        }
         const response = await tweetAPI.createTweet({
           description: this.description,
         });
         console.log(response);
+        this.description = "";
+        this.isProcessing = false;
       } catch {
         this.isProcessing = false;
         Fire.fire({

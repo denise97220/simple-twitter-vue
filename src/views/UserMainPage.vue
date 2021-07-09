@@ -3,7 +3,9 @@
     <div class="main-container">
       <div class="navbar"><Navbar /></div>
       <div class="main-page">
-        <div class="create-tweet"><CreateComment /></div>
+        <div class="create-tweet">
+          <CreateComment :currentUser="currentUser" />
+        </div>
         <div class="tweets"><UserTweets :tweets="tweets" /></div>
       </div>
       <div class="relate-users"><RelatedUsers /></div>
@@ -18,6 +20,7 @@ import UserTweets from "./../components/UserTweets.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
 import tweetAPI from "./../apis/tweet";
 import { Fire } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "UserMainPage",
@@ -48,6 +51,9 @@ export default {
         });
       }
     },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
 };
 </script>
