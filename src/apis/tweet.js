@@ -6,5 +6,8 @@ export default {
   },
   createTweet({ description }) {
     return apiHelper.post('/tweets', { description })
+  },
+  getUserTweets({ userId }) {
+    return apiHelper.get(`/users/${userId}/tweets`)
   }
 }
