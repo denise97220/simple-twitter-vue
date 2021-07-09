@@ -6,7 +6,7 @@
       <router-link to="" v-for="user in relatedUsers" :key="user.id">
         <div class="single-user">
           <div class="avatar">
-            <img class="avatar-img" :src="user.image" alt="">
+            <img class="avatar-img" :src="user.avatar" alt="">
           </div>
           <div class="info">
             <div class="name">{{ user.name }}</div>
@@ -15,7 +15,7 @@
           <button 
             class="main-btn following-btn" 
             @click.stop.prevent="unFollow(user.id)" 
-            v-if="user.isFollowing"
+            v-if="user.isFollowed"
           >正在跟隨</button>
           <button 
             class="follow-btn" 
@@ -48,73 +48,15 @@
 </template>
 
 <script>
+import userAPI from './../apis/user'
+import { Fire } from './../utils/helper'
+
 export default {
   name: "RelatedUsers",
   data() {
     return {
-      relatedUsers: [
-        {
-          name: "許丹",
-          id: 1,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          isFollowing: false
-        },
-        {
-          name: "許丹",
-          id: 2,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          isFollowing: true
-        },
-        {
-          name: "許丹",
-          id: 3,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 "
-        },
-        {
-          name: "許丹",
-          id: 4,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 "
-        },
-        {
-          name: "許丹",
-          id: 5,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          isFollowing: false
-        },
-        {
-          name: "許丹",
-          id: 6,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          isFollowing: false,
-        },
-        {
-          name: "許丹",
-          id: 7,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          isFollowing: true
-        },
-        {
-          name: "許丹",
-          id: 8,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 "
-        },
-        {
-          name: "許丹",
-          id: 9,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          isFollowing: false
-        },
-      ],
-      isShowMore: false
+      relatedUsers: [],
+      isShowMore: false,
     }
   },
   methods: {
@@ -124,26 +66,73 @@ export default {
     showLess() {
       this.isShowMore = false
     },
-    follow(userId) {
-      this.relatedUsers = this.relatedUsers.map(user => {
-        if (user.id === userId) {
-          user.isFollowing = true 
-          return
-        } else {
-          return user
+    async follow(id) {
+      try {
+        const { data } = await userAPI.follow({ id })
+
+        if (data.status !== "success") {
+          throw new Error(data.message)
         }
-      })
+
+        this.relatedUsers = this.relatedUsers.map(user => {
+          if (user.id === id) {
+            return user = {
+              ...user,
+              isFollowed: true
+            }
+          } else {
+            return user
+          }
+        })
+      } catch(error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法追蹤，請稍後再試"
+        })
+      } 
     },
-    unFollow(userId) {
-      this.relatedUsers = this.relatedUsers.map(user => {
+    async unFollow(userId) {
+      try {
+        const { data } = await userAPI.unFollow({ userId })
+
+        if (data.status !== "success") {
+          throw new Error(data.message)
+        }
+
+        this.relatedUsers = this.relatedUsers.map(user => {
         if (user.id === userId) {
-          user.isFollowing = false
-          return
+          return user = {
+            ...user,
+            isFollowed: false
+          }
         } else {
           return user
         }
       })
+      } catch(error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法取消追蹤，請稍後再試"
+        })
+      } 
+    },
+    async fetchTopUsers() {
+      try {
+        const { data } = await userAPI.getTopUsers()
+        const { topUsers } = data
+        this.relatedUsers = topUsers
+
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法取得使用者資料，請稍後再試"
+        })
+      }
     }
+  },
+  created() {
+    this.fetchTopUsers()
   }
 }
 </script>
