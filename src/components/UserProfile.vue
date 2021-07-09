@@ -18,7 +18,7 @@
       </div>
       <div class="user-navbar-info">
         <div class="user-name">{{ User.name }}</div>
-        <div class="user-tweets-length">25 推文</div>
+        <div class="user-tweets-length">{{ tweetLength }} 推文</div>
       </div>
     </div>
     <div class="user-profile">
@@ -34,7 +34,7 @@
       <div class="user-info">
         <div class="name">{{ User.name }}</div>
         <div class="user-account">
-          <a href="#">@{{ User.account }}</a>
+          <a href="#">{{ User.account }}</a>
         </div>
         <div class="user-description">
           {{ User.description }}
@@ -56,33 +56,44 @@
     <!-- modal -->
 
     <div class="twitter-edit-modal" v-show="isShowModal">
-      <div class="modal-container">
+      <form class="modal-container" @submit.stop.prevent="EditUserProfile">
         <div class="modal-header">
           <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
           <div class="title">編輯個人資料</div>
-          <d class="save-btn main-btn">儲存</d>
+          <button class="save-btn main-btn" type="submit">儲存</button>
         </div>
-        <form class="modal-form">
+        <div class="modal-form">
           <div class="modal-cover-photo">
             <img :src="User.cover" alt="cover" />
             <div class="cover-photo-icon">
               <div class="icon-photo">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19.708 22H4.292C3.028 22 2 20.972 2 19.708V7.375C2 6.11 3.028 5.083 4.292 5.083H6.438C7.633 3.17 9.722 2 12 2C14.277 2 16.367 3.17 17.562 5.083H19.708C20.972 5.083 22 6.11 22 7.375V19.708C22 20.972 20.972 22 19.708 22ZM4.292 6.583C3.855 6.583 3.5 6.938 3.5 7.375V19.708C3.5 20.145 3.855 20.5 4.292 20.5H19.708C20.145 20.5 20.5 20.145 20.5 19.708V7.375C20.5 6.938 20.145 6.583 19.708 6.583H17.258C16.941 6.633 16.626 6.488 16.476 6.201C15.596 4.536 13.882 3.501 12 3.501C10.117 3.501 8.402 4.536 7.524 6.203C7.364 6.505 7.022 6.663 6.691 6.583H4.293H4.292Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M12 8.16699C9.32001 8.16699 7.14001 10.347 7.14001 13.027C7.14001 15.707 9.32001 17.887 12 17.887C14.68 17.887 16.86 15.707 16.86 13.027C16.86 10.347 14.68 8.16699 12 8.16699ZM14 13.75H12.75V15C12.75 15.414 12.414 15.75 12 15.75C11.586 15.75 11.25 15.414 11.25 15V13.75H10C9.58601 13.75 9.25001 13.414 9.25001 13C9.25001 12.586 9.58601 12.25 10 12.25H11.25V11C11.25 10.586 11.586 10.25 12 10.25C12.414 10.25 12.75 10.586 12.75 11V12.25H14C14.414 12.25 14.75 12.586 14.75 13C14.75 13.414 14.414 13.75 14 13.75Z"
-                    fill="white"
-                  />
-                </svg>
+                <label for="cover">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19.708 22H4.292C3.028 22 2 20.972 2 19.708V7.375C2 6.11 3.028 5.083 4.292 5.083H6.438C7.633 3.17 9.722 2 12 2C14.277 2 16.367 3.17 17.562 5.083H19.708C20.972 5.083 22 6.11 22 7.375V19.708C22 20.972 20.972 22 19.708 22ZM4.292 6.583C3.855 6.583 3.5 6.938 3.5 7.375V19.708C3.5 20.145 3.855 20.5 4.292 20.5H19.708C20.145 20.5 20.5 20.145 20.5 19.708V7.375C20.5 6.938 20.145 6.583 19.708 6.583H17.258C16.941 6.633 16.626 6.488 16.476 6.201C15.596 4.536 13.882 3.501 12 3.501C10.117 3.501 8.402 4.536 7.524 6.203C7.364 6.505 7.022 6.663 6.691 6.583H4.293H4.292Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M12 8.16699C9.32001 8.16699 7.14001 10.347 7.14001 13.027C7.14001 15.707 9.32001 17.887 12 17.887C14.68 17.887 16.86 15.707 16.86 13.027C16.86 10.347 14.68 8.16699 12 8.16699ZM14 13.75H12.75V15C12.75 15.414 12.414 15.75 12 15.75C11.586 15.75 11.25 15.414 11.25 15V13.75H10C9.58601 13.75 9.25001 13.414 9.25001 13C9.25001 12.586 9.58601 12.25 10 12.25H11.25V11C11.25 10.586 11.586 10.25 12 10.25C12.414 10.25 12.75 10.586 12.75 11V12.25H14C14.414 12.25 14.75 12.586 14.75 13C14.75 13.414 14.414 13.75 14 13.75Z"
+                      fill="white"
+                    />
+                  </svg>
+                </label>
+                <input
+                  type="file"
+                  name="cover"
+                  id="cover"
+                  class="input-file"
+                  accept="image/*"
+                  @change="handleFileChange"
+                  hidden
+                />
               </div>
               <div class="icon-delete">
                 <svg
@@ -103,22 +114,33 @@
           <div class="user-avatar">
             <img :src="User.avatar" alt="avatar" />
             <div class="icon-photo">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.708 22H4.292C3.028 22 2 20.972 2 19.708V7.375C2 6.11 3.028 5.083 4.292 5.083H6.438C7.633 3.17 9.722 2 12 2C14.277 2 16.367 3.17 17.562 5.083H19.708C20.972 5.083 22 6.11 22 7.375V19.708C22 20.972 20.972 22 19.708 22ZM4.292 6.583C3.855 6.583 3.5 6.938 3.5 7.375V19.708C3.5 20.145 3.855 20.5 4.292 20.5H19.708C20.145 20.5 20.5 20.145 20.5 19.708V7.375C20.5 6.938 20.145 6.583 19.708 6.583H17.258C16.941 6.633 16.626 6.488 16.476 6.201C15.596 4.536 13.882 3.501 12 3.501C10.117 3.501 8.402 4.536 7.524 6.203C7.364 6.505 7.022 6.663 6.691 6.583H4.293H4.292Z"
-                  fill="white"
-                />
-                <path
-                  d="M12 8.16699C9.32001 8.16699 7.14001 10.347 7.14001 13.027C7.14001 15.707 9.32001 17.887 12 17.887C14.68 17.887 16.86 15.707 16.86 13.027C16.86 10.347 14.68 8.16699 12 8.16699ZM14 13.75H12.75V15C12.75 15.414 12.414 15.75 12 15.75C11.586 15.75 11.25 15.414 11.25 15V13.75H10C9.58601 13.75 9.25001 13.414 9.25001 13C9.25001 12.586 9.58601 12.25 10 12.25H11.25V11C11.25 10.586 11.586 10.25 12 10.25C12.414 10.25 12.75 10.586 12.75 11V12.25H14C14.414 12.25 14.75 12.586 14.75 13C14.75 13.414 14.414 13.75 14 13.75Z"
-                  fill="white"
-                />
-              </svg>
+              <label for="avatar">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19.708 22H4.292C3.028 22 2 20.972 2 19.708V7.375C2 6.11 3.028 5.083 4.292 5.083H6.438C7.633 3.17 9.722 2 12 2C14.277 2 16.367 3.17 17.562 5.083H19.708C20.972 5.083 22 6.11 22 7.375V19.708C22 20.972 20.972 22 19.708 22ZM4.292 6.583C3.855 6.583 3.5 6.938 3.5 7.375V19.708C3.5 20.145 3.855 20.5 4.292 20.5H19.708C20.145 20.5 20.5 20.145 20.5 19.708V7.375C20.5 6.938 20.145 6.583 19.708 6.583H17.258C16.941 6.633 16.626 6.488 16.476 6.201C15.596 4.536 13.882 3.501 12 3.501C10.117 3.501 8.402 4.536 7.524 6.203C7.364 6.505 7.022 6.663 6.691 6.583H4.293H4.292Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M12 8.16699C9.32001 8.16699 7.14001 10.347 7.14001 13.027C7.14001 15.707 9.32001 17.887 12 17.887C14.68 17.887 16.86 15.707 16.86 13.027C16.86 10.347 14.68 8.16699 12 8.16699ZM14 13.75H12.75V15C12.75 15.414 12.414 15.75 12 15.75C11.586 15.75 11.25 15.414 11.25 15V13.75H10C9.58601 13.75 9.25001 13.414 9.25001 13C9.25001 12.586 9.58601 12.25 10 12.25H11.25V11C11.25 10.586 11.586 10.25 12 10.25C12.414 10.25 12.75 10.586 12.75 11V12.25H14C14.414 12.25 14.75 12.586 14.75 13C14.75 13.414 14.414 13.75 14 13.75Z"
+                    fill="white"
+                  />
+                </svg>
+              </label>
+              <input
+                type="file"
+                name="avatar"
+                id="avatar"
+                class="input-file"
+                accept="image/*"
+                @change="handleFileChange"
+                hidden
+              />
             </div>
           </div>
           <div class="user-text">
@@ -126,7 +148,7 @@
               <label for="name" class="label">
                 <span>名稱</span>
                 <input
-                  v-model="name"
+                  v-model="User.name"
                   name="name"
                   class="name-input"
                   type="text"
@@ -141,7 +163,7 @@
               <label for="description" class="label">
                 <span>自我介紹 </span>
                 <textarea
-                  v-model="introduction"
+                  v-model="User.introduction"
                   class="description"
                   name="description"
                   id="description"
@@ -154,13 +176,16 @@
               </div>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
+import tweetAPI from "./../apis/tweet";
+import userAPI from "./../apis/user";
+
 export default {
   name: "UserProfile",
   props: {
@@ -176,7 +201,7 @@ export default {
   data() {
     return {
       User: {
-        id: -1,
+        id: this.currentUser.id,
         name: "",
         account: "",
         avatar: "",
@@ -188,23 +213,70 @@ export default {
       isShowModal: false,
       name: "",
       introduction: "",
+      tweetLength: -1,
     };
   },
-  created() {
-    this.fetchUser();
-  },
-  methods: {
-    fetchUser() {
+  watch: {
+    currentUser(newValue) {
       this.User = {
         ...this.User,
-        ...this.currentUser,
+        ...newValue,
       };
+    },
+    tweetLength(newValue) {
+      console.log("newValue", newValue);
+      this.tweetLength = newValue;
+    },
+    User(newValue) {
+      this.User = {
+        ...this.User,
+        ...newValue,
+      };
+    },
+  },
+  created() {
+    const { id } = this.currentUser.id;
+    this.fetchUser(id);
+  },
+  methods: {
+    async fetchUser(userId) {
+      try {
+        this.User = {
+          ...this.User,
+          ...this.currentUser,
+        };
+        const { data } = await tweetAPI.getUserTweets({ userId });
+        this.tweetLength = data.length;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async EditUserProfile(userId, formData) {
+      try {
+        const response = await userAPI.editUserProfile({
+          userId: this.currentUser.id,
+          formData,
+        });
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
     },
     showModal() {
       this.isShowModal = true;
     },
     closeModal() {
       this.isShowModal = false;
+    },
+    handleSubmit(e) {
+      console.log(e);
+    },
+    handleFileChange(e) {
+      const files = e.target.files;
+      console.log(files);
+      if (!files.length) return;
+      const imageURL = window.URL.createObjectURL(files[0]);
+      this.User.avatar = imageURL;
     },
   },
 };
@@ -445,7 +517,7 @@ export default {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          &:hover {
+          :hover {
             cursor: pointer;
           }
         }
@@ -494,9 +566,5 @@ export default {
       }
     }
   }
-}
-.cover {
-  position: absolute;
-  left: -100%;
 }
 </style>

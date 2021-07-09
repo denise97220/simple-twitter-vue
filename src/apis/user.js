@@ -22,4 +22,10 @@ export default {
   saveAccount({ userId, formData }) {
     return apiHelper.put(`/users/${userId}`, formData);
   },
+  getOtherUser({ userId }) {
+    return apiHelper.get(`/users/${userId}`)
+  },
+  editUserProfile({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}/profile`, formData)
+  }
 };
