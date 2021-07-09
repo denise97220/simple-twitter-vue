@@ -54,6 +54,7 @@
         class="input password-input"
         autocomplete="current-password"
         required
+        v-model="password"
         >
       </div>
 
@@ -66,6 +67,7 @@
         class="input checkPassword-input"
         autocomplete="current-checkPassword"
         required
+        v-model="checkPassword"
         >
       </div>
 
@@ -88,6 +90,12 @@ import { Fire } from './../utils/helper'
 
 export default {
   name: 'UserSettingForm',
+  data() {
+    return {
+      password: "",
+      checkPassword: ""
+    }
+  },
   computed: {
     ...mapState(['currentUser'])
   },
@@ -103,12 +111,22 @@ export default {
           throw new Error(data.message)
         }
 
+        Fire.fire({
+          icon: "success",
+          title: "儲存成功"
+        })
+
+        this.password = ""
+        this.checkPassword = ""
+
       } catch(error) {
         console.log(error)
         Fire.fire({
           icon: "warning",
           title: "儲存失敗，請稍後再試"
         })
+        this.password = ""
+        this.checkPassword = ""
       }
     }
   }
