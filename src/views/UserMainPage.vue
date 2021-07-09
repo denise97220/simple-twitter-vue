@@ -43,7 +43,6 @@ export default {
       try {
         const { data } = await tweetAPI.getTweets();
         this.tweets = data;
-        console.log(data);
       } catch (error) {
         Fire.fire({
           icon: "warning",

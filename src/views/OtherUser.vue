@@ -5,7 +5,7 @@
     </div>
     <div class="middle-container">
       <div class="user-profile">
-        <UserProfile />
+        <UserProfile :currentUser="currentUser" />
       </div>
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage" />
@@ -23,6 +23,8 @@ import Navbar from "./../components/Navbar.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
 import UserNavtabs from "../components/UserNavtabs.vue";
 import UserProfile from "./../components/UserProfile.vue";
+import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
 
 export default {
   name: "OtherUser",
@@ -36,7 +38,30 @@ export default {
     return {
       userId: 4,
       nowPage: "other",
+      currentUser: {},
+      id: -1,
     };
+  },
+  created() {
+    const { id } = this.$route.params;
+    this.fetchUser(id);
+  },
+  methods: {
+    async fetchUser(userId) {
+      try {
+        const { data } = await userAPI.getOtherUser({ userId });
+        this.id = userId;
+        this.currentUser = {
+          ...data,
+        };
+      } catch (error) {
+        console.error(error);
+        Fire.fire({
+          icon: "warning",
+          title: "無法取得資料，請稍後再試",
+        });
+      }
+    },
   },
 };
 </script>
