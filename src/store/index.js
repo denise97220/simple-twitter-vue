@@ -22,6 +22,11 @@ export default new Vuex.Store({
       };
       state.isAuthenticated = true;
     },
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      localStorage.removeItem("token")
+    },
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -40,7 +45,7 @@ export default new Vuex.Store({
           updatedAt,
           Followers,
           Followings,
-          Likes
+          Likes,
         } = data;
 
         commit("setCurrentUser", {
@@ -58,9 +63,13 @@ export default new Vuex.Store({
           Followings,
           Likes,
         });
+
+        return true
       } catch (error) {
         console.log("error", error);
         console.error("無法取得當前使用者");
+
+        return false;
       }
     },
   },

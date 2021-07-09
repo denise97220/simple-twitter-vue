@@ -6,7 +6,9 @@
     ></div>
     <div class="navbar">
       <div class="logo">
-         <svg width="50" height="50" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M30.7 23.47s-7.467 12.108-13.59 12.108c-10.707 0-.728-23.065 7.082-23.065 5.449 0 6.508 10.958 6.508 10.958z" fill="#F60"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.572 38.697a19.997 19.997 0 01-31.81-3.557c1.77 2.408 4.772 4.013 9.041 4.013 10.517 0 16.487-8.173 16.487-8.173s.516 6.46 6.27 7.717h.012zM42.722 15.745a19.98 19.98 0 01-.481 19.395 5.947 5.947 0 01-2.803-3.531l-2.282-6.837 5.566-9.027zM25.003 5.017a19.96 19.96 0 0113.537 5.28l-3.788 6.112c-1.37-3.566-4.156-7.136-9.575-7.136-11.099 0-19.325 12.116-19.325 19.712-.002.982.123 1.96.373 2.91a20 20 0 019.53-24.628A20.008 20.008 0 0125.002 5v.017z" fill="#F60"/></svg>
+        <router-link to="/main">
+          <svg width="50" height="50" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M30.7 23.47s-7.467 12.108-13.59 12.108c-10.707 0-.728-23.065 7.082-23.065 5.449 0 6.508 10.958 6.508 10.958z" fill="#F60"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.572 38.697a19.997 19.997 0 01-31.81-3.557c1.77 2.408 4.772 4.013 9.041 4.013 10.517 0 16.487-8.173 16.487-8.173s.516 6.46 6.27 7.717h.012zM42.722 15.745a19.98 19.98 0 01-.481 19.395 5.947 5.947 0 01-2.803-3.531l-2.282-6.837 5.566-9.027zM25.003 5.017a19.96 19.96 0 0113.537 5.28l-3.788 6.112c-1.37-3.566-4.156-7.136-9.575-7.136-11.099 0-19.325 12.116-19.325 19.712-.002.982.123 1.96.373 2.91a20 20 0 019.53-24.628A20.008 20.008 0 0125.002 5v.017z" fill="#F60"/></svg>
+        </router-link>
       </div>
       <div class="nav-list">
         <router-link to="/main">
@@ -40,7 +42,10 @@
       >推文</button>
       <div class="logout">
         <svg width="20" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 13L5 9m0 0l4-4M5 9h14m-5 4v1a3 3 0 01-3 3H4a3 3 0 01-3-3V4a3 3 0 013-3h7a3 3 0 013 3v1" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="logout-text">登出</div>
+        <div 
+          class="logout-text"
+          @click.stop.prevent="logout"
+        >登出</div>
       </div>
     </div>
 
@@ -66,7 +71,10 @@
             v-model="tweetContent"
           ></textarea>
         </div>
-        <button class="main-btn post-btn">
+        <button 
+          class="main-btn post-btn"
+          @click.stop.prevent="createTweet"
+        >
           推文
         </button>
       </div>
@@ -75,6 +83,9 @@
 </template>
 
 <script>
+import tweetAPI from './../apis/tweet'
+import { Fire } from './../utils/helper'
+
 export default {
   name: "Navbar",
   data () {
@@ -89,6 +100,31 @@ export default {
     },
     closeModal() {
       this.isShowModal = false
+    },
+    async createTweet() {
+      try {
+        const description = this.tweetContent
+        const { data } = await tweetAPI.createTweet({ description })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        console.log(data.status)
+        this.tweetContent = ''
+        this.isShowModal = false
+
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法成功推文，請稍後再試"
+        })
+      }
+    },
+    logout() {
+      this.$store.commit("revokeAuthentication")
+      this.$router.push("/login")
     }
   }
 }
