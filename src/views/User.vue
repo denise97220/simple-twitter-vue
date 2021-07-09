@@ -4,7 +4,7 @@
       <Navbar />
     </div>
     <div class="middle-container">
-      <div class="user-profile"><UserProfile /></div>
+      <div class="user-profile"><UserProfile :nowPage="nowPage" /></div>
       <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
       <router-view></router-view>
     </div>

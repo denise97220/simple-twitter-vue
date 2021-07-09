@@ -161,48 +161,6 @@ $borderColor: #e6ecf0;
   font-family: "Noto Sans TC", sans-serif;
 }
 
-.user-navbar {
-  display: grid;
-  grid-template-columns: 0.1fr 1fr;
-  height: 55px;
-  border: solid 1px $borderColor;
-  border-bottom: none;
-  align-items: center;
-  justify-content: center;
-  grid-gap: 20px;
-  .icon {
-    text-align: center;
-  }
-  .user-name {
-    font-size: 19px;
-    font-weight: 900;
-  }
-  .user-tweets-length {
-    font-size: 13px;
-    font-weight: 500;
-    color: #657786;
-  }
-}
-
-// Follow Navtabs
-.nav-tabs {
-  display: flex;
-  height: 54px;
-  align-items: center;
-  border: solid 1px #e6ecf0;
-  border-top: none;
-  .follower,
-  .following {
-    padding: 1rem;
-    border-bottom: solid 2px $mainColor;
-    width: 130px;
-    text-align: center;
-    font-weight: 700;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
 // Follow List
 .follow-card {
   display: grid;
@@ -233,6 +191,7 @@ $borderColor: #e6ecf0;
       border-radius: 100px;
       &:hover {
         cursor: pointer;
+        color: $mainColorHover;
       }
     }
     .name {

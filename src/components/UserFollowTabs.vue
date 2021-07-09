@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="user-navbar">
-      <div class="icon">
+      <div class="icon" @click.stop.prevent="$router.go(-1)">
         <svg
           width="17"
           height="14"
@@ -40,6 +40,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
+
 $borderColor: #e6ecf0;
 
 .user-navbar {
@@ -53,6 +54,9 @@ $borderColor: #e6ecf0;
   grid-gap: 20px;
   .icon {
     text-align: center;
+    &:hover {
+      cursor: pointer;
+    }
   }
   .user-name {
     font-size: 19px;
@@ -64,6 +68,7 @@ $borderColor: #e6ecf0;
     color: #657786;
   }
 }
+
 // Follow Navtabs
 .nav-tabs {
   display: flex;
@@ -74,13 +79,17 @@ $borderColor: #e6ecf0;
   .follower,
   .following {
     padding: 1rem;
-    border-bottom: solid 3px $mainColor;
     width: 130px;
     text-align: center;
     font-weight: 700;
     &:hover {
       cursor: pointer;
     }
+  }
+  .router-link-active {
+    text-decoration: none;
+    color: $mainColor;
+    border-bottom: 3px solid $mainColor;
   }
 }
 </style>

@@ -191,6 +191,7 @@ $borderColor: #e6ecf0;
       border-radius: 100px;
       &:hover {
         cursor: pointer;
+        color: $mainColorHover;
       }
     }
     .name {

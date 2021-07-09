@@ -13,6 +13,7 @@
         <div class="created">
           <div class="user-text">
             <textarea
+              v-model="description"
               name=""
               id=""
               cols="30"
@@ -22,7 +23,14 @@
           </div>
           <div class="btn-place">
             <router-link to="#">
-              <div class="create-btn">推文</div>
+              <button
+                @click.stop.prevent="createTweet"
+                :class="{ 'disabled-btn': isProcessing }"
+                :disabled="isProcessing"
+                class="create-btn"
+              >
+                推文
+              </button>
             </router-link>
           </div>
         </div>
@@ -30,6 +38,38 @@
     </div>
   </div>
 </template>
+
+<script>
+import { Fire } from "./../utils/helper";
+import tweetAPI from "./../apis/tweet";
+
+export default {
+  name: "CreateComment",
+  data() {
+    return {
+      description: "",
+      isProcessing: false,
+    };
+  },
+  methods: {
+    async createTweet() {
+      try {
+        this.isProcessing = true;
+        const response = await tweetAPI.createTweet({
+          description: this.description,
+        });
+        console.log(response);
+      } catch {
+        this.isProcessing = false;
+        Fire.fire({
+          icon: "warning",
+          title: "無法新增推文，請稍後再試",
+        });
+      }
+    },
+  },
+};
+</script>
 
 
 <style lang="scss" scoped>
@@ -89,6 +129,7 @@ $border-color: #e6ecf0;
       display: flex;
       width: 64px;
       height: 40px;
+      border: none;
       border-radius: 100px;
       align-items: center;
       justify-content: center;
@@ -96,6 +137,16 @@ $border-color: #e6ecf0;
       font-size: 18px;
       font-weight: 500;
       color: #ffffff;
+      &:hover {
+        cursor: pointer;
+        background: $mainColorHover;
+      }
+    }
+    .disabled-btn {
+      background: $mainColorDisabled;
+      &:hover {
+        cursor: wait;
+      }
     }
   }
 }
