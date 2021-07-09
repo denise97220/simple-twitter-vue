@@ -2,7 +2,9 @@
   <div class="follow-container">
     <div class="navbar"><Navbar /></div>
     <div class="middle-container">
-      <div class="follow-tabs"><UserFollowTabs /></div>
+      <div class="follow-tabs">
+        <UserFollowTabs :currentUser="currentUser" />
+      </div>
       <router-view> </router-view>
     </div>
     <div class="related"><RelatedUsers /></div>
@@ -23,9 +25,7 @@ export default {
     RelatedUsers,
   },
   data() {
-    return {
-      currentUser: [],
-    };
+    return {};
   },
   computed: {
     ...mapState(["currentUser"]),

@@ -10,7 +10,7 @@ export default {
       password,
     });
   },
-  saveAccount({userId, formData}) {
+  saveAccount({ userId, formData }) {
     return apiHelper.put(`/users/${userId}`, formData);
   },
 };

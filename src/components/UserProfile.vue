@@ -17,52 +17,54 @@
         </svg>
       </div>
       <div class="user-navbar-info">
-        <div class="user-name">Ashley</div>
+        <div class="user-name">{{ User.name }}</div>
         <div class="user-tweets-length">25 推文</div>
       </div>
     </div>
     <div class="user-profile">
-      <div class="cover-photo"></div>
+      <div class="cover-photo">
+        <img :src="User.cover" alt="cover" />
+      </div>
       <div class="user-avatar">
-        <img
-          src="https://scontent.ftpe13-2.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=ZVRGyMI7a6oAX_Aba8b&_nc_ht=scontent.ftpe13-2.fna&oh=c9ba5554c67d9ea9479b5d9c27649a0a&oe=60E8FF7C"
-          alt="avatar"
-        />
+        <img :src="User.avatar" alt="avatar" />
       </div>
       <div class="edit-btn">
         <button @click.stop.prevent="showModal">編輯個人資料</button>
       </div>
       <div class="user-info">
-        <div class="name">Ashley Huang</div>
-        <div class="user-account"><a href="#">@ashley</a></div>
+        <div class="name">{{ User.name }}</div>
+        <div class="user-account">
+          <a href="#">@{{ User.account }}</a>
+        </div>
         <div class="user-description">
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-          sint.
+          {{ User.description }}
         </div>
         <div class="user-follow-info">
           <router-link :to="{ path: `/user/${nowPage}/follow/follower` }">
-            <div class="user-following">34 個 <span>跟隨中 </span></div>
+            <div class="user-following">
+              {{ User.Followings.length }} 個 <span>跟隨中 </span>
+            </div>
           </router-link>
           <router-link :to="{ path: `/user/${nowPage}/follow/following` }">
-            <div class="user-follower">59位<span>跟隨者</span></div>
+            <div class="user-follower">
+              {{ User.Followers.length }}位<span>跟隨者</span>
+            </div>
           </router-link>
         </div>
       </div>
     </div>
     <!-- modal -->
+
     <div class="twitter-edit-modal" v-show="isShowModal">
       <div class="modal-container">
         <div class="modal-header">
           <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
           <div class="title">編輯個人資料</div>
-          <div class="save-btn main-btn">儲存</div>
+          <d class="save-btn main-btn">儲存</d>
         </div>
-        <div class="modal-form">
+        <form class="modal-form">
           <div class="modal-cover-photo">
-            <img
-              src="https://www.momokids.com.tw/public/files/programs/1576215093-1.jpg"
-              alt=""
-            />
+            <img :src="User.cover" alt="cover" />
             <div class="cover-photo-icon">
               <div class="icon-photo">
                 <svg
@@ -99,10 +101,7 @@
             </div>
           </div>
           <div class="user-avatar">
-            <img
-              src="https://scontent.ftpe13-2.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=ZVRGyMI7a6oAX_Aba8b&_nc_ht=scontent.ftpe13-2.fna&oh=c9ba5554c67d9ea9479b5d9c27649a0a&oe=60E8FF7C"
-              alt="avatar"
-            />
+            <img :src="User.avatar" alt="avatar" />
             <div class="icon-photo">
               <svg
                 width="24"
@@ -127,20 +126,22 @@
               <label for="name" class="label">
                 <span>名稱</span>
                 <input
-                  v-model="editName"
+                  v-model="name"
                   name="name"
                   class="name-input"
                   type="text"
                   autofocus
                 />
               </label>
-              <div class="name-length">8/50</div>
+              <div class="name-length">
+                {{ User.name ? name.length : "0" }}/50
+              </div>
             </div>
             <div class="form-label description">
               <label for="description" class="label">
                 <span>自我介紹 </span>
                 <textarea
-                  v-model="editDescription"
+                  v-model="introduction"
                   class="description"
                   name="description"
                   id="description"
@@ -148,10 +149,12 @@
                   rows="10"
                 ></textarea>
               </label>
-              <div class="description-length">0/160</div>
+              <div class="description-length">
+                {{ introduction.length }}/160
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -165,15 +168,38 @@ export default {
       type: String,
       required: true,
     },
+    currentUser: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
+      User: {
+        id: -1,
+        name: "",
+        account: "",
+        avatar: "",
+        cover: "",
+        introduction: "",
+        Followers: [],
+        Following: [],
+      },
       isShowModal: false,
-      editName: "",
-      editDescription: "",
+      name: "",
+      introduction: "",
     };
   },
+  created() {
+    this.fetchUser();
+  },
   methods: {
+    fetchUser() {
+      this.User = {
+        ...this.User,
+        ...this.currentUser,
+      };
+    },
     showModal() {
       this.isShowModal = true;
     },
@@ -229,6 +255,11 @@ export default {
   .cover-photo {
     width: 100%;
     height: 200px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
     background: #999999;
   }
   .user-avatar {
