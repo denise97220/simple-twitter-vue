@@ -80,6 +80,7 @@ export default {
         console.log(response);
         this.description = "";
         this.isProcessing = false;
+        this.$emit("updateTweets")
       } catch {
         this.isProcessing = false;
         Fire.fire({

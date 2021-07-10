@@ -109,8 +109,12 @@ export default {
   props: {
     Switch: {
       type: Boolean,
-      default: true
-    }
+      default: false
+    },
+    NavbarSwitch: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -185,6 +189,12 @@ export default {
       this.$forceUpdate()
     },
     Switch: { 
+      handler () {
+        this.fetchData()
+      },
+      deep: true
+    },
+    NavbarSwitch: {
       handler () {
         this.fetchData()
       },

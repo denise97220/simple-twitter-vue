@@ -4,7 +4,7 @@
       <div class="navbar"><Navbar @updateTweets="updateTweets" /></div>
       <div class="main-page">
         <div class="create-tweet">
-          <CreateComment :currentUser="currentUser" />
+          <CreateComment :currentUser="currentUser" @updateTweets="updateTweets"/>
         </div>
         <div class="tweets"><UserTweets :Switch="Switch" /></div>
       </div>
