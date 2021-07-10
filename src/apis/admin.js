@@ -7,6 +7,9 @@ export default {
       password,
     });
   },
+  register({ formData }) {
+    return apiHelper.post('/users', formData)
+  },
   tweets() {
     return apiHelper.get('/admin/tweets')
   },
