@@ -27,5 +27,12 @@ export default {
   },
   editUserProfile({ userId, formData }) {
     return apiHelper.put(`/users/${userId}/profile`, formData)
+  },
+  getUserFollowings({ userId }) {
+    return apiHelper.get(`/users/${userId}/followings`)
+  },
+  getUserFollowers({ userId }) {
+    return apiHelper.get(`/users/${userId}/followers`)
   }
+
 };

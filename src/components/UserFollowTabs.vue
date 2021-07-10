@@ -33,8 +33,48 @@
 </template>
 
 <script>
+import userAPI from "./../apis/user";
+
 export default {
   name: "UserFollowtabs",
+  props: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      User: {},
+    };
+  },
+  watch: {
+    currentUser(newValue) {
+      this.User = {
+        ...this.User,
+        ...newValue,
+      };
+    },
+  },
+  created() {
+    const { id } = this.$route.params;
+    console.log(id);
+    this.fetchUser(id);
+  },
+  methods: {
+    async fetchUser(userId) {
+      try {
+        const response = await userAPI.getUserFollowings({ userId });
+        console.log(response);
+        this.User = {
+          ...this.User,
+          ...this.currentUser,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
 };
 </script>
 

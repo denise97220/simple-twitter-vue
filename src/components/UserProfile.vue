@@ -227,12 +227,6 @@ export default {
       console.log("newValue", newValue);
       this.tweetLength = newValue;
     },
-    User(newValue) {
-      this.User = {
-        ...this.User,
-        ...newValue,
-      };
-    },
   },
   created() {
     const { id } = this.currentUser.id;
@@ -246,6 +240,7 @@ export default {
           ...this.currentUser,
         };
         const { data } = await tweetAPI.getUserTweets({ userId });
+        console.log(data);
         this.tweetLength = data.length;
       } catch (error) {
         console.error(error);
