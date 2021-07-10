@@ -36,6 +36,9 @@ body {
 
 .disabled-btn {
   background-color: $mainColorDisabled;
+  &:hover {
+    background-color: $mainColorDisabled;
+  }
 }
 </style>
 

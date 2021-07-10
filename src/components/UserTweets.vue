@@ -1,23 +1,22 @@
 <template>
   <div class="container">
-    <div class="tweet-reply" v-for="reply in replies" :key="reply.id">
+    <div class="tweet-reply" v-for="tweet in tweets" :key="tweet.id">
       <div class="reply-avatar">
         <router-link to="">
-          <img class="avatar-img" :src="reply.image" alt="" />
+          <img class="avatar-img" :src="tweet.User.avatar" alt="" />
         </router-link>
       </div>
       <div class="reply-user-info">
         <div class="reply-user">
           <router-link class="reply-user-link" to="">
-            <h3 class="reply-user-name">{{ reply.name }}</h3>
-            <h3 class="reply-user-account">{{ reply.account }}．</h3>
+            <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
+            <h3 class="reply-user-account">{{ tweet.User.account }}．</h3>
           </router-link>
           2小時
         </div>
         <div class="tweet-content">
           <h3 class="content">
-            なんやて工藤！！！ それはてぇへんだFlushed faceFlushed faceFlushed
-            face さ、さ、再起動...とか...
+           {{ tweet.description }}
           </h3>
         </div>
         <div class="reply-detail">
@@ -49,7 +48,7 @@
           <div class="reply-avatar">
             <img
               class="avatar-img"
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/37765399_1877802215574356_4881372551156072448_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=K7VbACTwazkAX9tTTUt&_nc_ht=scontent.ftpe13-1.fna&oh=b620abf3c4829034c1431ec67a5313fb&oe=60EC9077"
+              :src="currentUser.avatar"
               alt=""
             />
             <div class="line"></div>
@@ -57,20 +56,19 @@
           <div class="replied-content">
             <div class="reply-user-info">
               <div class="reply-user">
-                <h3 class="reply-user-name">林琛育</h3>
-                <h3 class="reply-user-account">@jane．</h3>
-                2小時
+                <h3 class="reply-user-name">sss</h3>
+                <h3 class="reply-user-account">@sss．</h3>
+                  2 小時
               </div>
               <div class="tweet-content">
                 <h3 class="content">
-                  なんやて工藤！！！ それはてぇへんだFlushed faceFlushed
-                  faceFlushed face さ、さ、再起動...とか...
+                  QQQQQQQQQQQQQQQQQQQQ
                 </h3>
               </div>
             </div>
             <div class="replied-author">
               <h3 class="reply-text">回覆給&nbsp;</h3>
-              <h3 class="replid-author-name">@jane</h3>
+              <h3 class="replid-author-name">@aaa</h3>
             </div>
           </div>
         </div>
@@ -78,7 +76,7 @@
           <div class="avatar">
             <img
               class="avatar-img"
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959"
+              :src="currentUser.avatar"
               alt=""
             />
           </div>
@@ -101,87 +99,19 @@
 </template>
 
 <script>
+// import userAPI from './../apis/user'
+import tweetAPI from './../apis/tweet'
+import { Fire } from './../utils/helper'
+import { mapState } from 'vuex'
+
 export default {
-  name: "UserTweet",
-  props: {
-    // userId: {
-    //   type: Number,
-    //   required: true,
-    // },
-    Tweets: {
-      type: Array,
-      required: true,
-    },
-  },
+  name: "UserTweets",
   data() {
     return {
-      replies: [
-        {
-          name: "許丹",
-          id: 1,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-        {
-          name: "許丹",
-          id: 2,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-        {
-          name: "許丹",
-          id: 3,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-        {
-          name: "許丹",
-          id: 4,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-        {
-          name: "許丹",
-          id: 5,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-        {
-          name: "許丹",
-          id: 6,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-        {
-          name: "許丹",
-          id: 7,
-          account: "@dandan",
-          image:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki",
-        },
-      ],
       tweets: [],
       isShowModal: false,
+      nowPage: "main",
+      nowPageId: -1
     };
   },
   methods: {
@@ -191,7 +121,55 @@ export default {
     closeModal() {
       this.isShowModal = false;
     },
+    async fetchData() {
+      try {
+        const { data } = await tweetAPI.getTweets()
+        this.tweets = data
+
+        // if (this.nowPage === "user-main") {
+        //   const { data } = await tweetAPI.getTweets()
+        //   this.tweets = data
+        //   return
+        // } else if (this.nowPage === "user-other-tweet") {
+        //   const userId = this.nowPageId
+        //   const { data } = await userAPI.getSingleUserTweets({ userId })
+        //   this.tweets = data
+        //   return
+        // } else if (this.nowPage === "user-other-like") {
+        //   const userId = this.nowPageId
+        //   const { data } = await userAPI.getSingleUserLikeTweets({ userId })
+        //   this.tweets = data
+        //   return
+        // } else if (this.nowPage == "user-self-tweet") {
+        //   const userId = this.currentUser.id
+        //   const { data } = await userAPI.getSingleUserTweets({ userId })
+        //   this.tweets = data
+        //   return
+        // } else if (this.nowPage == "user-self-like") {
+        //   const userId = this.currentUser.id
+        //   const { data } = await userAPI.getSingleUserLikeTweets({ userId })
+        //   this.tweets = data
+        //   return
+        // }
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法取得推文，請稍後再試"
+        })
+      }
+    }
   },
+  computed: {
+    ...mapState(["currentUser"])
+  },
+  created() {
+    this.nowPage = this.$route.name
+    if (this.$route.params.id) {
+      this.nowPageId = this.$route.params.id
+    }
+    this.fetchData()
+  }
 };
 </script>
 

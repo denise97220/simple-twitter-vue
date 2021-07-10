@@ -129,7 +129,7 @@ export default {
         this.checkPassword = ""
       }
     }
-  }
+  },
 }
 </script>
 

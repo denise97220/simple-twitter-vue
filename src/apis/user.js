@@ -23,9 +23,15 @@ export default {
     return apiHelper.put(`/users/${userId}`, formData);
   },
   getOtherUser({ userId }) {
-    return apiHelper.get(`/users/${userId}`)
+    return apiHelper.get(`/users/${userId}`);
   },
   editUserProfile({ userId, formData }) {
-    return apiHelper.put(`/users/${userId}/profile`, formData)
-  }
+    return apiHelper.put(`/users/${userId}/profile`, formData);
+  },
+  getSingleUserTweets({ userId }) {
+    return apiHelper.get(`/users/${userId}/tweets`);
+  },
+  getSingleUserLikeTweets({ userId }) {
+    return apiHelper.get(`/users/${userId}/likes`);
+  },
 };
