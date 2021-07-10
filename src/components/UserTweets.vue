@@ -21,7 +21,7 @@
         </div>
         <div class="reply-detail">
           <div class="reply">
-            <div class="reply-icon-wrapper" @click.stop.prevent="showModal">
+            <div class="reply-icon-wrapper" @click.stop.prevent="showModal(tweet)">
               <img class="reply-icon" src="reply.svg" alt="" />
             </div>
             <div class="reply-count">12</div>
@@ -48,7 +48,7 @@
           <div class="reply-avatar">
             <img
               class="avatar-img"
-              :src="currentUser.avatar"
+              :src="nowModal.User.avatar"
               alt=""
             />
             <div class="line"></div>
@@ -56,19 +56,19 @@
           <div class="replied-content">
             <div class="reply-user-info">
               <div class="reply-user">
-                <h3 class="reply-user-name">sss</h3>
-                <h3 class="reply-user-account">@sss．</h3>
+                <h3 class="reply-user-name">{{ nowModal.User.name }}</h3>
+                <h3 class="reply-user-account">{{ nowModal.User.account }}．</h3>
                   2 小時
               </div>
               <div class="tweet-content">
                 <h3 class="content">
-                  QQQQQQQQQQQQQQQQQQQQ
+                  {{ nowModal.description }}
                 </h3>
               </div>
             </div>
             <div class="replied-author">
               <h3 class="reply-text">回覆給&nbsp;</h3>
-              <h3 class="replid-author-name">@aaa</h3>
+              <h3 class="replid-author-name">{{ nowModal.User.account }}</h3>
             </div>
           </div>
         </div>
@@ -111,12 +111,15 @@ export default {
       tweets: [],
       isShowModal: false,
       nowPage: "main",
-      nowPageId: -1
+      nowPageId: -1,
+      nowModal: {}
     };
   },
   methods: {
-    showModal() {
+    showModal(tweet) {
+      this.nowModal = tweet
       this.isShowModal = true;
+      console.log(this.nowModal)
     },
     closeModal() {
       this.isShowModal = false;
@@ -158,16 +161,16 @@ export default {
           title: "無法取得推文，請稍後再試"
         })
       }
-    }
+    },
   },
   computed: {
     ...mapState(["currentUser"])
   },
   created() {
-    this.nowPage = this.$route.name
-    if (this.$route.params.id) {
-      this.nowPageId = this.$route.params.id
-    }
+    // this.nowPage = this.$route.name
+    // if (this.$route.params.id) {
+    //   this.nowPageId = this.$route.params.id
+    // }
     this.fetchData()
   }
 };
