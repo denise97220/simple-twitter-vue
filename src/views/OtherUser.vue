@@ -5,7 +5,7 @@
     </div>
     <div class="middle-container">
       <div class="user-profile">
-        <UserProfile :currentUser="currentUser" />
+        <UserProfile :currentUser="currentUser" :nowPage="nowPage" />
       </div>
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage"/>

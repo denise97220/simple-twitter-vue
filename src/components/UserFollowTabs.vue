@@ -22,10 +22,20 @@
     </div>
     <!-- Follow Navtabs -->
     <div class="nav-tabs">
-      <router-link to="/user/self/follow/follower">
+      <router-link
+        :to="{
+          name: 'user-self-follow-follower',
+          params: { id: this.$route.params.id },
+        }"
+      >
         <div class="follower">跟隨者</div>
       </router-link>
-      <router-link to="/user/self/follow/following">
+      <router-link
+        :to="{
+          name: 'user-self-follow-following',
+          params: { id: this.$route.params.id },
+        }"
+      >
         <div class="following">正在跟隨</div>
       </router-link>
     </div>
@@ -33,8 +43,48 @@
 </template>
 
 <script>
+import userAPI from "./../apis/user";
+
 export default {
   name: "UserFollowtabs",
+  props: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      User: {},
+    };
+  },
+  watch: {
+    currentUser(newValue) {
+      this.User = {
+        ...this.User,
+        ...newValue,
+      };
+    },
+  },
+  created() {
+    const { id } = this.$route.params;
+    console.log(id);
+    this.fetchUser(id);
+  },
+  methods: {
+    async fetchUser(userId) {
+      try {
+        const response = await userAPI.getUserFollowings({ userId });
+        console.log(response);
+        this.User = {
+          ...this.User,
+          ...this.currentUser,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
 };
 </script>
 

@@ -37,15 +37,25 @@
           <a href="#">{{ User.account }}</a>
         </div>
         <div class="user-description">
-          {{ User.description }}
+          {{ User.introduction }}
         </div>
         <div class="user-follow-info">
-          <router-link :to="{ path: `/user/${nowPage}/follow/follower` }">
+          <router-link
+            :to="{
+              name: `user-${nowPage}-follow-following`,
+              params: { id: currentUser.id },
+            }"
+          >
             <div class="user-following">
               {{ User.Followings.length }} 個 <span>跟隨中 </span>
             </div>
           </router-link>
-          <router-link :to="{ path: `/user/${nowPage}/follow/following` }">
+          <router-link
+            :to="{
+              name: `user-${nowPage}-follow-follower`,
+              params: { id: currentUser.id },
+            }"
+          >
             <div class="user-follower">
               {{ User.Followers.length }}位<span>跟隨者</span>
             </div>
@@ -56,11 +66,18 @@
     <!-- modal -->
 
     <div class="twitter-edit-modal" v-show="isShowModal">
-      <form class="modal-container" @submit.stop.prevent="EditUserProfile">
+      <form class="modal-container" @submit.stop.prevent="handleSubmit">
         <div class="modal-header">
           <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
           <div class="title">編輯個人資料</div>
-          <button class="save-btn main-btn" type="submit">儲存</button>
+          <button
+            class="save-btn main-btn"
+            type="submit"
+            :class="{ 'disabled-btn': isProcessing }"
+            :disabled="isProcessing"
+          >
+            儲存
+          </button>
         </div>
         <div class="modal-form">
           <div class="modal-cover-photo">
@@ -91,7 +108,7 @@
                   id="cover"
                   class="input-file"
                   accept="image/*"
-                  @change="handleFileChange"
+                  @change="handleCoverChange"
                   hidden
                 />
               </div>
@@ -138,7 +155,7 @@
                 id="avatar"
                 class="input-file"
                 accept="image/*"
-                @change="handleFileChange"
+                @change="handleAvatarChange"
                 hidden
               />
             </div>
@@ -160,13 +177,13 @@
               </div>
             </div>
             <div class="form-label description">
-              <label for="description" class="label">
+              <label for="introduction" class="label">
                 <span>自我介紹 </span>
                 <textarea
                   v-model="User.introduction"
                   class="description"
-                  name="description"
-                  id="description"
+                  name="introduction"
+                  id="introduction"
                   cols="30"
                   rows="10"
                 ></textarea>
@@ -185,6 +202,7 @@
 <script>
 import tweetAPI from "./../apis/tweet";
 import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
 
 export default {
   name: "UserProfile",
@@ -214,6 +232,7 @@ export default {
       name: "",
       introduction: "",
       tweetLength: -1,
+      isProcessing: false,
     };
   },
   watch: {
@@ -224,17 +243,14 @@ export default {
       };
     },
     tweetLength(newValue) {
-      console.log("newValue", newValue);
       this.tweetLength = newValue;
     },
-    User(newValue) {
-      this.User = {
-        ...this.User,
-        ...newValue,
-      };
+    nowPage(newValue) {
+      this.nowPage = newValue;
     },
   },
   created() {
+    console.log("NowPage id:", this.$route.params.id);
     const { id } = this.currentUser.id;
     this.fetchUser(id);
   },
@@ -246,20 +262,36 @@ export default {
           ...this.currentUser,
         };
         const { data } = await tweetAPI.getUserTweets({ userId });
-        this.tweetLength = data.length;
+        console.log(data);
+        if (data) {
+          this.tweetLength = data.length;
+        } else {
+          return 0;
+        }
       } catch (error) {
         console.error(error);
       }
     },
-    async EditUserProfile(userId, formData) {
+    async EditUserProfile(formData) {
       try {
+        this.isProcessing = true;
         const response = await userAPI.editUserProfile({
           userId: this.currentUser.id,
           formData,
         });
         console.log(response);
+        this.isProcessing = false;
+        Fire.fire({
+          icon: "success",
+          title: "資料已儲存！",
+        });
       } catch (error) {
+        this.isProcessing = false;
         console.error(error);
+        Fire.fire({
+          icon: "warning",
+          title: "無法儲存資料，請稍後再試",
+        });
       }
     },
     showModal() {
@@ -270,13 +302,21 @@ export default {
     },
     handleSubmit(e) {
       console.log(e);
+      const form = e.target;
+      const formData = new FormData(form);
+      this.EditUserProfile(formData);
     },
-    handleFileChange(e) {
+    handleAvatarChange(e) {
       const files = e.target.files;
       console.log(files);
-      if (!files.length) return;
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.avatar = imageURL;
+    },
+    handleCoverChange(e) {
+      const files = e.target.files;
+      console.log(files);
+      const imageURL = window.URL.createObjectURL(files[0]);
+      this.User.cover = imageURL;
     },
   },
 };
