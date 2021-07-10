@@ -1,13 +1,13 @@
 <template>
   <div class="user-container">
     <div class="navbar">
-      <Navbar @updateTweets="updateTweets"/>
+      <Navbar @updateTweets="updateTweets" />
     </div>
     <div class="middle-container">
       <div class="user-profile">
         <UserProfile :nowPage="nowPage" :currentUser="currentUser" />
       </div>
-      <div class="user-tweets"><UserNavtabs :nowPage="nowPage"  /></div>
+      <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
       <router-view :NavbarSwitch="NavbarSwitch"></router-view>
     </div>
     <div class="user-related"><RelatedUsers /></div>
@@ -32,13 +32,13 @@ export default {
   data() {
     return {
       nowPage: "self",
-      NavbarSwitch: false
+      NavbarSwitch: false,
     };
   },
   methods: {
     updateTweets() {
-      this.NavbarSwitch = !this.NavbarSwitch
-    }
+      this.NavbarSwitch = !this.NavbarSwitch;
+    },
   },
   computed: {
     ...mapState(["currentUser"]),
