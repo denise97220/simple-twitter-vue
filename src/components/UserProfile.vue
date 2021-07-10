@@ -40,12 +40,22 @@
           {{ User.description }}
         </div>
         <div class="user-follow-info">
-          <router-link :to="{ path: `/user/${nowPage}/follow/follower` }">
+          <router-link
+            :to="{
+              name: `user-${nowPage}-follow-follower`,
+              params: { id: currentUser.id },
+            }"
+          >
             <div class="user-following">
               {{ User.Followings.length }} 個 <span>跟隨中 </span>
             </div>
           </router-link>
-          <router-link :to="{ path: `/user/${nowPage}/follow/following` }">
+          <router-link
+            :to="{
+              name: `user-${nowPage}-follow-following`,
+              params: { id: currentUser.id },
+            }"
+          >
             <div class="user-follower">
               {{ User.Followers.length }}位<span>跟隨者</span>
             </div>
@@ -227,14 +237,13 @@ export default {
       console.log("newValue", newValue);
       this.tweetLength = newValue;
     },
-    User(newValue) {
-      this.User = {
-        ...this.User,
-        ...newValue,
-      };
+    nowPage(newValue) {
+      console.log("newPage", newValue);
+      this.nowPage = newValue;
     },
   },
   created() {
+    console.log(this.$route.params.id);
     const { id } = this.currentUser.id;
     this.fetchUser(id);
   },
@@ -246,6 +255,7 @@ export default {
           ...this.currentUser,
         };
         const { data } = await tweetAPI.getUserTweets({ userId });
+        console.log(data);
         this.tweetLength = data.length;
       } catch (error) {
         console.error(error);
