@@ -33,6 +33,10 @@ export default {
   },
   getUserFollowers({ userId }) {
     return apiHelper.get(`/users/${userId}/followers`)
+<<<<<<< HEAD
   }
 
+=======
+  },
+>>>>>>> UserFollowAPI/A
 };

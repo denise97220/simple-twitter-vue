@@ -22,10 +22,20 @@
     </div>
     <!-- Follow Navtabs -->
     <div class="nav-tabs">
-      <router-link to="/user/self/follow/follower">
+      <router-link
+        :to="{
+          name: 'user-self-follow-follower',
+          params: { id: this.$route.params.id },
+        }"
+      >
         <div class="follower">跟隨者</div>
       </router-link>
-      <router-link to="/user/self/follow/following">
+      <router-link
+        :to="{
+          name: 'user-self-follow-following',
+          params: { id: this.$route.params.id },
+        }"
+      >
         <div class="following">正在跟隨</div>
       </router-link>
     </div>

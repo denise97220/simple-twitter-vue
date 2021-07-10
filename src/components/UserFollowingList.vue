@@ -3,147 +3,60 @@
     <!-- Follow List -->
     <div class="follow-list">
       <!--  card    -->
-      <div class="follow-card">
+      <div
+        class="follow-card"
+        v-for="follower in Followings"
+        :key="follower.followerId"
+      >
         <div class="avatar">
-          <img
-            src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=7bltECWyJOEAX_iAo19&_nc_ht=scontent.ftpe4-1.fna&oh=b74a26b71dee8ebd1228e3e4a4764c0e&oe=60EAF9BC"
-            alt=""
-          />
+          <img :src="follower.avatar" alt="avatar" />
         </div>
         <div class="content">
           <div class="user-info">
             <div class="user-name">
-              <div class="name">Ashley</div>
-              <div class="user-account">@ashley</div>
+              <div class="name">{{ follower.name }}</div>
+              <div class="user-account">{{ follower.account }}</div>
             </div>
-            <div class="follow-btn">正在跟隨</div>
+            <div class="follow-btn">跟隨</div>
           </div>
 
           <div class="tweet-content">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum
-            incidunt explicabo libero modi sit eveniet sint voluptates illo,
-            quibusdam excepturi!
-          </div>
-        </div>
-      </div>
-      <div class="follow-card">
-        <div class="avatar">
-          <img
-            src="https://i.pinimg.com/originals/38/da/e2/38dae2d2337be986bbc1a2ade5e86f33.png"
-            alt=""
-          />
-        </div>
-        <div class="content">
-          <div class="user-info">
-            <div class="user-name">
-              <div>Ashley</div>
-              <div class="user-account">@ashley</div>
-            </div>
-            <div class="follow-btn">正在跟隨</div>
-          </div>
-
-          <div class="tweet-content">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum
-            incidunt explicabo libero modi sit eveniet sint voluptates illo,
-            quibusdam excepturi!
-          </div>
-        </div>
-      </div>
-      <div class="follow-card">
-        <div class="avatar">
-          <img
-            src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=7bltECWyJOEAX_iAo19&_nc_ht=scontent.ftpe4-1.fna&oh=b74a26b71dee8ebd1228e3e4a4764c0e&oe=60EAF9BC"
-            alt=""
-          />
-        </div>
-        <div class="content">
-          <div class="user-info">
-            <div class="user-name">
-              <div class="name">Ashley</div>
-              <div class="user-account">@ashley</div>
-            </div>
-            <div class="follow-btn">正在跟隨</div>
-          </div>
-
-          <div class="tweet-content">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum
-            incidunt explicabo libero modi sit eveniet sint voluptates illo,
-            quibusdam excepturi!
-          </div>
-        </div>
-      </div>
-      <div class="follow-card">
-        <div class="avatar">
-          <img
-            src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=7bltECWyJOEAX_iAo19&_nc_ht=scontent.ftpe4-1.fna&oh=b74a26b71dee8ebd1228e3e4a4764c0e&oe=60EAF9BC"
-            alt=""
-          />
-        </div>
-        <div class="content">
-          <div class="user-info">
-            <div class="user-name">
-              <div class="name">Ashley</div>
-              <div class="user-account">@ashley</div>
-            </div>
-            <div class="follow-btn">正在跟隨</div>
-          </div>
-
-          <div class="tweet-content">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum
-            incidunt explicabo libero modi sit eveniet sint voluptates illo,
-            quibusdam excepturi!
-          </div>
-        </div>
-      </div>
-      <div class="follow-card">
-        <div class="avatar">
-          <img
-            src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=7bltECWyJOEAX_iAo19&_nc_ht=scontent.ftpe4-1.fna&oh=b74a26b71dee8ebd1228e3e4a4764c0e&oe=60EAF9BC"
-            alt=""
-          />
-        </div>
-        <div class="content">
-          <div class="user-info">
-            <div class="user-name">
-              <div class="name">Ashley</div>
-              <div class="user-account">@ashley</div>
-            </div>
-            <div class="follow-btn">正在跟隨</div>
-          </div>
-
-          <div class="tweet-content">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum
-            incidunt explicabo libero modi sit eveniet sint voluptates illo,
-            quibusdam excepturi!
-          </div>
-        </div>
-      </div>
-      <div class="follow-card">
-        <div class="avatar">
-          <img
-            src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.6435-9/41733863_2401943579823502_6964299628061655040_n.jpg?_nc_cat=108&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=7bltECWyJOEAX_iAo19&_nc_ht=scontent.ftpe4-1.fna&oh=b74a26b71dee8ebd1228e3e4a4764c0e&oe=60EAF9BC"
-            alt=""
-          />
-        </div>
-        <div class="content">
-          <div class="user-info">
-            <div class="user-name">
-              <div class="name">Ashley</div>
-              <div class="user-account">@ashley</div>
-            </div>
-            <div class="follow-btn">正在跟隨</div>
-          </div>
-
-          <div class="tweet-content">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum
-            incidunt explicabo libero modi sit eveniet sint voluptates illo,
-            quibusdam excepturi!
+            {{ follower.introduction }}
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import userAPI from "./../apis/user";
+
+export default {
+  data() {
+    return {
+      id: this.$route.params.id,
+      Followings: [],
+    };
+  },
+  created() {
+    this.fetchUserFollowings(this.id);
+  },
+  methods: {
+    async fetchUserFollowings() {
+      try {
+        const { data } = await userAPI.getUserFollowings;
+        this.Followings = {
+          ...data,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+};
+</script>
+
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
