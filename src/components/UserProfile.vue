@@ -37,7 +37,7 @@
           <a href="#">{{ User.account }}</a>
         </div>
         <div class="user-description">
-          {{ User.description }}
+          {{ User.introduction }}
         </div>
         <div class="user-follow-info">
           <router-link
@@ -66,7 +66,7 @@
     <!-- modal -->
 
     <div class="twitter-edit-modal" v-show="isShowModal">
-      <form class="modal-container" @submit.stop.prevent="EditUserProfile">
+      <form class="modal-container" @submit.stop.prevent="handleSubmit">
         <div class="modal-header">
           <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
           <div class="title">編輯個人資料</div>
@@ -101,7 +101,7 @@
                   id="cover"
                   class="input-file"
                   accept="image/*"
-                  @change="handleFileChange"
+                  @change="handleCoverChange"
                   hidden
                 />
               </div>
@@ -148,7 +148,7 @@
                 id="avatar"
                 class="input-file"
                 accept="image/*"
-                @change="handleFileChange"
+                @change="handleAvatarChange"
                 hidden
               />
             </div>
@@ -170,13 +170,13 @@
               </div>
             </div>
             <div class="form-label description">
-              <label for="description" class="label">
+              <label for="introduction" class="label">
                 <span>自我介紹 </span>
                 <textarea
                   v-model="User.introduction"
                   class="description"
-                  name="description"
-                  id="description"
+                  name="introduction"
+                  id="introduction"
                   cols="30"
                   rows="10"
                 ></textarea>
@@ -241,7 +241,7 @@ export default {
     },
   },
   created() {
-    console.log(this.$route.params.id);
+    console.log("NowPage id:", this.$route.params.id);
     const { id } = this.currentUser.id;
     this.fetchUser(id);
   },
@@ -254,12 +254,16 @@ export default {
         };
         const { data } = await tweetAPI.getUserTweets({ userId });
         console.log(data);
-        this.tweetLength = data.length;
+        if (data) {
+          this.tweetLength = data.length;
+        } else {
+          return 0;
+        }
       } catch (error) {
         console.error(error);
       }
     },
-    async EditUserProfile(userId, formData) {
+    async EditUserProfile(formData) {
       try {
         const response = await userAPI.editUserProfile({
           userId: this.currentUser.id,
@@ -278,13 +282,21 @@ export default {
     },
     handleSubmit(e) {
       console.log(e);
+      const form = e.target;
+      const formData = new FormData(form);
+      this.EditUserProfile(formData);
     },
-    handleFileChange(e) {
+    handleAvatarChange(e) {
       const files = e.target.files;
       console.log(files);
-      if (!files.length) return;
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.avatar = imageURL;
+    },
+    handleCoverChange(e) {
+      const files = e.target.files;
+      console.log(files);
+      const imageURL = window.URL.createObjectURL(files[0]);
+      this.User.cover = imageURL;
     },
   },
 };
