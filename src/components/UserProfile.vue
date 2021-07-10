@@ -42,7 +42,7 @@
         <div class="user-follow-info">
           <router-link
             :to="{
-              name: `user-${nowPage}-follow-follower`,
+              name: `user-${nowPage}-follow-following`,
               params: { id: currentUser.id },
             }"
           >
@@ -52,7 +52,7 @@
           </router-link>
           <router-link
             :to="{
-              name: `user-${nowPage}-follow-following`,
+              name: `user-${nowPage}-follow-follower`,
               params: { id: currentUser.id },
             }"
           >

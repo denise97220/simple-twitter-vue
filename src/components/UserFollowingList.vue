@@ -33,6 +33,7 @@
 import userAPI from "./../apis/user";
 
 export default {
+  name: "UserFollowingList",
   data() {
     return {
       id: this.$route.params.id,
@@ -43,9 +44,9 @@ export default {
     this.fetchUserFollowings(this.id);
   },
   methods: {
-    async fetchUserFollowings() {
+    async fetchUserFollowings(userId) {
       try {
-        const { data } = await userAPI.getUserFollowings;
+        const { data } = await userAPI.getUserFollowings({ userId });
         this.Followings = {
           ...data,
         };
