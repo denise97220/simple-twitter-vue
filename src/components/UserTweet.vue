@@ -207,7 +207,7 @@ export default {
       try {
         const tweet_id = this.$route.params.id
         const comment = this.comment
-        const {data} = await tweetAPI.replySingleTweet({tweet_id, comment})
+        const { data } = await tweetAPI.replySingleTweet({tweet_id, comment})
       
         this.comment = ""
         this.isShowModal = false

@@ -113,7 +113,7 @@ export default {
         console.log(data.status)
         this.tweetContent = ''
         this.isShowModal = false
-
+        this.$emit("updateTweets")
       } catch(error) {
         console.log(error)
         Fire.fire({

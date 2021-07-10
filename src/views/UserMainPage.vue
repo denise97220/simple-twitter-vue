@@ -1,12 +1,12 @@
 <template>
   <div class="rwd-container">
     <div class="main-container">
-      <div class="navbar"><Navbar /></div>
+      <div class="navbar"><Navbar @updateTweets="updateTweets" /></div>
       <div class="main-page">
         <div class="create-tweet">
           <CreateComment :currentUser="currentUser" />
         </div>
-        <div class="tweets"><UserTweets :tweets="tweets" /></div>
+        <div class="tweets"><UserTweets :Switch="Switch" /></div>
       </div>
       <div class="relate-users"><RelatedUsers /></div>
     </div>
@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       tweets: [],
+      Switch: false
     };
   },
   created() {
@@ -50,6 +51,9 @@ export default {
         });
       }
     },
+    updateTweets() {
+      this.Switch = !this.Switch
+    }
   },
   computed: {
     ...mapState(["currentUser"]),

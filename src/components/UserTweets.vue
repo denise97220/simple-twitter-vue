@@ -106,6 +106,12 @@ import { mapState } from 'vuex'
 
 export default {
   name: "UserTweets",
+  props: {
+    Switch: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       tweets: [],
@@ -177,6 +183,12 @@ export default {
   watch: {
     nowModal() {
       this.$forceUpdate()
+    },
+    Switch: { 
+      handler () {
+        this.fetchData()
+      },
+      deep: true
     }
   },
   created() {

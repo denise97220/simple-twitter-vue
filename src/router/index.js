@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import UserLogin from '../views/UserLogin.vue';
-import store from "./../store";
+// import store from "./../store";
 
 Vue.use(VueRouter)
 
@@ -140,27 +140,27 @@ const router = new VueRouter({
   linkExactActiveClass: 'active',
 });
 
-router.beforeEach(async (to, from, next) => {
-  const token = localStorage.getItem("token")
-  let isAuthenticated = false
+// router.beforeEach(async (to, from, next) => {
+//   const token = localStorage.getItem("token")
+//   let isAuthenticated = false
 
-  if (token) {
-    isAuthenticated = await store.dispatch("fetchCurrentUser")
-  }
+//   if (token) {
+//     isAuthenticated = await store.dispatch("fetchCurrentUser")
+//   }
 
-  const pathsWithoutAuthentication = ["user-login", "register", "admin-login"];
+//   const pathsWithoutAuthentication = ["user-login", "register", "admin-login"];
 
-  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
-    next("/login")
-    return
-  }
+//   if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
+//     next("/login")
+//     return
+//   }
 
-  if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    next("/main")
-    return
-  }
-  next()
-});
+//   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
+//     next("/main")
+//     return
+//   }
+//   next()
+// });
 
 
 export default router
