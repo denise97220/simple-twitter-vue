@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form @submit.stop.prevent="submit">
+    <form @submit.stop.prevent="handleSubmit">
       <div class="logo">
         <svg
           width="50"
@@ -85,7 +85,7 @@
           v-model="checkPassword"
           id="check-password"
           name="check-password"
-          type="check-password"
+          type="password"
           class="check-password-input"
           autocomplete="check-password"
           required
@@ -101,13 +101,15 @@
       </button>
 
       <div class="regist-cancle-btn">
-        <router-link to="#"> 取消 </router-link>
+        <router-link to="/login"> 取消 </router-link>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import adminAPI from "./../apis/admin";
+
 export default {
   name: "Register",
   data() {
@@ -117,7 +119,21 @@ export default {
       email: "",
       password: "",
       checkPassword: "",
+      isProcessing: false,
     };
+  },
+  methods: {
+    async registUser(formData) {
+      this.isProcessing = true;
+      const response = await adminAPI.register({ formData });
+      console.log(response);
+      this.isProcessing = false;
+    },
+    handleSubmit(e) {
+      const form = e.target;
+      const formData = new FormData(form);
+      this.registUser(formData);
+    },
   },
 };
 </script>

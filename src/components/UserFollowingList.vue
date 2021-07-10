@@ -18,10 +18,18 @@
               <div class="user-account">{{ follow.account }}</div>
             </div>
             <div
+              v-if="follow.isFollowed"
               class="follow-btn"
               @click.stop.prevent="deleteFollowList(follow.followingId)"
             >
               正在跟隨
+            </div>
+            <div
+              v-else
+              class="unfollow-btn"
+              @click.stop.prevent="addFollowList(follow.followingId)"
+            >
+              跟隨
             </div>
           </div>
 
@@ -49,18 +57,31 @@ export default {
   created() {
     this.fetchUserFollowings(this.id);
   },
-  watch: {
-    Followings(newValue) {
-      return console.log("Following change", newValue);
-    },
-  },
   methods: {
     async fetchUserFollowings(userId) {
       try {
         const { data } = await userAPI.getUserFollowings({ userId });
-        this.Followings = {
-          ...data,
-        };
+        this.Followings = data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async addFollowList(userId) {
+      try {
+        const { data } = await userAPI.follow({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.Followings = this.Followings.map((follow) => {
+          if (follow.followingId === userId) {
+            return (follow = {
+              ...follow,
+              isFollowed: true,
+            });
+          } else {
+            return follow;
+          }
+        });
       } catch (error) {
         console.error(error);
       }
@@ -72,13 +93,16 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.Followings = this.Followings.filter(
-          (follow) => follow.followingId !== userId
-        );
-        console.log(this.Followings);
-        Fire.fire({
-          icon: "success",
-          title: "已取消追蹤～",
+        this.Followings = this.Followings.map((follow) => {
+          console.log("test follow");
+          if (follow.followingId === userId) {
+            return (follow = {
+              ...follow,
+              isFollowed: false,
+            });
+          } else {
+            return follow;
+          }
         });
       } catch (error) {
         Fire.fire({
@@ -90,7 +114,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
@@ -140,6 +163,25 @@ $borderColor: #e6ecf0;
         cursor: pointer;
         color: #ffffff;
         background: $mainColorHover;
+      }
+    }
+    .unfollow-btn {
+      width: 70%;
+      height: 1.5rem;
+      grid-column: 4/4;
+      text-align: center;
+      justify-self: end;
+      line-height: 1.5rem;
+      background-color: #ffffff;
+      font-weight: 500;
+      font-size: 15px;
+      color: $mainColor;
+      border: 1px solid $mainColor;
+      border-radius: 100px;
+      &:hover {
+        cursor: pointer;
+        color: $mainColorHover;
+        background: #ffffff;
       }
     }
     .name {
