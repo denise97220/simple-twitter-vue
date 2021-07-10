@@ -1,0 +1,41 @@
+@import "./src/assets/scss/main.scss";
+@import "./src/assets/scss/replyModal.scss";
+
+.container {
+  border-right: solid 1px #e6ecf0;
+  border-left: solid 1px #e6ecf0;
+}
+
+.cover {
+  top: -100%;
+  left: -100%;
+}
+
+.router-link-active {
+  color: #1c1c1c;
+}
+
+.reply-icon-wrapper:hover,
+.heart-icon-wrapper:hover {
+  background-color: $replyIconHover;
+  cursor: pointer;
+}
+
+.heart-icon-wrapper:hover {
+  background-color: $heartIconHover;
+}
+
+.reply-icon-wrapper,
+.heart-icon-wrapper {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border-radius: 50%;
+  transition: background-color 0.3s ease-in;
+  .reply-icon,
+  .heart-icon {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+  }
+}

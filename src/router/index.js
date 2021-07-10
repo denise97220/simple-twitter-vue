@@ -55,7 +55,7 @@ const routes = [
       {
         path: "like",
         name: "user-self-like",
-        component: () => import("../components/UserTweets.vue"),
+        component: () => import("../components/UserLikes.vue"),
       },
     ]
   },
@@ -96,7 +96,7 @@ const routes = [
       {
         path: "like",
         name: "user-other-like",
-        component: () => import("../components/UserTweets.vue"),
+        component: () => import("../components/UserLikes.vue"),
       },
     ],
   },

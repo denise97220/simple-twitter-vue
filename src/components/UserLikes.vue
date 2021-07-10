@@ -100,22 +100,11 @@
 
 <script>
 import userAPI from './../apis/user'
-import tweetAPI from './../apis/tweet'
 import { Fire } from './../utils/helper'
 import { mapState } from 'vuex'
 
 export default {
   name: "UserTweets",
-  props: {
-    Switch: {
-      type: Boolean,
-      default: false
-    },
-    NavbarSwitch: {
-      type: Boolean,
-      default: false
-    },
-  },
   data() {
     return {
       tweets: [],
@@ -148,18 +137,15 @@ export default {
     },
     async fetchData() {
       try {
-        if (this.nowPage === "user-main") {
-          const { data } = await tweetAPI.getTweets()
-          this.tweets = data
-        } else if (this.nowPage === "user-other-tweet") {
+        if (this.nowPage === "user-other-like") {
           const userId = this.nowPageId
-          const { data } = await userAPI.getSingleUserTweets({ userId })
+          const { data } = await userAPI.getSingleUserLikeTweets({ userId })
           this.tweets = data
-        } else if (this.nowPage == "user-self-tweet") {
+        } else if (this.nowPage == "user-self-like") {
           const userId = this.currentUser.id
-          const { data } = await userAPI.getSingleUserTweets({ userId })
+          const { data } = await userAPI.getSingleUserLikeTweets({ userId })
           this.tweets = data
-        } 
+        }
       } catch(error) {
         console.log(error)
         Fire.fire({
@@ -176,18 +162,6 @@ export default {
     nowModal() {
       this.$forceUpdate()
     },
-    Switch: { 
-      handler () {
-        this.fetchData()
-      },
-      deep: true
-    },
-    NavbarSwitch: {
-      handler () {
-        this.fetchData()
-      },
-      deep: true
-    }
   },
   created() {
     this.nowPage = this.$route.name
@@ -201,5 +175,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/userTweets.scss";
-
 </style>

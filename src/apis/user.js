@@ -34,6 +34,9 @@ export default {
   getSingleUserLikeTweets({ userId }) {
     return apiHelper.get(`/users/${userId}/likes`);
   },
+  getSingleUserReplies({ userId }) {
+    return apiHelper.get(`/users/${userId}/replied_tweets`);
+  },
   getUserFollowings({ userId }) {
     return apiHelper.get(`/users/${userId}/followings`)
   },

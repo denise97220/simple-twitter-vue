@@ -1,17 +1,17 @@
 <template>
   <div class="container">
     
-    <div class="tweet-reply" v-for="reply in replies" :key="reply.id">
+    <div class="tweet-reply" v-for="reply in replies" :key="reply.TweetId">
       <div class="reply-avatar">
         <router-link to="">
-          <img class="avatar-img" :src="reply.image" alt="">
+          <img class="avatar-img" :src="reply.User.avatar" alt="">
         </router-link>
       </div>
       <div class="reply-info">
         <div class="reply-user">
           <router-link class="reply-user-link" to="">
-            <h3 class="reply-user-name">{{ reply.name }}</h3>
-            <h3 class="reply-user-account">{{ reply.account }}．</h3>
+            <h3 class="reply-user-name">{{ reply.User.name }}</h3>
+            <h3 class="reply-user-account">{{ reply.User.account }}．</h3>
           </router-link>
           2小時
         </div>
@@ -29,69 +29,39 @@
 </template>
 
 <script>
+import userAPI from './../apis/user'
+import { Fire } from './../utils/helper'
+import { mapState } from 'vuex'
+
 export default {
   name: "UserTweet",
   data() {
     return {
-      replies: [{
-          name: "許丹",
-          id: 1,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        },
-        {
-          name: "許丹",
-          id: 2,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        },
-        {
-          name: "許丹",
-          id: 3,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        },
-        {
-          name: "許丹",
-          id: 4,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        },
-        {
-          name: "許丹",
-          id: 5,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        },
-        {
-          name: "許丹",
-          id: 6,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        },
-        {
-          name: "許丹",
-          id: 7,
-          account: "@dandan",
-          image: "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959 ",
-          content: "3Dおめでとうございます！！！！",
-          author: "@Tomoe_Shirayuki"
-        }
-      ]
+      replies: []
     }
   },
+  methods: {
+    async fetchReplies(userId) {
+      try {
+
+        const { data } = await userAPI.getSingleUserReplies({ userId })
+        this.replies = data
+        console.log(data)
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法取得回覆，請稍後再試"
+        })
+      }
+    }
+  },
+  computed: {
+    ...mapState(["currentUser"])
+  },
+  created() {
+    this.fetchReplies(this.currentUser.id)
+  }
 }
 </script>
 
