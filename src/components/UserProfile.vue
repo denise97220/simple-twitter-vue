@@ -70,7 +70,14 @@
         <div class="modal-header">
           <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
           <div class="title">編輯個人資料</div>
-          <button class="save-btn main-btn" type="submit">儲存</button>
+          <button
+            class="save-btn main-btn"
+            type="submit"
+            :class="{ 'disabled-btn': isProcessing }"
+            :disabled="isProcessing"
+          >
+            儲存
+          </button>
         </div>
         <div class="modal-form">
           <div class="modal-cover-photo">
@@ -195,6 +202,7 @@
 <script>
 import tweetAPI from "./../apis/tweet";
 import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
 
 export default {
   name: "UserProfile",
@@ -224,6 +232,7 @@ export default {
       name: "",
       introduction: "",
       tweetLength: -1,
+      isProcessing: false,
     };
   },
   watch: {
@@ -265,13 +274,24 @@ export default {
     },
     async EditUserProfile(formData) {
       try {
+        this.isProcessing = true;
         const response = await userAPI.editUserProfile({
           userId: this.currentUser.id,
           formData,
         });
         console.log(response);
+        this.isProcessing = false;
+        Fire.fire({
+          icon: "success",
+          title: "資料已儲存！",
+        });
       } catch (error) {
+        this.isProcessing = false;
         console.error(error);
+        Fire.fire({
+          icon: "warning",
+          title: "無法儲存資料，請稍後再試",
+        });
       }
     },
     showModal() {
