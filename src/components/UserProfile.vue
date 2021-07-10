@@ -28,8 +28,12 @@
       <div class="user-avatar">
         <img :src="User.avatar" alt="avatar" />
       </div>
-      <div class="edit-btn">
+      <div class="edit-btn" v-if="nowPage === 'self'">
         <button @click.stop.prevent="showModal">編輯個人資料</button>
+      </div>
+      <div class="edit-btn" v-else>
+        <!-- TODO: 追蹤判斷 -->
+        <button @click.stop.prevent="showModal">正在追蹤</button>
       </div>
       <div class="user-info">
         <div class="name">{{ User.name }}</div>
