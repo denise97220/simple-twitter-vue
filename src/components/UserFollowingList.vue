@@ -5,23 +5,28 @@
       <!--  card    -->
       <div
         class="follow-card"
-        v-for="follower in Followings"
-        :key="follower.followerId"
+        v-for="follow in Followings"
+        :key="follow.followingId"
       >
         <div class="avatar">
-          <img :src="follower.avatar" alt="avatar" />
+          <img :src="follow.avatar" alt="avatar" />
         </div>
         <div class="content">
           <div class="user-info">
             <div class="user-name">
-              <div class="name">{{ follower.name }}</div>
-              <div class="user-account">{{ follower.account }}</div>
+              <div class="name">{{ follow.name }}</div>
+              <div class="user-account">{{ follow.account }}</div>
             </div>
-            <div class="follow-btn">跟隨</div>
+            <div
+              class="follow-btn"
+              @click.stop.prevent="deleteFollowList(follow.followingId)"
+            >
+              正在跟隨
+            </div>
           </div>
 
           <div class="tweet-content">
-            {{ follower.introduction }}
+            {{ follow.introduction }}
           </div>
         </div>
       </div>
@@ -31,6 +36,7 @@
 
 <script>
 import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
 
 export default {
   name: "UserFollowingList",
@@ -43,6 +49,11 @@ export default {
   created() {
     this.fetchUserFollowings(this.id);
   },
+  watch: {
+    Followings(newValue) {
+      return console.log("Following change", newValue);
+    },
+  },
   methods: {
     async fetchUserFollowings(userId) {
       try {
@@ -52,6 +63,28 @@ export default {
         };
       } catch (error) {
         console.error(error);
+      }
+    },
+    async deleteFollowList(userId) {
+      try {
+        const { data } = await userAPI.unFollow({ userId });
+        console.log("data", data);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.Followings = this.Followings.filter(
+          (follow) => follow.followingId !== userId
+        );
+        console.log(this.Followings);
+        Fire.fire({
+          icon: "success",
+          title: "已取消追蹤～",
+        });
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法刪除，請稍後再試",
+        });
       }
     },
   },
@@ -97,15 +130,16 @@ $borderColor: #e6ecf0;
       text-align: center;
       justify-self: end;
       line-height: 1.5rem;
-      background-color: #ffffff;
+      background-color: $mainColor;
       font-weight: 500;
       font-size: 15px;
-      color: $mainColor;
+      color: #ffffff;
       border: 1px solid $mainColor;
       border-radius: 100px;
       &:hover {
         cursor: pointer;
-        color: $mainColorHover;
+        color: #ffffff;
+        background: $mainColorHover;
       }
     }
     .name {
