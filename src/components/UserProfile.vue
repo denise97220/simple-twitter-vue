@@ -234,16 +234,11 @@ export default {
       };
     },
     tweetLength(newValue) {
-      console.log("newValue", newValue);
       this.tweetLength = newValue;
     },
-<<<<<<< HEAD
-=======
     nowPage(newValue) {
-      console.log("newPage", newValue);
       this.nowPage = newValue;
     },
->>>>>>> UserFollowAPI/A
   },
   created() {
     console.log(this.$route.params.id);

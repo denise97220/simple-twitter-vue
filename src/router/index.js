@@ -101,19 +101,19 @@ const routes = [
     ],
   },
   {
-    path: "/user/other/follow",
+    path: "/user/other/follow/:id",
     name: "user-other-follow",
     component: () => import("../views/UserSelfFollow.vue"),
     redirect: '/user/other/follow/follower',
     children: [
       {
         path: 'follower',
-        name: 'user-follower-list',
+        name: 'user-other-follow-follower',
         component: () => import('../components/UserFollowerList.vue')
       },
       {
         path: 'following',
-        name: 'user-following-list',
+        name: 'user-other-follow-following',
         component: () => import('../components/UserFollowingList.vue')
       }
     ]
