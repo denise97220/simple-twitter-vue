@@ -5,7 +5,7 @@ h1 {
 }
 
 .container {
-  width: 600px;
+  max-width: 600px;
   margin-top: 60px;
   margin-left: auto;
   margin-right: auto;
@@ -36,17 +36,20 @@ form {
 
   .form-label {
     position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .label {
     position: absolute;
     color: #657786;
     top: 25px;
-    left: 10px;
+    left: 60px;
   }
 
   .email-input, .password-input {
-    width: 530px;
+    width: 80%;
     height: 26px;
     background: #F5F8FA;
     border: none;
@@ -59,7 +62,7 @@ form {
   }
 
   .login-btn {
-    width: 540px;
+    width: 80%;
     height: 50px;
     border-radius: 50px;
     margin-top: 30px;
@@ -84,3 +87,18 @@ form {
     align-items: center;
   }
 }
+
+// @media screen and (max-width: 900px) {
+//   .form-label {
+  
+//     width:120% ;
+//   }
+//    .email-input, .password-input {
+//     width:530px;
+
+//   }
+
+//   .login-btn {
+//     width: 540px;
+//   }
+// }

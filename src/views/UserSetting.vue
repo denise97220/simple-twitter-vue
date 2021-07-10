@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
     <div class="navbar">
-      <Navbar/>
+      <Navbar />
     </div>
     <div class="setting-form">
       <UserSettingForm />
@@ -10,20 +10,19 @@
 </template>
 
 <script>
-import Navbar from './../components/Navbar.vue'
-import UserSettingForm from './../components/UserSettingForm.vue'
+import Navbar from "./../components/Navbar.vue";
+import UserSettingForm from "./../components/UserSettingForm.vue";
 
 export default {
-  name: 'UserSetting',
+  name: "UserSetting",
   components: {
     Navbar,
-    UserSettingForm
+    UserSettingForm,
   },
-  data () {
-    return {
-    } 
+  data() {
+    return {};
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

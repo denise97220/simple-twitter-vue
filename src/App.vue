@@ -9,8 +9,14 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 
 body {
-  font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
+  font-family: "Noto Sans TC", "微軟正黑體", sans-serif;
   font-style: normal;
+}
+
+.rwd-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cover {
