@@ -200,5 +200,20 @@ form {
   line-height: 26px;
   position: relative;
 }
+
+@media screen and (max-width: 900px) {
+  .form-label {
+    width: 300px;
+  }
+
+  .label {
+    width: 300px;
+  }
+
+  .input {
+    width: 300px;
+
+  }
+}
 </style>
 

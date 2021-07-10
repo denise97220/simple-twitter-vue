@@ -123,7 +123,7 @@
           <div class="avatar">
             <img
               class="avatar-img"
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=eplQbZCeODYAX9Ft4O1&_nc_ht=scontent.ftpe13-1.fna&oh=6fba4d9139406318664165edec73f8c7&oe=60E82959"
+              :src="currentUser.avatar"
               alt=""
             />
           </div>
@@ -145,6 +145,7 @@
 <script>
 import tweetAPI from "./../apis/tweet";
 import { Fire } from "./../utils/helper";
+import { mapState } from "vuex"
 
 export default {
   name: "Navbar",
@@ -186,6 +187,9 @@ export default {
       this.$store.commit("revokeAuthentication");
       this.$router.push("/login");
     },
+  },
+  computed: {
+    ...mapState(["currentUser"])
   },
 };
 </script>
@@ -312,12 +316,15 @@ export default {
 }
 
 @media screen and (max-width: 800px) {
-  .list-title {
+  .list-title, .logout-text {
     display: none;
+  }
+  .logout {
+    padding-left: 20px;
   }
   .twitter-btn {
     width: 64px;
-    height: 35px;
+    height: 40px;
   }
   .logo {
     margin-left: 20px;

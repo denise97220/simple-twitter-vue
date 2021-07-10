@@ -12,7 +12,7 @@
             <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
             <h3 class="reply-user-account">{{ tweet.User.account }}．</h3>
           </router-link>
-          2小時
+          {{ tweet.createdAt }}
         </div>
         <div class="tweet-content">
           <h3 class="content">
@@ -24,13 +24,22 @@
             <div class="reply-icon-wrapper" @click.stop.prevent="showModal(tweet)">
               <img class="reply-icon" src="reply.svg" alt="" />
             </div>
-            <div class="reply-count">12</div>
+            <div class="reply-count">{{ tweet.RepliesCount }}</div>
           </div>
           <div class="like">
             <div class="heart-icon-wrapper">
-              <img class="heart-icon" src="heart.svg" alt="" />
+              <img 
+                class="heart-icon" 
+                src="heart.svg" alt="" 
+                v-if="!tweet.isLike"
+                />
+              <img 
+                class="heart-icon" 
+                src="heartSmallRed.svg" alt="" 
+                v-else
+              />
             </div>
-            <div class="like-count">12</div>
+            <div class="like-count">{{ tweet.LikesCount }}</div>
           </div>
         </div>
       </div>
@@ -84,9 +93,13 @@
             class="twitter-text"
             placeholder="推你的回覆"
             maxlength="200"
+            v-model="comment"
           ></textarea>
         </div>
-        <button class="main-btn post-btn">回覆</button>
+        <button 
+          class="main-btn post-btn"
+          @click.stop.prevent="replyTweet"
+        >回覆</button>
       </div>
     </div>
 
@@ -100,6 +113,7 @@
 
 <script>
 import userAPI from './../apis/user'
+import tweetAPI from './../apis/tweet'
 import { Fire } from './../utils/helper'
 import { mapState } from 'vuex'
 
@@ -124,7 +138,8 @@ export default {
           "account": "",
           "avatar": ""
         }
-      }
+      },
+      comment: ""
     };
   },
   methods: {
@@ -154,6 +169,27 @@ export default {
         })
       }
     },
+    async replyTweet() {
+      try {
+        const tweet_id = this.nowModal.TweetId
+        const comment = this.comment
+        const { data } = await tweetAPI.replySingleTweet({ tweet_id, comment })
+
+        if (data.status !== "success") {
+          throw new Error(data.message)
+        }
+        console.log(data.status)
+        this.comment = ""
+        this.isShowModal = false
+
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法回覆推文，請稍後再試"
+        })
+      }
+    }
   },
   computed: {
     ...mapState(["currentUser"])

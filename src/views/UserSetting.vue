@@ -19,9 +19,6 @@ export default {
     Navbar,
     UserSettingForm,
   },
-  data() {
-    return {};
-  },
 };
 </script>
 
@@ -29,16 +26,17 @@ export default {
 @import "./src/assets/scss/main.scss";
 
 .setting-container {
-  display: flex;
-  position: relative;
-}
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-gap: 40px;
 
-.navbar {
-  width: 378px;
-}
-
-.setting-form {
-  flex: 1;
+  .navbar {
+    grid-column: 1 / 2;
+  }
+  .setting-form {
+    grid-column: 2 / 3;
+    width: 100%;
+  }
 }
 </style>
 

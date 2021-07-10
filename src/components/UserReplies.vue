@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     
-    <div class="tweet-reply" v-for="reply in replies" :key="reply.TweetId">
+    <div class="tweet-reply" v-for="reply in replies" :key="reply.id">
       <div class="reply-avatar">
         <router-link to="">
           <img class="avatar-img" :src="reply.User.avatar" alt="">
@@ -18,10 +18,10 @@
         <div class="tweet-author">
           <h3 class="reply-text">回覆</h3>
           <router-link to="">
-            <h3 class="author-name">{{ reply.author }}</h3>
+            <h3 class="author-name" v-if="reply.Tweet">{{ reply.Tweet.User.account }}</h3>
           </router-link>
         </div>
-        <div class="reply-content">{{ reply.content }}</div>
+        <div class="reply-content">{{ reply.comment }}</div>
       </div>
     </div>
 
@@ -43,7 +43,6 @@ export default {
   methods: {
     async fetchReplies(userId) {
       try {
-
         const { data } = await userAPI.getSingleUserReplies({ userId })
         this.replies = data
         console.log(data)
@@ -60,7 +59,11 @@ export default {
     ...mapState(["currentUser"])
   },
   created() {
-    this.fetchReplies(this.currentUser.id)
+    if (this.$route.name === "user-self-reply") {
+      this.fetchReplies(this.currentUser.id)
+    } else if (this.$route.name === "user-other-reply") {
+      this.fetchReplies(this.$route.params.id)
+    }
   }
 }
 </script>
