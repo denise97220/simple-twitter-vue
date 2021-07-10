@@ -8,7 +8,7 @@
         <UserProfile :currentUser="currentUser" />
       </div>
       <div class="user-tweets">
-        <UserNavtabs :nowPage="nowPage" />
+        <UserNavtabs :nowPage="nowPage"/>
       </div>
       <router-view :userId="userId"></router-view>
     </div>

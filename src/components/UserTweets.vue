@@ -99,7 +99,7 @@
 </template>
 
 <script>
-// import userAPI from './../apis/user'
+import userAPI from './../apis/user'
 import tweetAPI from './../apis/tweet'
 import { Fire } from './../utils/helper'
 import { mapState } from 'vuex'
@@ -112,48 +112,52 @@ export default {
       isShowModal: false,
       nowPage: "main",
       nowPageId: -1,
-      nowModal: {}
+      nowModal: {
+        "id": -1,
+        "createdAt": "",
+        "description": "",
+        "LikesCount": -1,
+        "RepliesCount": -1,
+        "isLike": "false",
+        "User": {
+          "id": -1,
+          "name": "",
+          "account": "",
+          "avatar": ""
+        }
+      }
     };
   },
   methods: {
     showModal(tweet) {
       this.nowModal = tweet
       this.isShowModal = true;
-      console.log(this.nowModal)
     },
     closeModal() {
       this.isShowModal = false;
     },
     async fetchData() {
       try {
-        const { data } = await tweetAPI.getTweets()
-        this.tweets = data
-
-        // if (this.nowPage === "user-main") {
-        //   const { data } = await tweetAPI.getTweets()
-        //   this.tweets = data
-        //   return
-        // } else if (this.nowPage === "user-other-tweet") {
-        //   const userId = this.nowPageId
-        //   const { data } = await userAPI.getSingleUserTweets({ userId })
-        //   this.tweets = data
-        //   return
-        // } else if (this.nowPage === "user-other-like") {
-        //   const userId = this.nowPageId
-        //   const { data } = await userAPI.getSingleUserLikeTweets({ userId })
-        //   this.tweets = data
-        //   return
-        // } else if (this.nowPage == "user-self-tweet") {
-        //   const userId = this.currentUser.id
-        //   const { data } = await userAPI.getSingleUserTweets({ userId })
-        //   this.tweets = data
-        //   return
-        // } else if (this.nowPage == "user-self-like") {
-        //   const userId = this.currentUser.id
-        //   const { data } = await userAPI.getSingleUserLikeTweets({ userId })
-        //   this.tweets = data
-        //   return
-        // }
+        if (this.nowPage === "user-main") {
+          const { data } = await tweetAPI.getTweets()
+          this.tweets = data
+        } else if (this.nowPage === "user-other-tweet") {
+          const userId = this.nowPageId
+          const { data } = await userAPI.getSingleUserTweets({ userId })
+          this.tweets = data
+        } else if (this.nowPage === "user-other-like") {
+          const userId = this.nowPageId
+          const { data } = await userAPI.getSingleUserLikeTweets({ userId })
+          this.tweets = data
+        } else if (this.nowPage == "user-self-tweet") {
+          const userId = this.currentUser.id
+          const { data } = await userAPI.getSingleUserTweets({ userId })
+          this.tweets = data
+        } else if (this.nowPage == "user-self-like") {
+          const userId = this.currentUser.id
+          const { data } = await userAPI.getSingleUserLikeTweets({ userId })
+          this.tweets = data
+        }
       } catch(error) {
         console.log(error)
         Fire.fire({
@@ -163,14 +167,23 @@ export default {
       }
     },
   },
+  beforeRouteUpdate (to, from, next) {
+    this.fetchData()
+    next()
+  },
   computed: {
     ...mapState(["currentUser"])
   },
+  watch: {
+    nowModal() {
+      this.$forceUpdate()
+    }
+  },
   created() {
-    // this.nowPage = this.$route.name
-    // if (this.$route.params.id) {
-    //   this.nowPageId = this.$route.params.id
-    // }
+    this.nowPage = this.$route.name
+    if (this.$route.params.id) {
+      this.nowPageId = this.$route.params.id
+    }
     this.fetchData()
   }
 };
