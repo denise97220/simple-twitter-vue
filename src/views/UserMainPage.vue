@@ -4,7 +4,10 @@
       <div class="navbar"><Navbar @updateTweets="updateTweets" /></div>
       <div class="main-page">
         <div class="create-tweet">
-          <CreateComment :currentUser="currentUser" @updateTweets="updateTweets"/>
+          <CreateComment
+            :currentUser="currentUser"
+            @updateTweets="updateTweets"
+          />
         </div>
         <div class="tweets"><UserTweets :Switch="Switch" /></div>
       </div>
@@ -33,7 +36,7 @@ export default {
   data() {
     return {
       tweets: [],
-      Switch: false
+      Switch: false,
     };
   },
   created() {
@@ -52,8 +55,8 @@ export default {
       }
     },
     updateTweets() {
-      this.Switch = !this.Switch
-    }
+      this.Switch = !this.Switch;
+    },
   },
   computed: {
     ...mapState(["currentUser"]),
@@ -63,11 +66,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
-.rwd-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .main-container {
   display: grid;

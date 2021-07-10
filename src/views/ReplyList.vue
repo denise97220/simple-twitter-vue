@@ -1,34 +1,35 @@
 <template>
-  <div class="relpy-list-container">
-    <div class="navbar">
-      <Navbar/>
-    </div>
-    <div class="user-tweet">
-      <UserTweet />
-    </div>
-    <div class="related-users">
-      <RelatedUsers />
+  <div class="rwd-container">
+    <div class="relpy-list-container">
+      <div class="navbar">
+        <Navbar />
+      </div>
+      <div class="user-tweet">
+        <UserTweet />
+      </div>
+      <div class="related-users">
+        <RelatedUsers />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from './../components/Navbar.vue'
-import RelatedUsers from './../components/RelatedUsers.vue'
-import UserTweet from './../components/UserTweet.vue'
+import Navbar from "./../components/Navbar.vue";
+import RelatedUsers from "./../components/RelatedUsers.vue";
+import UserTweet from "./../components/UserTweet.vue";
 
 export default {
-  name: 'ReplyList',
+  name: "ReplyList",
   components: {
     Navbar,
     RelatedUsers,
-    UserTweet
+    UserTweet,
   },
-  data () {
-    return {
-    } 
+  data() {
+    return {};
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
