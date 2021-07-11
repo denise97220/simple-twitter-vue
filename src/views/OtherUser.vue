@@ -10,7 +10,7 @@
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage"/>
       </div>
-      <router-view :userId="userId"></router-view>
+      <router-view></router-view>
     </div>
     <div class="related-users">
       <RelatedUsers />
@@ -36,7 +36,6 @@ export default {
   },
   data() {
     return {
-      userId: 4,
       nowPage: "other",
       currentUser: {},
       id: -1,
