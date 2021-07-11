@@ -52,7 +52,7 @@ form {
     width: 80%;
     height: 26px;
     background: #F5F8FA;
-    border: none;
+    border: solid 3px transparent;
     border-bottom: solid 3px #657786;
     border-radius: 4px;
     margin-top: 20px;
@@ -88,17 +88,10 @@ form {
   }
 }
 
-// @media screen and (max-width: 900px) {
-//   .form-label {
-  
-//     width:120% ;
-//   }
-//    .email-input, .password-input {
-//     width:530px;
-
-//   }
-
-//   .login-btn {
-//     width: 540px;
-//   }
-// }
+input {
+  transition: border .1s linear;
+  &:focus {
+    border: solid 2px $mainColor;
+    border-bottom: solid 3px $mainColor;
+  }
+}
