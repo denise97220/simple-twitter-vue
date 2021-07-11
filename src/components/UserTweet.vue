@@ -301,6 +301,7 @@ export default {
 }
 
 .container {
+  width: 100%;
   border: 1px solid #e6ecf0;
 }
 
