@@ -227,7 +227,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  padding-left: 103px;
+  padding-left: 60px;
   padding-top: 14px;
 }
 
@@ -369,8 +369,12 @@ export default {
   }
 }
 
-@media screen and (max-width: 800px) {
-  .list-title, .logout-text {
+@media screen and (max-width: 900px) {
+  .list-title, 
+  .logout-text, 
+  .home-title, 
+  .selfinfo-title, 
+  .setting-title {
     display: none;
   }
   .logo-wrapper {

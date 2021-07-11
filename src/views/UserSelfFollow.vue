@@ -1,13 +1,19 @@
 <template>
-  <div class="follow-container">
-    <div class="navbar"><Navbar /></div>
-    <div class="middle-container">
-      <div class="follow-tabs">
-        <UserFollowTabs :currentUser="currentUser" />
+  <div class="rwd-container">
+    <div class="follow-container">
+      <div class="navbar">
+        <Navbar />
       </div>
-      <router-view> </router-view>
+      <div class="middle-container scrollbar">
+        <div class="follow-tabs">
+          <UserFollowTabs :currentUser="currentUser" />
+        </div>
+        <router-view></router-view>
+      </div>
+      <div class="related-users">
+        <RelatedUsers />
+      </div>
     </div>
-    <div class="related"><RelatedUsers /></div>
   </div>
 </template>
 
@@ -39,5 +45,48 @@ export default {
 .follow-container {
   display: grid;
   grid-template-columns: 0.9fr 600px 1fr;
+  grid-gap: 30px;
+
+  .navbar {
+    grid-column: 1 / 2;
+  }
+  .middle-container {
+    grid-column: 2 / 3;
+  }
+  .related-users {
+    grid-column: 3 / 4;
+  }
+}
+
+.middle-container {
+  height: calc(100vh); 
+  overflow-y: scroll;
+}
+
+.scrollbar {
+  padding-left: 1px;
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(225, 222, 222, 0.1);
+  }
+}
+
+@media screen and (max-width: 1359px) {
+  .follow-container  {
+    grid-template-columns: 1fr 2fr 0.2fr;
+    grid-gap: 10px;
+    .navbar {
+      grid-column: 1 / 2;
+    }
+    .middle-container{
+      grid-column: 2 / 3;
+    }
+    .related-users {
+      display: none;
+    }
+  }
 }
 </style>

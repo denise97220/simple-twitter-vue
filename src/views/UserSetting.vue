@@ -27,14 +27,14 @@ export default {
 
 .setting-container {
   display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-gap: 40px;
+  grid-template-columns: 0.1fr 1fr 4fr;
+  grid-gap: 30px;
 
   .navbar {
-    grid-column: 1 / 2;
+    grid-column: 2 / 3;
   }
   .setting-form {
-    grid-column: 2 / 3;
+    grid-column: 3 / 4;
     width: 100%;
   }
 }

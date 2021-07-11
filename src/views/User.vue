@@ -1,16 +1,18 @@
 <template>
-  <div class="user-container">
-    <div class="navbar">
-      <Navbar @updateTweets="updateTweets" />
-    </div>
-    <div class="middle-container">
-      <div class="user-profile">
-        <UserProfile :nowPage="nowPage" :currentUser="currentUser" />
+  <div class="rwd-container">
+    <div class="user-container">
+      <div class="navbar">
+        <Navbar @updateTweets="updateTweets" />
       </div>
-      <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
-      <router-view :NavbarSwitch="NavbarSwitch"></router-view>
+      <div class="middle-container scrollbar">
+        <div class="user-profile">
+          <UserProfile :nowPage="nowPage" :currentUser="currentUser" />
+        </div>
+        <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
+        <router-view :NavbarSwitch="NavbarSwitch"></router-view>
+      </div>
+      <div class="related-users"><RelatedUsers /></div>
     </div>
-    <div class="user-related"><RelatedUsers /></div>
   </div>
 </template>
 
@@ -47,6 +49,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./src/assets/scss/main.scss";
+
 * {
   font-style: normal;
   font-weight: bold;
@@ -54,13 +58,48 @@ export default {
 .user-container {
   display: grid;
   grid-template-columns: 0.9fr 600px 1fr;
-  grid-gap: 40px;
+  grid-gap: 30px;
 
   .navbar {
     grid-column: 1 / 2;
   }
   .middle-container {
     grid-column: 2 / 3;
+  }
+  .related-users {
+    grid-column: 3 / 4;
+  }
+}
+
+.middle-container{
+  height: calc(100vh); 
+  overflow-y: scroll;
+}
+
+.scrollbar {
+  padding-left: 1px;
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(225, 222, 222, 0.1);
+  }
+}
+
+@media screen and (max-width: 1359px) {
+  .user-container {
+    grid-template-columns: 1fr 2fr 0.2fr;
+    grid-gap: 10px;
+    .navbar {
+      grid-column: 1 / 2;
+    }
+    .middle-container{
+      grid-column: 2 / 3;
+    }
+    .related-users {
+      display: none;
+    }
   }
 }
 </style>

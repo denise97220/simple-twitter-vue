@@ -38,7 +38,7 @@ export default {
 .relpy-list-container {
   display: grid;
   grid-template-columns: 0.9fr 600px 1fr;
-  grid-gap: 40px;
+  grid-gap: 30px;
 
   .navbar {
     grid-column: 1 / 2;
@@ -71,7 +71,7 @@ export default {
 @media screen and (max-width: 1359px) {
   .relpy-list-container {
     grid-template-columns: 1fr 2fr 0.2fr;
-
+    grid-gap: 10px;
     .navbar {
       grid-column: 1 / 2;
     }

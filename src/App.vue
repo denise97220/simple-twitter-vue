@@ -21,10 +21,11 @@ body {
 
 .cover {
   width: 600%;
-  height: 300%;
+  height: 200%;
   background-color: #0b0b0b;
   opacity: 0.3;
   position: absolute;
+  left: -100%;
   z-index: 10;
 }
 

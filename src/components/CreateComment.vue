@@ -106,7 +106,7 @@ $border-color: #e6ecf0;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 2fr;
-  width: 600px;
+  width: 100%;
 }
 .user-header {
   display: flex;

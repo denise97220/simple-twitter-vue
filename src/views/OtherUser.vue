@@ -3,7 +3,7 @@
     <div class="navbar">
       <Navbar />
     </div>
-    <div class="middle-container">
+    <div class="middle-container scrollbar">
       <div class="user-profile">
         <UserProfile :currentUser="currentUser" :nowPage="nowPage" />
       </div>
@@ -85,9 +85,25 @@ export default {
   }
 }
 
+.middle-container {
+  height: calc(100vh); 
+  overflow-y: scroll;
+}
+
+.scrollbar {
+  padding-left: 1px;
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(225, 222, 222, 0.1);
+  }
+}
+
 @media screen and (max-width: 1359px) {
   .relpy-list-container {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 2fr 0.2fr;
 
     .navbar {
       grid-column: 1 / 2;
