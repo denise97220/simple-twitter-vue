@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Spinner v-if="isLoading" />
     <div class="cover" v-show="isShowModal"></div>
     <div class="user-navbar">
       <div class="icon" @click.stop.prevent="$router.go(-1)">
@@ -29,11 +30,24 @@
         <img :src="User.avatar" alt="avatar" />
       </div>
       <div class="edit-btn" v-if="nowPage === 'self'">
-        <button @click.stop.prevent="showModal">編輯個人資料</button>
+        <div @click.stop.prevent="showModal">編輯個人資料</div>
       </div>
       <div class="edit-btn" v-else>
         <!-- TODO: 追蹤判斷 -->
-        <button>正在追蹤</button>
+        <div
+          class="follow-btn"
+          v-if="currentUser.isFollowed"
+          @click.stop.prevent="deleteFollowList(User.id)"
+        >
+          正在追蹤
+        </div>
+        <div
+          class="unfollow-btn"
+          v-else
+          @click.stop.prevent="addFollowList(User.id)"
+        >
+          追蹤
+        </div>
       </div>
       <div class="user-info">
         <div class="name">{{ User.name }}</div>
@@ -206,6 +220,7 @@
 <script>
 import userAPI from "./../apis/user";
 import { Fire } from "./../utils/helper";
+import Spinner from "./../components/Spinner.vue";
 
 export default {
   name: "UserProfile",
@@ -219,6 +234,9 @@ export default {
       required: true,
     },
   },
+  components: {
+    Spinner,
+  },
   data() {
     return {
       User: {
@@ -230,6 +248,7 @@ export default {
         introduction: "",
         Followers: [],
         Following: [],
+        isFollowed: false,
       },
       isShowModal: false,
       name: "",
@@ -237,6 +256,7 @@ export default {
       tweets: [],
       tweetLength: -1,
       isProcessing: false,
+      isLoading: true,
     };
   },
   watch: {
@@ -253,23 +273,25 @@ export default {
   created() {
     const userId = this.currentUser.id;
     const id = userId ? this.currentUser.id : this.$route.params.id;
-    console.log("userId:", userId, "id:", id);
     this.fetchUser(id);
   },
   methods: {
     async fetchUser(userId) {
       try {
+        this.isProcessing = true;
         this.User = {
           ...this.User,
           ...this.currentUser,
         };
         const { data } = await userAPI.getSingleUserTweets({ userId });
+        this.isLoading = false;
         if (data) {
           return (this.tweetLength = data.length);
         } else {
           return 0;
         }
       } catch (error) {
+        this.isLoading = false;
         Fire.fire({
           icon: "warning",
           title: "無法取得資料",
@@ -288,7 +310,6 @@ export default {
           throw new Error(data.message);
         }
         this.tweets = data;
-        console.log(data);
         this.isProcessing = false;
         Fire.fire({
           icon: "success",
@@ -300,6 +321,40 @@ export default {
         Fire.fire({
           icon: "warning",
           title: "無法儲存資料，請稍後再試",
+        });
+      }
+    },
+    async addFollowList(id) {
+      try {
+        const { data } = await userAPI.follow({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.User = {
+          ...this.User,
+          isFollowed: false,
+        };
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法新增，請稍候再說",
+        });
+      }
+    },
+    async deleteFollowList(id) {
+      try {
+        const { data } = await userAPI.unfollow({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.User = {
+          ...this.User,
+          isFollowed: true,
+        };
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法刪除，請稍候再說",
         });
       }
     },
@@ -411,16 +466,32 @@ export default {
     line-height: 40px;
     margin-top: 10px;
     margin-right: 15px;
-    button {
-      border: none;
-      background-color: transparent;
-      outline: none;
+    &:hover {
+      cursor: pointer;
+      color: $mainColorHover;
+      border-color: $mainColorHover;
+    }
+    .follow-btn {
+      background: $mainColor;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 100px;
+      &:hover {
+        cursor: pointer;
+        background: $mainColorHover;
+      }
+    }
+    .unfollow-btn {
+      background: #fff;
       color: $mainColor;
       font-size: 15px;
       font-weight: bold;
+      border-radius: 100px;
       &:hover {
         cursor: pointer;
         color: $mainColorHover;
+        border-color: $mainColorHover;
       }
     }
   }
