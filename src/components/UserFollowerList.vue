@@ -17,7 +17,20 @@
               <div class="name">{{ follower.name }}</div>
               <div class="user-account">{{ follower.account }}</div>
             </div>
-            <div class="follow-btn">跟隨</div>
+            <div
+              v-if="!follower.isFollowed"
+              class="unfollow-btn"
+              @click.stop.prevent="addFollowList(follower.followerId)"
+            >
+              跟隨
+            </div>
+            <div
+              v-else
+              class="follow-btn"
+              @click.stop.prevent="deleteFollowList(follower.followerId)"
+            >
+              正在跟隨
+            </div>
           </div>
 
           <div class="tweet-content">
@@ -31,6 +44,7 @@
 
 <script>
 import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
 
 export default {
   name: "UserFollowerList",
@@ -47,11 +61,56 @@ export default {
     async fetchUserFollowers(userId) {
       try {
         const { data } = await userAPI.getUserFollowers({ userId });
-        this.Followers = {
-          ...data,
-        };
+        this.Followers = data;
       } catch (error) {
         console.error(error);
+      }
+    },
+    async addFollowList(id) {
+      try {
+        const { data } = await userAPI.follow({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.Followers = this.Followers.map((follow) => {
+          if (follow.followerId === id) {
+            return (follow = {
+              ...follow,
+              isFollowed: true,
+            });
+          } else {
+            return follow;
+          }
+        });
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法新增，請稍後再試。",
+        });
+        console.error(error);
+      }
+    },
+    async deleteFollowList(userId) {
+      try {
+        const { data } = await userAPI.unFollow({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.Followers = this.Followers.map((follow) => {
+          if (follow.followerId === userId) {
+            return (follow = {
+              ...follow,
+              isFollowed: false,
+            });
+          } else {
+            return follow;
+          }
+        });
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法刪除，請稍後再試",
+        });
       }
     },
   },
@@ -90,7 +149,7 @@ $borderColor: #e6ecf0;
   .user-info {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    .follow-btn {
+    .unfollow-btn {
       width: 3.5rem;
       height: 1.5rem;
       grid-column: 4/4;
@@ -106,6 +165,25 @@ $borderColor: #e6ecf0;
       &:hover {
         cursor: pointer;
         color: $mainColorHover;
+      }
+    }
+    .follow-btn {
+      width: 70%;
+      height: 1.5rem;
+      grid-column: 4/4;
+      text-align: center;
+      justify-self: end;
+      line-height: 1.5rem;
+      background-color: $mainColor;
+      font-weight: 500;
+      font-size: 15px;
+      color: #ffffff;
+      border: 1px solid $mainColor;
+      border-radius: 100px;
+      &:hover {
+        cursor: pointer;
+        color: #ffffff;
+        background: $mainColorHover;
       }
     }
     .name {

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form @submit.stop.prevent="submit">
+    <form @submit.stop.prevent="handleSubmit">
       <div class="logo">
         <svg
           width="50"
@@ -80,14 +80,14 @@
         />
       </div>
       <div class="form-label check-password-form-label">
-        <label for="password" class="label">確認密碼</label>
+        <label for="checkPassword" class="label">確認密碼</label>
         <input
           v-model="checkPassword"
-          id="check-password"
-          name="check-password"
-          type="check-password"
+          id="checkPassword"
+          name="checkPassword"
+          type="password"
           class="check-password-input"
-          autocomplete="check-password"
+          autocomplete="checkPassword"
           required
         />
       </div>
@@ -101,13 +101,16 @@
       </button>
 
       <div class="regist-cancle-btn">
-        <router-link to="#"> 取消 </router-link>
+        <router-link to="/login"> 取消 </router-link>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import adminAPI from "./../apis/admin";
+import { Fire } from "./../utils/helper";
+
 export default {
   name: "Register",
   data() {
@@ -117,7 +120,61 @@ export default {
       email: "",
       password: "",
       checkPassword: "",
+      isProcessing: false,
     };
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+        this.isProcessing = true;
+        if (this.password !== this.checkPassword) {
+          Fire.fire({
+            icon: "warning",
+            title: "密碼輸入錯誤",
+          });
+          return;
+        }
+        if (
+          !this.account ||
+          !this.name ||
+          !this.email ||
+          !this.password ||
+          !this.checkPassword
+        ) {
+          Fire.fire({
+            icon: "warning",
+            title: "請輸入所有欄位",
+          });
+          return;
+        }
+        if (this.password.length < 6) {
+          Fire.fire({
+            icon: "warning",
+            title: "密碼長度不足",
+          });
+          return;
+        }
+
+        const { data } = await adminAPI.signUp({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          checkPassword: this.checkPassword,
+        });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.isProcessing = false;
+        console.log("signup success!");
+        this.$router.push("/");
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法註冊，請稍後再試！",
+        });
+      }
+    },
   },
 };
 </script>
