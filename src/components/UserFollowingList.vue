@@ -66,14 +66,14 @@ export default {
         console.error(error);
       }
     },
-    async addFollowList(userId) {
+    async addFollowList(id) {
       try {
-        const { data } = await userAPI.follow({ userId });
+        const { data } = await userAPI.follow({ id });
         if (data.status !== "success") {
           throw new Error(data.message);
         }
         this.Followings = this.Followings.map((follow) => {
-          if (follow.followingId === userId) {
+          if (follow.followingId === id) {
             return (follow = {
               ...follow,
               isFollowed: true,

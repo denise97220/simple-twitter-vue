@@ -66,14 +66,14 @@ export default {
         console.error(error);
       }
     },
-    async addFollowList(userId) {
+    async addFollowList(id) {
       try {
-        const { data } = await userAPI.follow({ userId });
+        const { data } = await userAPI.follow({ id });
         if (data.status !== "success") {
           throw new Error(data.message);
         }
         this.Followers = this.Followers.map((follow) => {
-          if (follow.followerId === userId) {
+          if (follow.followerId === id) {
             return (follow = {
               ...follow,
               isFollowed: true,
@@ -83,13 +83,16 @@ export default {
           }
         });
       } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法新增，請稍後再試。",
+        });
         console.error(error);
       }
     },
     async deleteFollowList(userId) {
       try {
         const { data } = await userAPI.unFollow({ userId });
-        console.log("data", data);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
