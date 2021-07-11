@@ -3,8 +3,10 @@
     <input type="checkbox" class="navbar-toggle" id="navbar-toggle" />
     <div class="related-users-card">
       <div class="header">跟隨誰</div>
-      <router-link to="" v-for="user in relatedUsers" :key="user.id">
-        <div class="single-user">
+        <div class="single-user" 
+          v-for="user in relatedUsers" :key="user.id" 
+          @click="redirectToProfile(user.id)"
+        >
           <div class="avatar">
             <img class="avatar-img" :src="user.avatar" alt="">
           </div>
@@ -23,7 +25,6 @@
             v-else
           >跟隨</button>
         </div>
-      </router-link>
     </div>
      <!-- footer -->
     <div class="footer">
@@ -48,8 +49,9 @@
 </template>
 
 <script>
-import userAPI from './../apis/user'
-import { Fire } from './../utils/helper'
+import userAPI from "./../apis/user"
+import { Fire } from "./../utils/helper"
+import { mapState } from "vuex"
 
 export default {
   name: "RelatedUsers",
@@ -129,7 +131,17 @@ export default {
           title: "無法取得使用者資料，請稍後再試"
         })
       }
-    }
+    },
+    redirectToProfile(id) {
+      if (id === this.currentUser.id) {
+        this.$router.push("/user/self")
+      } else {
+        this.$router.push({ path: `/user/other/${id}` })
+      }
+    },
+  },
+  computed: {
+    ...mapState(["currentUser"])
   },
   created() {
     this.fetchTopUsers()
@@ -169,12 +181,16 @@ export default {
     font-size: 15px;
     line-height: 15px;
   }
-
   .follow-btn {
     width: 62px;
     background: none;
     border: solid 1px $mainColor;
     color: $mainColor;
+    cursor: pointer;
+    transition: background-color .1s linear;
+    &:hover {
+      background-color: #e3e3e3;
+    }
   }
 }
 
@@ -197,6 +213,8 @@ export default {
   padding: 10px 15px;
   border-bottom: 1px solid #E6ECF0;
   position: relative;
+  transition: background-color .2s linear;
+  cursor: pointer;
   .avatar-img {
     width: 50px;
     height: 50px;
@@ -214,7 +232,9 @@ export default {
       color: #657786;
     }
   }
-
+  &:hover {
+    background-color: #eeeeee;
+  }
  .footer {
     width: 350px;
     height: 45px;

@@ -145,7 +145,10 @@
             v-model="tweetContent"
           ></textarea>
         </div>
-        <button class="main-btn post-btn" @click.stop.prevent="createTweet">
+        <button 
+          class="main-btn post-btn"
+          @click.stop.prevent="createTweet"
+          >
           推文
         </button>
       </div>
@@ -176,6 +179,8 @@ export default {
     },
     async createTweet() {
       try {
+        if (!this.tweetContent.trim()) return
+      
         const description = this.tweetContent;
         const { data } = await tweetAPI.createTweet({ description });
 
