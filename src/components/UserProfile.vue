@@ -33,7 +33,7 @@
       </div>
       <div class="edit-btn" v-else>
         <!-- TODO: 追蹤判斷 -->
-        <button @click.stop.prevent="showModal">正在追蹤</button>
+        <button>正在追蹤</button>
       </div>
       <div class="user-info">
         <div class="name">{{ User.name }}</div>
@@ -193,7 +193,7 @@
                 ></textarea>
               </label>
               <div class="description-length">
-                {{ introduction.length }}/160
+                {{ introduction.length ? introduction.length : "0" }}/160
               </div>
             </div>
           </div>
@@ -204,7 +204,6 @@
 </template>
 
 <script>
-import tweetAPI from "./../apis/tweet";
 import userAPI from "./../apis/user";
 import { Fire } from "./../utils/helper";
 
@@ -235,27 +234,26 @@ export default {
       isShowModal: false,
       name: "",
       introduction: "",
+      tweets: [],
       tweetLength: -1,
       isProcessing: false,
     };
   },
   watch: {
-    currentUser(newValue) {
+    currentUser: function (newValue) {
       this.User = {
         ...this.User,
         ...newValue,
       };
-    },
-    tweetLength(newValue) {
-      this.tweetLength = newValue;
     },
     nowPage(newValue) {
       this.nowPage = newValue;
     },
   },
   created() {
-    console.log("NowPage id:", this.$route.params.id);
-    const { id } = this.currentUser.id;
+    const userId = this.currentUser.id;
+    const id = userId ? this.currentUser.id : this.$route.params.id;
+    console.log("userId:", userId, "id:", id);
     this.fetchUser(id);
   },
   methods: {
@@ -265,25 +263,32 @@ export default {
           ...this.User,
           ...this.currentUser,
         };
-        const { data } = await tweetAPI.getUserTweets({ userId });
-        console.log(data);
+        const { data } = await userAPI.getSingleUserTweets({ userId });
         if (data) {
-          this.tweetLength = data.length;
+          return (this.tweetLength = data.length);
         } else {
           return 0;
         }
       } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法取得資料",
+        });
         console.error(error);
       }
     },
     async EditUserProfile(formData) {
       try {
         this.isProcessing = true;
-        const response = await userAPI.editUserProfile({
+        const { data } = await userAPI.editUserProfile({
           userId: this.currentUser.id,
           formData,
         });
-        console.log(response);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.tweets = data;
+        console.log(data);
         this.isProcessing = false;
         Fire.fire({
           icon: "success",

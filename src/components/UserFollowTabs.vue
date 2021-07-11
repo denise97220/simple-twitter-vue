@@ -74,8 +74,11 @@ export default {
   methods: {
     async fetchUser(userId) {
       try {
-        const response = await userAPI.getUserFollowings({ userId });
-        console.log(response);
+        const { data } = await userAPI.getUserFollowings({ userId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        console.log(data);
         this.User = {
           ...this.User,
           ...this.currentUser,

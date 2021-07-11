@@ -1,12 +1,23 @@
 <template>
   <div class="container">
-    <div class="cover" 
-      v-show="isShowModal" 
+    <div
+      class="cover"
+      v-show="isShowModal"
       @click.stop.prevent="closeModal"
     ></div>
     <header>
       <div class="goback-btn" @click.stop.prevent="goback">
-        <svg width="17" height="14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 6H3.414l4.293-4.293A1 1 0 006.293.293l-6 6a1 1 0 000 1.414l6 6a.996.996 0 001.414 0 1 1 0 000-1.414L3.414 8H16a1 1 0 100-2z" fill="#000"/></svg>
+        <svg
+          width="17"
+          height="14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16 6H3.414l4.293-4.293A1 1 0 006.293.293l-6 6a1 1 0 000 1.414l6 6a.996.996 0 001.414 0 1 1 0 000-1.414L3.414 8H16a1 1 0 100-2z"
+            fill="#000"
+          />
+        </svg>
       </div>
       <div class="header-content">推文</div>
     </header>
@@ -16,7 +27,7 @@
       <div class="author-info">
         <router-link class="author-info-link" to="">
           <div class="avatar">
-            <img class="avatar-img" :src="tweet.User.avatar" alt="">
+            <img class="avatar-img" :src="tweet.User.avatar" alt="" />
           </div>
           <div class="name-info">
             <div class="name">{{ tweet.User.name }}</div>
@@ -24,30 +35,24 @@
           </div>
         </router-link>
       </div>
-      <div class="tweet-content">{{ tweet.description }}
+      <div class="tweet-content">{{ tweet.description }}</div>
+      <div class="time">{{ tweet.createdAt | fromNow }}</div>
+      <div class="reply-info">
+        {{ tweet.Replies.length }} 回覆&nbsp;&nbsp;{{ tweet.LikesCount }}
+        喜歡次數
       </div>
-      <div class="time">{{ tweet.createdAt }}</div>
-      <div class="reply-info">{{ tweet.Replies.length }} 回覆&nbsp;&nbsp;{{ tweet.LikesCount }} 喜歡次數</div>
     </div>
 
     <!-- function btn -->
     <div class="function-btn">
       <div class="reply-btn" @click.stop.prevent="showModal">
-        <img class="reply-icon" src="replyBig.svg" alt="">
+        <img class="reply-icon" src="replyBig.svg" alt="" />
       </div>
-      <div 
-        class="like-btn"
-        v-if="!tweet.isLike"
-        @click.stop.prevent="like"
-      >
-        <img class="heart-icon" src="heartBig.svg" alt="">
+      <div class="like-btn" v-if="!tweet.isLike" @click.stop.prevent="like">
+        <img class="heart-icon" src="heartBig.svg" alt="" />
       </div>
-      <div 
-        class="like-btn"
-        v-if="tweet.isLike"
-        @click.stop.prevent="unlike"
-      >
-        <img class="heart-icon" src="heartRed.svg" alt="">
+      <div class="like-btn" v-if="tweet.isLike" @click.stop.prevent="unlike">
+        <img class="heart-icon" src="heartRed.svg" alt="" />
       </div>
     </div>
 
@@ -55,16 +60,16 @@
     <div class="tweet-reply" v-for="reply in tweet.Replies" :key="reply.id">
       <div class="reply-avatar">
         <router-link to="">
-          <img class="avatar-img" :src="reply.User.avatar" alt="">
+          <img class="avatar-img" :src="reply.User.avatar" alt="" />
         </router-link>
       </div>
       <div class="reply-info">
         <div class="reply-user">
           <router-link class="reply-user-link" to="">
             <h3 class="reply-user-name">{{ reply.User.name }}</h3>
-            <h3 class="reply-user-account">{{reply.User.account }}．</h3>
+            <h3 class="reply-user-account">{{ reply.User.account }}．</h3>
           </router-link>
-          {{ reply.createdAt }}
+          {{ reply.createdAt | fromNow }}
         </div>
         <div class="tweet-author">
           <h3 class="reply-text">回覆</h3>
@@ -80,24 +85,21 @@
     <div class="reply-modal" v-if="isShowModal">
       <div class="modal-container">
         <div class="modal-header">
-          <div 
-           class="close-btn" 
-            @click.stop.prevent="closeModal"
-          >
-            <img src="cross.svg" alt="">
+          <div class="close-btn" @click.stop.prevent="closeModal">
+            <img src="cross.svg" alt="" />
           </div>
         </div>
         <div class="replied-tweet">
           <div class="reply-avatar">
-            <img class="avatar-img" :src="tweet.User.avatar" alt="">
+            <img class="avatar-img" :src="tweet.User.avatar" alt="" />
             <div class="line"></div>
           </div>
           <div class="replied-content">
-             <div class="reply-user-info">
+            <div class="reply-user-info">
               <div class="reply-user">
                 <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
                 <h3 class="reply-user-account">{{ tweet.User.account }}．</h3>
-                {{ tweet.createdAt }}
+                {{ tweet.createdAt | fromNow }}
               </div>
               <div class="tweet-content">
                 <h3 class="content">
@@ -110,11 +112,10 @@
               <h3 class="replid-author-name">{{ tweet.User.account }}</h3>
             </div>
           </div>
-         
         </div>
         <div class="modal-content">
           <div class="avatar">
-            <img class="avatar-img" :src="currentUser.avatar" alt="">
+            <img class="avatar-img" :src="currentUser.avatar" alt="" />
           </div>
           <textarea
             class="twitter-text"
@@ -123,159 +124,164 @@
             v-model="comment"
           ></textarea>
         </div>
-        <button 
-          class="main-btn post-btn"
-          @click.stop.prevent="replyTweet"
-        >
+        <button class="main-btn post-btn" @click.stop.prevent="replyTweet">
           回覆
         </button>
       </div>
     </div>
-
   </div>
 </template>
 
  <script>
-import Spinner from './../components/Spinner.vue'
-import tweetAPI from "./../apis/tweet"
-import { Fire } from "./../utils/helper"
-import { mapState } from "vuex"
+import Spinner from "./../components/Spinner.vue";
+import tweetAPI from "./../apis/tweet";
+import { Fire } from "./../utils/helper";
+import { mapState } from "vuex";
+import { fromNowFilter } from "./../utils/mixins";
 
 export default {
   name: "UserTweet",
   components: {
-    Spinner
+    Spinner,
   },
+  mixins: [fromNowFilter],
   data() {
     return {
       tweet: {
-        "id": -1,
-        "description": "",
-        "createdAt": "",
-        "LikesCount": -1,
-        "isLike": "",
-        "User": {
-          "id": -1,
-          "name": "",
-          "avatar": "",
-          "account": ""
+        id: -1,
+        description: "",
+        createdAt: "",
+        LikesCount: -1,
+        isLike: "",
+        User: {
+          id: -1,
+          name: "",
+          avatar: "",
+          account: "",
         },
-        "Replies": [
+        Replies: [
           {
-            "id": -1,
-            "comment": "",
-            "createdAt": "",
-            "User": {
-              "id": -1,
-              "name": "",
-              "cover": "",
-              "account": ""
-            }
+            id: -1,
+            comment: "",
+            createdAt: "",
+            User: {
+              id: -1,
+              name: "",
+              cover: "",
+              account: "",
+            },
           },
-        ]
+        ],
       },
       isShowModal: false,
       comment: "",
-      isLoading: true
-    }
+      isLoading: true,
+    };
   },
   methods: {
     showModal() {
-      this.isShowModal = true
+      this.isShowModal = true;
     },
     closeModal() {
-      this.isShowModal = false
+      this.isShowModal = false;
     },
     async fetchTweet(tweet_id) {
       try {
-        const { data } = await tweetAPI.getSingleTweet({ tweet_id })
-        const { id, description, createdAt, LikesCount, isLike, User, Replies} = data
+        const { data } = await tweetAPI.getSingleTweet({ tweet_id });
+        const {
+          id,
+          description,
+          createdAt,
+          LikesCount,
+          isLike,
+          User,
+          Replies,
+        } = data;
         this.tweet = {
           ...this.tweet,
           id,
-          description, 
-          createdAt, 
-          LikesCount, 
-          isLike, 
-          User, 
-          Replies
-        }
-        this.isLoading = false
-
-      } catch(error) {
-        console.log(error)
+          description,
+          createdAt,
+          LikesCount,
+          isLike,
+          User,
+          Replies,
+        };
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法取得貼文，請稍後再試"
-        })
-        this.isLoading = false
+          title: "無法取得貼文，請稍後再試",
+        });
+        this.isLoading = false;
       }
     },
     async replyTweet() {
       try {
-        const tweet_id = this.$route.params.id
-        const comment = this.comment
-        const { data } = await tweetAPI.replySingleTweet({tweet_id, comment})
-      
-        this.comment = ""
-        this.isShowModal = false
+        const tweet_id = this.$route.params.id;
+        const comment = this.comment;
+        const { data } = await tweetAPI.replySingleTweet({ tweet_id, comment });
 
-        this.fetchTweet(this.tweet.id)
+        this.comment = "";
+        this.isShowModal = false;
+
+        this.fetchTweet(this.tweet.id);
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法回覆，請稍後再試"
-        })
+          title: "無法回覆，請稍後再試",
+        });
       }
     },
     async like() {
       try {
-        const TweetId = this.tweet.id
-        const {data} = await tweetAPI.likeSingleTweet({ TweetId })
-        this.tweet.isLike = true
-      
+        const TweetId = this.tweet.id;
+        const { data } = await tweetAPI.likeSingleTweet({ TweetId });
+        this.tweet.isLike = true;
+
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法喜歡推文，請稍後再試"
-        })
+          title: "無法喜歡推文，請稍後再試",
+        });
       }
     },
     async unlike() {
       try {
-        const TweetId = this.tweet.id
-        const {data} = await tweetAPI.unlikeSingleTweet({ TweetId })
-        this.tweet.isLike = false
+        const TweetId = this.tweet.id;
+        const { data } = await tweetAPI.unlikeSingleTweet({ TweetId });
+        this.tweet.isLike = false;
 
-        console.log(data.status)
+        console.log(data.status);
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法取消喜歡，請稍後再試"
-        })
+          title: "無法取消喜歡，請稍後再試",
+        });
       }
-    }
+    },
   },
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState(["currentUser"]),
   },
   created() {
-    const { id } = this.$route.params
-    this.fetchTweet(id)
-  }
-}
+    const { id } = this.$route.params;
+    this.fetchTweet(id);
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -289,18 +295,18 @@ export default {
 }
 
 .router-link-active {
-  color: #1C1C1C;
+  color: #1c1c1c;
 }
 
 .container {
-  border: 1px solid #E6ECF0;
+  border: 1px solid #e6ecf0;
 }
 
 header {
   display: flex;
   height: 15px;
   padding: 20px;
-  border-bottom: 1px solid #E6ECF0;
+  border-bottom: 1px solid #e6ecf0;
   .header-content {
     margin-left: 43px;
   }
@@ -341,8 +347,8 @@ header {
     display: flex;
     width: 99%;
     height: 68px;
-    border-top: solid 1px #E6ECF0;
-    border-bottom: solid 1px #E6ECF0;
+    border-top: solid 1px #e6ecf0;
+    border-bottom: solid 1px #e6ecf0;
     margin-top: 15px;
     line-height: 68px;
     font-size: 19px;
@@ -357,7 +363,8 @@ header {
   .like-btn {
     margin-left: 155px;
   }
-  .reply-btn:hover, .like-btn:hover {
+  .reply-btn:hover,
+  .like-btn:hover {
     background-color: $replyIconHover;
     cursor: pointer;
   }
@@ -379,5 +386,4 @@ header {
     }
   }
 }
-  
 </style>

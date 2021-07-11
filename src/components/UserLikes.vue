@@ -3,47 +3,45 @@
     <Spinner v-if="isLoading" />
     <div class="tweet-reply" v-else v-for="tweet in tweets" :key="tweet.id">
       <div class="reply-avatar">
-         <img 
-          class="avatar-img" 
-          :src="tweet.User.avatar" alt="" 
+        <img
+          class="avatar-img"
+          :src="tweet.User.avatar"
+          alt=""
           @click="redirectToProfile(tweet.User.id)"
         />
       </div>
-      <div 
-        class="reply-user-info"
-        @click="redirectToTweet(tweet.TweetId)"
-      >
+      <div class="reply-user-info" @click="redirectToTweet(tweet.TweetId)">
         <div class="reply-user">
           <router-link class="reply-user-link" to="">
             <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
             <h3 class="reply-user-account">{{ tweet.User.account }}．</h3>
           </router-link>
-          {{ tweet.createdAt }}
+          {{ tweet.createdAt | fromNow }}
         </div>
         <div class="tweet-content">
           <h3 class="content">
-           {{ tweet.description }}
+            {{ tweet.description }}
           </h3>
         </div>
         <div class="reply-detail">
           <div class="reply">
-            <div class="reply-icon-wrapper" @click.stop.prevent="showModal(tweet)">
+            <div
+              class="reply-icon-wrapper"
+              @click.stop.prevent="showModal(tweet)"
+            >
               <img class="reply-icon" src="reply.svg" alt="" />
             </div>
             <div class="reply-count">{{ tweet.RepliesCount }}</div>
           </div>
           <div class="like">
             <div class="heart-icon-wrapper">
-              <img 
-                class="heart-icon" 
-                src="heart.svg" alt="" 
+              <img
+                class="heart-icon"
+                src="heart.svg"
+                alt=""
                 v-if="!tweet.isLike"
-                />
-              <img 
-                class="heart-icon" 
-                src="heartSmallRed.svg" alt="" 
-                v-else
               />
+              <img class="heart-icon" src="heartSmallRed.svg" alt="" v-else />
             </div>
             <div class="like-count">{{ tweet.LikesCount }}</div>
           </div>
@@ -61,19 +59,17 @@
         </div>
         <div class="replied-tweet">
           <div class="reply-avatar">
-            <img
-              class="avatar-img"
-              :src="nowModal.User.avatar"
-              alt=""
-            />
+            <img class="avatar-img" :src="nowModal.User.avatar" alt="" />
             <div class="line"></div>
           </div>
           <div class="replied-content">
             <div class="reply-user-info">
               <div class="reply-user">
                 <h3 class="reply-user-name">{{ nowModal.User.name }}</h3>
-                <h3 class="reply-user-account">{{ nowModal.User.account }}．</h3>
-                  2 小時
+                <h3 class="reply-user-account">
+                  {{ nowModal.User.account }}．
+                </h3>
+                2 小時
               </div>
               <div class="tweet-content">
                 <h3 class="content">
@@ -89,11 +85,7 @@
         </div>
         <div class="modal-content">
           <div class="avatar">
-            <img
-              class="avatar-img"
-              :src="currentUser.avatar"
-              alt=""
-            />
+            <img class="avatar-img" :src="currentUser.avatar" alt="" />
           </div>
           <textarea
             class="twitter-text"
@@ -102,10 +94,9 @@
             v-model="comment"
           ></textarea>
         </div>
-        <button 
-          class="main-btn post-btn"
-          @click.stop.prevent="replyTweet"
-        >回覆</button>
+        <button class="main-btn post-btn" @click.stop.prevent="replyTweet">
+          回覆
+        </button>
       </div>
     </div>
 
@@ -118,16 +109,16 @@
 </template>
 
 <script>
-import userAPI from "./../apis/user"
-import tweetAPI from "./../apis/tweet"
-import { Fire } from "./../utils/helper"
-import { mapState } from "vuex"
-import Spinner from "./../components/Spinner.vue"
+import userAPI from "./../apis/user";
+import tweetAPI from "./../apis/tweet";
+import { Fire } from "./../utils/helper";
+import { mapState } from "vuex";
+import Spinner from "./../components/Spinner.vue";
 
 export default {
   name: "UserTweets",
   components: {
-    Spinner
+    Spinner,
   },
   data() {
     return {
@@ -136,26 +127,26 @@ export default {
       nowPage: "main",
       nowPageId: -1,
       nowModal: {
-        "id": -1,
-        "createdAt": "",
-        "description": "",
-        "LikesCount": -1,
-        "RepliesCount": -1,
-        "isLike": "false",
-        "User": {
-          "id": -1,
-          "name": "",
-          "account": "",
-          "avatar": ""
-        }
+        id: -1,
+        createdAt: "",
+        description: "",
+        LikesCount: -1,
+        RepliesCount: -1,
+        isLike: "false",
+        User: {
+          id: -1,
+          name: "",
+          account: "",
+          avatar: "",
+        },
       },
       comment: "",
-      isLoading: true
+      isLoading: true,
     };
   },
   methods: {
     showModal(tweet) {
-      this.nowModal = tweet
+      this.nowModal = tweet;
       this.isShowModal = true;
     },
     closeModal() {
@@ -164,72 +155,71 @@ export default {
     async fetchData() {
       try {
         if (this.nowPage === "user-other-like") {
-          const userId = this.nowPageId
-          const { data } = await userAPI.getSingleUserLikeTweets({ userId })
-          this.tweets = data
+          const userId = this.nowPageId;
+          const { data } = await userAPI.getSingleUserLikeTweets({ userId });
+          this.tweets = data;
         } else if (this.nowPage == "user-self-like") {
-          const userId = this.currentUser.id
-          const { data } = await userAPI.getSingleUserLikeTweets({ userId })
-          this.tweets = data
+          const userId = this.currentUser.id;
+          const { data } = await userAPI.getSingleUserLikeTweets({ userId });
+          this.tweets = data;
         }
-        this.isLoading = false
-      } catch(error) {
-        console.log(error)
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法取得推文，請稍後再試"
-        })
-        this.isLoading = false
+          title: "無法取得推文，請稍後再試",
+        });
+        this.isLoading = false;
       }
     },
     async replyTweet() {
       try {
-        const tweet_id = this.nowModal.TweetId
-        const comment = this.comment
-        const { data } = await tweetAPI.replySingleTweet({ tweet_id, comment })
+        const tweet_id = this.nowModal.TweetId;
+        const comment = this.comment;
+        const { data } = await tweetAPI.replySingleTweet({ tweet_id, comment });
 
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
-        console.log(data.status)
-        this.comment = ""
-        this.isShowModal = false
-
-      } catch(error) {
-        console.log(error)
+        console.log(data.status);
+        this.comment = "";
+        this.isShowModal = false;
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法回覆推文，請稍後再試"
-        })
+          title: "無法回覆推文，請稍後再試",
+        });
       }
     },
     redirectToProfile(id) {
       if (id === this.currentUser.id) {
-        this.$router.push("/user/self")
+        this.$router.push("/user/self");
       } else {
-        this.$router.push({ path: `/user/other/${id}` })
+        this.$router.push({ path: `/user/other/${id}` });
       }
     },
     redirectToTweet(id) {
-      console.log(id)
-      this.$router.push({ path: `/reply_list/${id}` })
-    }
+      console.log(id);
+      this.$router.push({ path: `/reply_list/${id}` });
+    },
   },
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState(["currentUser"]),
   },
   watch: {
     nowModal() {
-      this.$forceUpdate()
+      this.$forceUpdate();
     },
   },
   created() {
-    this.nowPage = this.$route.name
+    this.nowPage = this.$route.name;
     if (this.$route.params.id) {
-      this.nowPageId = this.$route.params.id
+      this.nowPageId = this.$route.params.id;
     }
-    this.fetchData()
-  }
+    this.fetchData();
+  },
 };
 </script>
 
