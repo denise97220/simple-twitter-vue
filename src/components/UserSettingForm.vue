@@ -15,7 +15,7 @@
         autocomplete="username"
         required
         autofocus
-        v-model="currentUser.account"
+        v-model="newCurrentUser.account"
         >
       </div>
 
@@ -93,7 +93,8 @@ export default {
   data() {
     return {
       password: "",
-      checkPassword: ""
+      checkPassword: "",
+      newCurrentUser: {}
     }
   },
   computed: {
@@ -130,6 +131,12 @@ export default {
       }
     }
   },
+  created() {
+    this.newCurrentUser= {
+      ...this.currentUser
+    }
+    this.newCurrentUser.account = this.newCurrentUser.account.slice(1)
+  }
 }
 </script>
 

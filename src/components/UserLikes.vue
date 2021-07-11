@@ -213,7 +213,7 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.fetchData()
+        tweet.LikesCount += 1
       } catch (error) {
         console.log(error);
         Fire.fire({
@@ -231,7 +231,7 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.fetchData()
+        tweet.LikesCount -= 1
       } catch (error) {
         console.log(error);
         Fire.fire({
