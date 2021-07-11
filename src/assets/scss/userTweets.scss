@@ -24,23 +24,40 @@
 .heart-icon-wrapper:hover {
   background-color: $replyIconHover;
   cursor: pointer;
+  .reply-icon {
+    fill: $mainColor;
+  }
 }
 
 .heart-icon-wrapper:hover {
   background-color: $heartIconHover;
+  .heart-icon {
+    fill: #E0245E;
+  }
 }
+
 
 .reply-icon-wrapper,
 .heart-icon-wrapper {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   position: relative;
   border-radius: 50%;
   transition: background-color 0.2s linear;
   .reply-icon,
   .heart-icon {
     position: absolute;
-    left: 5px;
-    top: 5px;
+    left: 7px;
+    top: 7px;
+  }
+  .heart-icon {
+    left: 8px;
+    top: 8px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .reply-modal {
+    width: 80%;
   }
 }

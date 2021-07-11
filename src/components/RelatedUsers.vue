@@ -165,12 +165,11 @@ export default {
 
 .related-users-card {
   width: 335px;
-  height: 502px;
+  height: 450px;
   background-color: #F5F8FA;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
-  margin-top: 15px;
-  font-style: normal;
+  margin-top: 10px;
   font-weight: bold;
   font-size: 18px;
   line-height: 26px;
@@ -223,8 +222,8 @@ export default {
   transition: background-color .2s linear;
   cursor: pointer;
   .avatar-img {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
   }
   .info {
@@ -254,7 +253,7 @@ export default {
 label {
   cursor: pointer;
   width: 320px;
-  height: 45px;
+  height: 40px;
   background-color: #F5F8FA;
   color: $mainColor;
   line-height: 45px;

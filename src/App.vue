@@ -19,6 +19,10 @@ body {
   align-items: center;
 }
 
+img {
+  object-fit: cover;
+}
+
 .cover {
   width: 600%;
   height: 200%;

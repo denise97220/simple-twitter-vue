@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import UserLogin from '../views/UserLogin.vue';
+import Vue from "vue"
+import VueRouter from "vue-router"
+import UserLogin from "../views/UserLogin.vue";
 import store from "./../store";
 
 Vue.use(VueRouter)
@@ -142,12 +142,13 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  linkExactActiveClass: 'active',
+  linkExactActiveClass: "active",
 });
 
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem("token")
   let isAuthenticated = false
+  let role = store.state.currentUser.role
 
   if (token) {
     isAuthenticated = await store.dispatch("fetchCurrentUser")
@@ -161,7 +162,11 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    next("/main")
+    if (role === "user") {
+      next("/tweets");
+    } else if (role === "admin") {
+      next("/admin_main")
+    }
     return
   }
   next()

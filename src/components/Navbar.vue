@@ -280,7 +280,9 @@ export default {
 .logo-wrapper:hover{
   background-color: $logoHover;
   
-  .home-logo-path, .selfinfo-logo-path, .setting-logo-path {
+  .home-logo-path, 
+  .selfinfo-logo-path, 
+  .setting-logo-path {
     fill: $mainColor;
   }
   .list-title {
@@ -391,6 +393,9 @@ export default {
   }
   .logo {
     margin-left: 16px;
+  }
+  .twitter-modal {
+    width: 80%;
   }
 }
 </style>
