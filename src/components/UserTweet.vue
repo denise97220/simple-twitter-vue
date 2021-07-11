@@ -32,21 +32,21 @@
     <!-- function btn -->
     <div class="function-btn">
       <div class="reply-btn" @click.stop.prevent="showModal">
-        <img src="replyBig.svg" alt="">
+        <img class="reply-icon" src="replyBig.svg" alt="">
       </div>
       <div 
         class="like-btn"
         v-if="!tweet.isLike"
         @click.stop.prevent="like"
       >
-        <img src="heartBig.svg" alt="">
+        <img class="heart-icon" src="heartBig.svg" alt="">
       </div>
       <div 
         class="like-btn"
         v-if="tweet.isLike"
         @click.stop.prevent="unlike"
       >
-        <img src="heartRed.svg" alt="">
+        <img class="heart-icon" src="heartRed.svg" alt="">
       </div>
     </div>
 
@@ -229,7 +229,6 @@ export default {
         const TweetId = this.tweet.id
         const {data} = await tweetAPI.likeSingleTweet({ TweetId })
         this.tweet.isLike = true
-        console.log(data.status)
       
         if (data.status !== "success") {
           throw new Error(data.message)
@@ -349,6 +348,27 @@ header {
   padding-top: 8px;
   .like-btn {
     margin-left: 155px;
+  }
+  .reply-btn:hover, .like-btn:hover {
+    background-color: $replyIconHover;
+    cursor: pointer;
+  }
+  .like-btn:hover {
+    background-color: $heartIconHover;
+  }
+  .reply-btn,
+  .like-btn {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 50%;
+    transition: background-color 0.2s linear;
+    .reply-icon,
+    .heart-icon {
+      position: absolute;
+      left: 7px;
+      top: 7px;
+    }
   }
 }
   

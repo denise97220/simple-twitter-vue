@@ -146,7 +146,7 @@ export default {
 
 .related-users-card {
   width: 335px;
-  height: 517px;
+  height: 502px;
   background-color: #F5F8FA;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
@@ -225,13 +225,19 @@ export default {
 }
 
 label {
+  cursor: pointer;
   width: 320px;
   height: 45px;
   background-color: #F5F8FA;
   color: $mainColor;
   line-height: 45px;
   padding-left: 15px;
+  padding-bottom: 5px;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
+  transition: background-color .2s linear;
+  &:hover {
+    background-color: #eeeeee;
+  }
 }
 </style>

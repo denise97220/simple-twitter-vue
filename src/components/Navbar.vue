@@ -31,7 +31,7 @@
       </div>
       <div class="nav-list">
         <router-link to="/main">
-          <div class="home">
+          <div class="logo-wrapper home">
             <i class="logo home-logo">
               <svg
                 width="24"
@@ -39,17 +39,20 @@
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
+                <path :class="{ 'nav-list-logo-choosed': nowPage === 'user-main' }" class="home-logo-path"
                   d="M22.58 6.35L12.475.897a1 1 0 00-.95 0L1.425 6.35A1.002 1.002 0 001.9 8.23c.16 0 .324-.037.475-.12l.734-.395 1.59 11.25c.216 1.214 1.31 2.062 2.66 2.062h9.282c1.35 0 2.444-.848 2.662-2.088l1.588-11.225.737.398a1 1 0 00.95-1.759l.002-.003zM12 14.435a3.25 3.25 0 110-6.5 3.25 3.25 0 010 6.5z"
                   fill="#1C1C1C"
                 />
               </svg>
             </i>
-            <h2 class="list-title home-title">首頁</h2>
+            <h2 
+              :class="{ 'list-title-choosed': nowPage === 'user-main', 'list-title': nowPage !== 'user-main' }"
+              class="home-title"
+            >首頁</h2>
           </div>
         </router-link>
         <router-link to="/user/self">
-          <div class="selfinfo">
+          <div class="logo-wrapper selfinfo">
             <i class="logo selfinfo-logo">
               <svg
                 width="18"
@@ -57,17 +60,20 @@
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
+                <path :class="{ 'nav-list-logo-choosed': nowPage === 'user-self-tweet' || nowPage === 'user-self-reply' || nowPage === 'user-self-like'}" class="selfinfo-logo-path"
                   d="M9 10.816c1.355 0 2.872-.15 3.84-1.256.814-.93 1.078-2.368.806-4.392C13.266 2.343 11.529.656 9 .656S4.734 2.343 4.354 5.17c-.272 2.022-.008 3.46.806 4.39.968 1.107 2.485 1.256 3.84 1.256zM5.84 5.368c.162-1.2.787-3.212 3.16-3.212s2.998 2.013 3.16 3.212c.207 1.55.057 2.627-.45 3.205-.455.52-1.266.743-2.71.743s-2.255-.223-2.71-.743c-.507-.578-.657-1.656-.45-3.205zm11.44 12.868c-.877-3.526-4.282-5.99-8.28-5.99-3.998 0-7.403 2.464-8.28 5.99-.172.692-.028 1.4.395 1.94.408.52 1.04.82 1.733.82h12.304c.693 0 1.325-.3 1.733-.82.424-.54.567-1.247.394-1.94h.001zm-1.576 1.016c-.126.16-.316.246-.552.246H2.848c-.235 0-.426-.085-.552-.246a.753.753 0 01-.12-.654c.71-2.855 3.517-4.85 6.824-4.85s6.114 1.994 6.824 4.85c.06.242.017.48-.12.654z"
                   fill="#000"
                 />
               </svg>
             </i>
-            <h2 class="list-title selfinfo-title">個人資料</h2>
+            <h2 
+              :class="{ 'list-title-choosed': nowPage === 'user-self-tweet' || nowPage === 'user-self-reply' || nowPage === 'user-self-like', 'list-title': nowPage !== 'user-self-tweet' && nowPage !== 'user-self-reply' && nowPage !== 'user-self-like' }" 
+              class="selfinfo-title"
+            >個人資料</h2>
           </div>
         </router-link>
         <router-link to="/setting">
-          <div class="setting">
+          <div class="logo-wrapper setting">
             <i class="logo setting-logo">
               <svg
                 width="20.75"
@@ -76,16 +82,21 @@
                 viewBox="0 0 20.75 20.75"
               >
                 <path
-                  class="cls-1"
+                  :class="{ 'nav-list-logo-choosed': nowPage === 'setting'}"
+                  class="setting-logo-path"
                   d="M10.74 20.75H10a2.27 2.27 0 01-2.27-2.06v-.15a.77.77 0 00-.47-.64.75.75 0 00-.8.11l-.12.1A2.34 2.34 0 013.29 18l-.51-.51a2.27 2.27 0 01-.14-3.06l.1-.12a.76.76 0 00.12-.79.77.77 0 00-.64-.52h-.15A2.26 2.26 0 010 10.74V10a2.26 2.26 0 012.06-2.25h.16a.77.77 0 00.64-.48.76.76 0 00-.12-.79l-.09-.12a2.25 2.25 0 01.14-3.06l.51-.51a2.34 2.34 0 013.06-.14l.11.1a.78.78 0 00.79.12.76.76 0 00.48-.64v-.16A2.27 2.27 0 0110 0h.72A2.26 2.26 0 0113 2.06v.16a.77.77 0 00.48.64.75.75 0 00.79-.12l.12-.1a2.34 2.34 0 013.06.14l.51.51a2.25 2.25 0 01.14 3.06l-.1.12a.76.76 0 00-.12.79.78.78 0 00.64.48h.16A2.26 2.26 0 0120.75 10v.73A2.26 2.26 0 0118.69 13h-.16a.79.79 0 00-.64.47.8.8 0 00.12.8l.1.12a2.25 2.25 0 01-.11 3.07l-.51.51a2.34 2.34 0 01-3.06.14l-.11-.1a.78.78 0 00-.79-.12.75.75 0 00-.48.64v.15a2.26 2.26 0 01-2.26 2.07zM7 16.33a2.32 2.32 0 01.87.17 2.27 2.27 0 011.4 1.9v.15a.77.77 0 00.77.7h.72a.77.77 0 00.77-.7v-.15a2.27 2.27 0 011.39-1.89 2.3 2.3 0 012.34.35l.11.09a.76.76 0 00.49.18.8.8 0 00.55-.22l.51-.51a.78.78 0 00.05-1l-.1-.12a2.27 2.27 0 01-.35-2.33 2.23 2.23 0 011.89-1.39h.15a.76.76 0 00.7-.77V10a.77.77 0 00-.7-.77h-.16a2.28 2.28 0 01-1.54-3.72l.1-.12a.77.77 0 00-.05-1l-.51-.51a.76.76 0 00-.55-.23.82.82 0 00-.49.18l-.12.1a2.32 2.32 0 01-2.32.36 2.27 2.27 0 01-1.4-1.9V2.2a.77.77 0 00-.77-.7H10a.77.77 0 00-.77.7v.15a2.28 2.28 0 01-3.71 1.54L5.4 3.8a.78.78 0 00-1 0l-.51.51a.76.76 0 00-.05 1l.1.12a2.28 2.28 0 01-1.58 3.8H2.2a.76.76 0 00-.7.77v.72a.77.77 0 00.7.77h.15a2.28 2.28 0 011.55 3.75l-.1.12a.76.76 0 00.05 1l.51.51a.78.78 0 001 0l.11-.09A2.27 2.27 0 017 16.33z"
                 />
                 <path
-                  class="cls-1"
+                  :class="{ 'nav-list-logo-choosed': nowPage === 'setting'}"
+                  class="setting-logo-path"
                   d="M10.33 6.34a3.79 3.79 0 103.79 3.78 3.79 3.79 0 00-3.79-3.78zm0 6.07a2.29 2.29 0 112.29-2.29 2.29 2.29 0 01-2.29 2.29z"
                 />
               </svg>
             </i>
-            <h2 class="list-title setting-title">設定</h2>
+            <h2 
+              :class="{ 'list-title-choosed': nowPage === 'setting', 'list-title': nowPage !== 'setting' }"
+              class="setting-title"
+            >設定</h2>
           </div>
         </router-link>
       </div>
@@ -130,7 +141,7 @@
           <textarea
             class="twitter-text"
             placeholder="有什麼新鮮事？"
-            maxlength="200"
+            maxlength="140"
             v-model="tweetContent"
           ></textarea>
         </div>
@@ -153,6 +164,7 @@ export default {
     return {
       isShowModal: false,
       tweetContent: "",
+      nowPage: ""
     };
   },
   methods: {
@@ -191,6 +203,10 @@ export default {
   computed: {
     ...mapState(["currentUser"])
   },
+  created() {
+    this.nowPage = this.$route.name
+    console.log(this.nowPage)
+  }
 };
 </script>
 
@@ -211,8 +227,29 @@ export default {
   padding-top: 14px;
 }
 
+.list-title-choosed {
+  color: $mainColor;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 26px;
+  padding-bottom: 2px;
+}
+
+.nav-list-logo-choosed {
+  fill: $mainColor;
+}
+
 .nav-list {
   margin-top: 51px;
+}
+
+.logo-wrapper {
+  width: 120%;
+  height: 50px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  border-radius: 30px;
+  transition: background-color 0.2s linear;
 }
 
 .home,
@@ -220,18 +257,31 @@ export default {
 .setting {
   display: flex;
   align-items: center;
+  margin-left: 2px;
 
   .list-title {
     font-weight: bold;
     font-size: 18px;
     line-height: 26px;
     color: #1c1c1c;
+    padding-bottom: 2px;
   }
 }
 
-.selfinfo,
-.setting {
-  margin-top: 34px;
+.home {
+  margin-left: 0;
+}
+
+
+.logo-wrapper:hover{
+  background-color: $logoHover;
+  
+  .home-logo-path, .selfinfo-logo-path, .setting-logo-path {
+    fill: $mainColor;
+  }
+  .list-title {
+    color: $mainColor;
+  }
 }
 
 .logo,
@@ -319,6 +369,11 @@ export default {
   .list-title, .logout-text {
     display: none;
   }
+  .logo-wrapper {
+    width: 80%;
+    border-radius: 100%;
+    padding-left: 0px;
+  }
   .logout {
     padding-left: 20px;
   }
@@ -327,7 +382,7 @@ export default {
     height: 40px;
   }
   .logo {
-    margin-left: 20px;
+    margin-left: 16px;
   }
 }
 </style>

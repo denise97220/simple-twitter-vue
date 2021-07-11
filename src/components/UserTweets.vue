@@ -1,17 +1,20 @@
 <template>
   <div class="container">
-    <div class="tweet-reply" v-for="tweet in tweets" :key="tweet.id">
+    <div class="tweet-reply" v-for="tweet in tweets" :key="tweet.TweetId">
       <div class="reply-avatar">
-        <router-link to="">
-          <img class="avatar-img" :src="tweet.User.avatar" alt="" />
-        </router-link>
+        <img 
+          class="avatar-img" 
+          :src="tweet.User.avatar" alt="" 
+          @click="redirectToProfile(tweet.User.id)"
+        />
       </div>
-      <div class="reply-user-info">
+      <div 
+        class="reply-user-info"
+        @click="redirectToTweet(tweet.TweetId)"
+      >
         <div class="reply-user">
-          <router-link class="reply-user-link" to="">
-            <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
-            <h3 class="reply-user-account">{{ tweet.User.account }}．</h3>
-          </router-link>
+          <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
+          <h3 class="reply-user-account">{{ tweet.User.account }}．</h3>
           {{ tweet.createdAt }}
         </div>
         <div class="tweet-content">
@@ -32,11 +35,13 @@
                 class="heart-icon" 
                 src="heart.svg" alt="" 
                 v-if="!tweet.isLike"
+                @click.stop.prevent="like(tweet)"
                 />
               <img 
                 class="heart-icon" 
                 src="heartSmallRed.svg" alt="" 
                 v-else
+                @click.stop.prevent="unlike(tweet)"
               />
             </div>
             <div class="like-count">{{ tweet.LikesCount }}</div>
@@ -200,6 +205,52 @@ export default {
         Fire.fire({
           icon: "warning",
           title: "無法回覆推文，請稍後再試"
+        })
+      }
+    },
+    redirectToProfile(id) {
+      if (id === this.currentUser.id) {
+        this.$router.push("/user/self")
+      } else {
+        this.$router.push({ path: `/user/other/${id}` })
+      }
+    },
+    redirectToTweet(id) {
+      console.log(id)
+      this.$router.push({ path: `/reply_list/${id}` })
+    },
+    async like(tweet) {
+      try {
+        const TweetId = tweet.TweetId
+        const {data} = await tweetAPI.likeSingleTweet({ TweetId })
+        tweet.isLike = true
+
+        if (data.status !== "success") {
+          throw new Error(data.message)
+        }
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法喜歡推文，請稍後再試"
+        })
+      }
+    },
+    async unlike(tweet) {
+      try {
+        const TweetId = tweet.TweetId
+        const {data} = await tweetAPI.unlikeSingleTweet({ TweetId })
+        tweet.isLike = false
+
+        console.log(data.status)
+        if (data.status !== "success") {
+          throw new Error(data.message)
+        }
+      } catch(error) {
+        console.log(error)
+        Fire.fire({
+          icon: "warning",
+          title: "無法取消喜歡，請稍後再試"
         })
       }
     }

@@ -2,11 +2,16 @@
   <div class="container">
     <div class="tweet-reply" v-for="tweet in tweets" :key="tweet.id">
       <div class="reply-avatar">
-        <router-link to="">
-          <img class="avatar-img" :src="tweet.User.avatar" alt="" />
-        </router-link>
+         <img 
+          class="avatar-img" 
+          :src="tweet.User.avatar" alt="" 
+          @click="redirectToProfile(tweet.User.id)"
+        />
       </div>
-      <div class="reply-user-info">
+      <div 
+        class="reply-user-info"
+        @click="redirectToTweet(tweet.TweetId)"
+      >
         <div class="reply-user">
           <router-link class="reply-user-link" to="">
             <h3 class="reply-user-name">{{ tweet.User.name }}</h3>
@@ -189,6 +194,17 @@ export default {
           title: "無法回覆推文，請稍後再試"
         })
       }
+    },
+    redirectToProfile(id) {
+      if (id === this.currentUser.id) {
+        this.$router.push("/user/self")
+      } else {
+        this.$router.push({ path: `/user/other/${id}` })
+      }
+    },
+    redirectToTweet(id) {
+      console.log(id)
+      this.$router.push({ path: `/reply_list/${id}` })
     }
   },
   computed: {
