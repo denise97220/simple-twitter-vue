@@ -6,7 +6,7 @@
       </div>
       <div class="middle-container scrollbar">
         <div class="user-profile">
-          <UserProfile :nowPage="nowPage" :currentUser="currentUser" />
+          <UserProfile :nowPage="nowPage" />
         </div>
         <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
         <router-view :NavbarSwitch="NavbarSwitch"></router-view>
@@ -71,8 +71,8 @@ export default {
   }
 }
 
-.middle-container{
-  height: calc(100vh); 
+.middle-container {
+  height: calc(100vh);
   overflow-y: scroll;
 }
 
@@ -94,7 +94,7 @@ export default {
     .navbar {
       grid-column: 1 / 2;
     }
-    .middle-container{
+    .middle-container {
       grid-column: 2 / 3;
     }
     .related-users {

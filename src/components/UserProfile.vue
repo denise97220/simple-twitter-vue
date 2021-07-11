@@ -221,6 +221,7 @@
 import userAPI from "./../apis/user";
 import { Fire } from "./../utils/helper";
 import Spinner from "./../components/Spinner.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "UserProfile",
@@ -229,10 +230,10 @@ export default {
       type: String,
       required: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
+    // currentUser: {
+    //   type: Object,
+    //   required: true,
+    // },
   },
   components: {
     Spinner,
@@ -240,7 +241,7 @@ export default {
   data() {
     return {
       User: {
-        id: this.currentUser.id,
+        id: -1,
         name: "",
         account: "",
         avatar: "",
@@ -260,30 +261,29 @@ export default {
     };
   },
   watch: {
-    currentUser: function (newValue) {
-      this.User = {
-        ...this.User,
-        ...newValue,
-      };
-    },
     nowPage(newValue) {
       this.nowPage = newValue;
     },
   },
   created() {
-    const userId = this.currentUser.id;
-    const id = userId ? this.currentUser.id : this.$route.params.id;
+    const userId = this.$route.params.id;
+    const id = userId ? this.$route.params.id : this.currentUser.id;
+    console.log("useId:", userId, "id:", id);
     this.fetchUser(id);
   },
   methods: {
     async fetchUser(userId) {
       try {
         this.isProcessing = true;
+        const { data } = await userAPI.getSingleUserTweets({ userId });
+        const Profile = await userAPI.getOtherUser({ userId });
+        console.log("other-Profile", Profile);
+        console.log("getotherTweets", data);
         this.User = {
           ...this.User,
-          ...this.currentUser,
+          ...Profile.data,
         };
-        const { data } = await userAPI.getSingleUserTweets({ userId });
+
         this.isLoading = false;
         if (data) {
           return (this.tweetLength = data.length);
@@ -332,7 +332,7 @@ export default {
         }
         this.User = {
           ...this.User,
-          isFollowed: false,
+          isFollowed: true,
         };
       } catch (error) {
         Fire.fire({
@@ -341,15 +341,15 @@ export default {
         });
       }
     },
-    async deleteFollowList(id) {
+    async deleteFollowList(userId) {
       try {
-        const { data } = await userAPI.unfollow({ id });
+        const { data } = await userAPI.unfollow({ userId });
         if (data.status !== "success") {
           throw new Error(data.message);
         }
         this.User = {
           ...this.User,
-          isFollowed: true,
+          isFollowed: false,
         };
       } catch (error) {
         Fire.fire({
@@ -382,6 +382,9 @@ export default {
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.cover = imageURL;
     },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
 };
 </script>
