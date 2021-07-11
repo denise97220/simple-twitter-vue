@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <input type="checkbox" class="navbar-toggle" id="navbar-toggle" />
-    <div class="related-users-card">
+    <Spinner v-if="isLoading" />
+    <div class="related-users-card" v-else>
       <div class="header">跟隨誰</div>
         <div class="single-user" 
           v-for="user in relatedUsers" :key="user.id" 
@@ -49,16 +50,21 @@
 </template>
 
 <script>
+import Spinner from "./../components/Spinner.vue"
 import userAPI from "./../apis/user"
 import { Fire } from "./../utils/helper"
 import { mapState } from "vuex"
 
 export default {
   name: "RelatedUsers",
+  components: {
+    Spinner
+  },
   data() {
     return {
       relatedUsers: [],
       isShowMore: false,
+      isLoading: true
     }
   },
   methods: {
@@ -123,13 +129,14 @@ export default {
         const { data } = await userAPI.getTopUsers()
         const { topUsers } = data
         this.relatedUsers = topUsers
-
+        this.isLoading = false
       } catch(error) {
         console.log(error)
         Fire.fire({
           icon: "warning",
           title: "無法取得使用者資料，請稍後再試"
         })
+        this.isLoading = false
       }
     },
     redirectToProfile(id) {

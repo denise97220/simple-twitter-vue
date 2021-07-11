@@ -11,7 +11,8 @@
       <div class="header-content">推文</div>
     </header>
     <!-- tweet -->
-    <div class="tweet">
+    <Spinner v-if="isLoading" />
+    <div class="tweet" v-else>
       <div class="author-info">
         <router-link class="author-info-link" to="">
           <div class="avatar">
@@ -76,7 +77,7 @@
     </div>
 
     <!-- reply modal -->
-    <div class="reply-modal" v-show="isShowModal">
+    <div class="reply-modal" v-if="isShowModal">
       <div class="modal-container">
         <div class="modal-header">
           <div 
@@ -135,12 +136,16 @@
 </template>
 
  <script>
+import Spinner from './../components/Spinner.vue'
 import tweetAPI from "./../apis/tweet"
 import { Fire } from "./../utils/helper"
 import { mapState } from "vuex"
 
 export default {
   name: "UserTweet",
+  components: {
+    Spinner
+  },
   data() {
     return {
       tweet: {
@@ -170,7 +175,8 @@ export default {
         ]
       },
       isShowModal: false,
-      comment: ""
+      comment: "",
+      isLoading: true
     }
   },
   methods: {
@@ -194,6 +200,7 @@ export default {
           User, 
           Replies
         }
+        this.isLoading = false
 
       } catch(error) {
         console.log(error)
@@ -201,6 +208,7 @@ export default {
           icon: "warning",
           title: "無法取得貼文，請稍後再試"
         })
+        this.isLoading = false
       }
     },
     async replyTweet() {
@@ -362,7 +370,7 @@ header {
     height: 40px;
     position: relative;
     border-radius: 50%;
-    transition: background-color 0.2s linear;
+    transition: background-color 0.1s linear;
     .reply-icon,
     .heart-icon {
       position: absolute;

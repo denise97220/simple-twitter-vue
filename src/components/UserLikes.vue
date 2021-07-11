@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="tweet-reply" v-for="tweet in tweets" :key="tweet.id">
+    <Spinner v-if="isLoading" />
+    <div class="tweet-reply" v-else v-for="tweet in tweets" :key="tweet.id">
       <div class="reply-avatar">
          <img 
           class="avatar-img" 
@@ -117,13 +118,17 @@
 </template>
 
 <script>
-import userAPI from './../apis/user'
-import tweetAPI from './../apis/tweet'
-import { Fire } from './../utils/helper'
-import { mapState } from 'vuex'
+import userAPI from "./../apis/user"
+import tweetAPI from "./../apis/tweet"
+import { Fire } from "./../utils/helper"
+import { mapState } from "vuex"
+import Spinner from "./../components/Spinner.vue"
 
 export default {
   name: "UserTweets",
+  components: {
+    Spinner
+  },
   data() {
     return {
       tweets: [],
@@ -144,7 +149,8 @@ export default {
           "avatar": ""
         }
       },
-      comment: ""
+      comment: "",
+      isLoading: true
     };
   },
   methods: {
@@ -166,12 +172,14 @@ export default {
           const { data } = await userAPI.getSingleUserLikeTweets({ userId })
           this.tweets = data
         }
+        this.isLoading = false
       } catch(error) {
         console.log(error)
         Fire.fire({
           icon: "warning",
           title: "無法取得推文，請稍後再試"
         })
+        this.isLoading = false
       }
     },
     async replyTweet() {

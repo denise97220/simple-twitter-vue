@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    
-    <div class="tweet-reply" v-for="reply in replies" :key="reply.id">
+    <Spinner v-if="isLoading" />
+    <div class="tweet-reply" v-else v-for="reply in replies" :key="reply.id">
       <div class="reply-avatar">
         <router-link to="">
           <img class="avatar-img" :src="reply.User.avatar" alt="">
@@ -29,15 +29,20 @@
 </template>
 
 <script>
-import userAPI from './../apis/user'
-import { Fire } from './../utils/helper'
-import { mapState } from 'vuex'
+import userAPI from "./../apis/user"
+import { Fire } from "./../utils/helper"
+import { mapState } from "vuex"
+import Spinner from "./../components/Spinner.vue"
 
 export default {
   name: "UserTweet",
+  components: {
+    Spinner
+  },
   data() {
     return {
-      replies: []
+      replies: [],
+      isLoading: true
     }
   },
   methods: {
@@ -45,13 +50,14 @@ export default {
       try {
         const { data } = await userAPI.getSingleUserReplies({ userId })
         this.replies = data
-        console.log(data)
+        this.isLoading = false
       } catch(error) {
         console.log(error)
         Fire.fire({
           icon: "warning",
           title: "無法取得回覆，請稍後再試"
         })
+        this.isLoading = false
       }
     }
   },

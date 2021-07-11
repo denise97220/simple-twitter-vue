@@ -178,9 +178,8 @@ export default {
       this.isShowModal = false;
     },
     async createTweet() {
+      if (!this.tweetContent.trim()) return
       try {
-        if (!this.tweetContent.trim()) return
-      
         const description = this.tweetContent;
         const { data } = await tweetAPI.createTweet({ description });
 
