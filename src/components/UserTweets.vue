@@ -205,6 +205,7 @@ export default {
     },
     async fetchOtherUser(userId) {
       try {
+        this.isLoading = true;
         const { data } = await userAPI.getSingleUserTweets({ userId });
         this.tweets = data;
         this.isLoading = false;
