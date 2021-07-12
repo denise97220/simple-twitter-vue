@@ -249,8 +249,8 @@ export default {
     },
     updateId: {
       type: Number,
-      default: -1
-    }
+      default: -1,
+    },
   },
   components: {
     Spinner,
@@ -283,7 +283,6 @@ export default {
     },
     "User.isFollowed": {
       handler: function (val) {
-        console.log("user change", val);
         this.User = {
           ...this.User,
           isFollowed: val,
@@ -291,13 +290,12 @@ export default {
       },
     },
     updateId() {
-      this.fetchUser(this.updateId)
-    }
+      this.fetchUser(this.updateId);
+    },
   },
   created() {
     const userId = this.$route.params.id;
     const id = userId ? this.$route.params.id : this.currentUser.id;
-    console.log("useId:", userId, "id:", id);
     this.fetchUser(id);
   },
   methods: {
@@ -306,13 +304,22 @@ export default {
         (this.isLoading = true), (this.isProcessing = true);
         const { data } = await userAPI.getSingleUserTweets({ userId });
         const Profile = await userAPI.getOtherUser({ userId });
-        console.log("other-Profile", Profile);
-        console.log("getotherTweets", data);
+        const followingList = await userAPI.getUserFollowings({ userId });
+        const followerList = await userAPI.getUserFollowers({ userId });
+        if (
+          data.status ||
+          Profile.data.status ||
+          followingList.data.status ||
+          followerList.data.status === "error"
+        ) {
+          throw new Error(data.message);
+        }
         this.User = {
           ...this.User,
           ...Profile.data,
         };
-        this.isLoading = false;
+        this.User.Followers = followerList.data;
+        (this.User.Followings = followingList.data), (this.isLoading = false);
         if (data || ![]) {
           return (this.tweetLength = data.length);
         } else {
@@ -355,7 +362,6 @@ export default {
     async addFollowList(id) {
       try {
         const { data } = await userAPI.follow({ id });
-        console.log(data.status);
         if (data.status === "error") {
           throw new Error(data.message);
         }
@@ -373,7 +379,6 @@ export default {
     async deleteFollowList(userId) {
       try {
         const { data } = await userAPI.unFollow({ userId });
-        console.log(data.status);
         if (data.status === "error") {
           throw new Error(data.message);
         }
