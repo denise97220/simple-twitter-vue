@@ -5,7 +5,7 @@
     </div>
     <div class="middle-container scrollbar">
       <div class="user-profile">
-        <UserProfile :currentUser="currentUser" :nowPage="nowPage" />
+        <UserProfile :nowPage="nowPage" />
       </div>
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage" />
@@ -23,8 +23,7 @@ import Navbar from "./../components/Navbar.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
 import UserNavtabs from "../components/UserNavtabs.vue";
 import UserProfile from "./../components/UserProfile.vue";
-import userAPI from "./../apis/user";
-import { Fire } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "OtherUser",
@@ -37,16 +36,15 @@ export default {
   data() {
     return {
       nowPage: "other",
-      currentUser: {},
       id: -1,
       isRouterAlive: true,
     };
   },
   // reload
-  provide(){
+  provide() {
     return {
-      reload: this.reload
-    }
+      reload: this.reload,
+    };
   },
   created() {
     const { id } = this.$route.params;
@@ -72,14 +70,17 @@ export default {
     reload() {
       this.isRouterAlive = false;
       this.$nextTick(function () {
-        this.isRouterAlive = true
+        this.isRouterAlive = true;
       });
-    }
+    },
   },
-  beforeRouteUpdate (to, from, next) {
+  computed: {
+    ...mapState(["currentUser"]),
+  },
+  beforeRouteUpdate(to, from, next) {
     const { id } = this.$route.params;
     this.fetchUser(id);
-    next()
+    next();
   },
 };
 </script>
@@ -105,7 +106,7 @@ export default {
 }
 
 .middle-container {
-  height: calc(100vh); 
+  height: calc(100vh);
   overflow-y: scroll;
 }
 

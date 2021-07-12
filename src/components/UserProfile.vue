@@ -17,10 +17,12 @@
         </svg>
       </div>
       <div class="user-navbar-info">
+        <Spinner v-if="isLoading" />
         <div class="user-name">{{ User.name }}</div>
         <div class="user-tweets-length">{{ tweetLength }} 推文</div>
       </div>
     </div>
+
     <div class="user-profile">
       <div class="cover-photo">
         <img :src="User.cover" alt="cover" />
@@ -28,12 +30,27 @@
       <div class="user-avatar">
         <img :src="User.avatar" alt="avatar" />
       </div>
+      <Spinner v-if="isLoading" />
       <div class="edit-btn" v-if="nowPage === 'self'">
-        <button @click.stop.prevent="showModal">編輯個人資料</button>
+        <div @click.stop.prevent="showModal">編輯個人資料</div>
       </div>
       <div class="edit-btn" v-else>
         <!-- TODO: 追蹤判斷 -->
-        <button>正在追蹤</button>
+
+        <div
+          class="follow-btn"
+          v-if="User.isFollowed"
+          @click.stop.prevent="deleteFollowList(User.id)"
+        >
+          正在追蹤
+        </div>
+        <div
+          class="unfollow-btn"
+          v-else
+          @click.stop.prevent="addFollowList(User.id)"
+        >
+          追蹤
+        </div>
       </div>
       <div class="user-info">
         <div class="name">{{ User.name }}</div>
@@ -51,7 +68,8 @@
             }"
           >
             <div class="user-following">
-              {{ User.Followings.length }} 個 <span>跟隨中 </span>
+              {{ User.Followings ? User.Followings.length : 0 }} 個
+              <span>跟隨中 </span>
             </div>
           </router-link>
           <router-link
@@ -61,7 +79,9 @@
             }"
           >
             <div class="user-follower">
-              {{ User.Followers.length }}位<span>跟隨者</span>
+              {{ User.Followers ? User.Followers.length : 0 }}位<span
+                >跟隨者</span
+              >
             </div>
           </router-link>
         </div>
@@ -206,6 +226,8 @@
 <script>
 import userAPI from "./../apis/user";
 import { Fire } from "./../utils/helper";
+import Spinner from "./../components/Spinner.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "UserProfile",
@@ -214,15 +236,14 @@ export default {
       type: String,
       required: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
+  },
+  components: {
+    Spinner,
   },
   data() {
     return {
       User: {
-        id: this.currentUser.id,
+        id: -1,
         name: "",
         account: "",
         avatar: "",
@@ -230,6 +251,7 @@ export default {
         introduction: "",
         Followers: [],
         Following: [],
+        isFollowed: false,
       },
       isShowModal: false,
       name: "",
@@ -237,39 +259,46 @@ export default {
       tweets: [],
       tweetLength: -1,
       isProcessing: false,
+      isLoading: true,
     };
   },
   watch: {
-    currentUser: function (newValue) {
-      this.User = {
-        ...this.User,
-        ...newValue,
-      };
-    },
     nowPage(newValue) {
       this.nowPage = newValue;
     },
+    "User.isFollowed": {
+      handler: function (val) {
+        console.log("user change", val);
+        this.User = {
+          ...this.User,
+          isFollowed: val,
+        };
+      },
+    },
   },
   created() {
-    const userId = this.currentUser.id;
-    const id = userId ? this.currentUser.id : this.$route.params.id;
-    console.log("userId:", userId, "id:", id);
+    const userId = this.$route.params.id;
+    const id = userId ? this.$route.params.id : this.currentUser.id;
+    console.log("useId:", userId, "id:", id);
     this.fetchUser(id);
   },
   methods: {
     async fetchUser(userId) {
       try {
-        this.User = {
-          ...this.User,
-          ...this.currentUser,
-        };
+        (this.isLoading = true), (this.isProcessing = true);
         const { data } = await userAPI.getSingleUserTweets({ userId });
-        if (data) {
+        const Profile = await userAPI.getOtherUser({ userId });
+        console.log("other-Profile", Profile);
+        console.log("getotherTweets", data);
+        this.User = Profile.data;
+        this.isLoading = false;
+        if (data || ![]) {
           return (this.tweetLength = data.length);
         } else {
           return 0;
         }
       } catch (error) {
+        this.isLoading = false;
         Fire.fire({
           icon: "warning",
           title: "無法取得資料",
@@ -288,7 +317,6 @@ export default {
           throw new Error(data.message);
         }
         this.tweets = data;
-        console.log(data);
         this.isProcessing = false;
         Fire.fire({
           icon: "success",
@@ -300,6 +328,43 @@ export default {
         Fire.fire({
           icon: "warning",
           title: "無法儲存資料，請稍後再試",
+        });
+      }
+    },
+    async addFollowList(id) {
+      try {
+        const { data } = await userAPI.follow({ id });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.User.isFollowed = true;
+        Fire.fire({
+          icon: "success",
+        });
+      } catch (error) {
+        Fire.fire({
+          icon: "warning",
+          title: "無法新增，請稍候再說",
+        });
+      }
+    },
+    async deleteFollowList(UserId) {
+      try {
+        const { data } = await userAPI.unFollow({ UserId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.User.isFollowed = false;
+
+        Fire.fire({
+          icon: "success",
+          title: "已成功移除",
+        });
+      } catch (error) {
+        console.error(error);
+        Fire.fire({
+          icon: "warning",
+          title: "無法刪除，請稍候再說",
         });
       }
     },
@@ -327,6 +392,9 @@ export default {
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.cover = imageURL;
     },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
 };
 </script>
@@ -411,16 +479,32 @@ export default {
     line-height: 40px;
     margin-top: 10px;
     margin-right: 15px;
-    button {
-      border: none;
-      background-color: transparent;
-      outline: none;
+    &:hover {
+      cursor: pointer;
+      color: $mainColorHover;
+      border-color: $mainColorHover;
+    }
+    .follow-btn {
+      background: $mainColor;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 100px;
+      &:hover {
+        cursor: pointer;
+        background: $mainColorHover;
+      }
+    }
+    .unfollow-btn {
+      background: #fff;
       color: $mainColor;
       font-size: 15px;
       font-weight: bold;
+      border-radius: 100px;
       &:hover {
         cursor: pointer;
         color: $mainColorHover;
+        border-color: $mainColorHover;
       }
     }
   }
@@ -584,7 +668,7 @@ export default {
         font-size: 15px;
         span {
           position: absolute;
-          top: 10px;
+          top: 5px;
         }
       }
       input,
@@ -593,7 +677,7 @@ export default {
         height: 54px;
         font-size: 20px;
         color: #1c1c1c;
-        padding-top: 15px;
+        padding-top: 20px;
         padding-bottom: -10px;
         border: none;
         border-bottom: solid 3px #657786;

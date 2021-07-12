@@ -1,12 +1,13 @@
 <template>
   <div class="rwd-container">
+    <Spinner v-if="isLoading" />
     <div class="user-container">
       <div class="navbar">
         <Navbar @updateTweets="updateTweets" />
       </div>
       <div class="middle-container scrollbar">
         <div class="user-profile">
-          <UserProfile :nowPage="nowPage" :currentUser="currentUser" />
+          <UserProfile :nowPage="nowPage" />
         </div>
         <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
         <router-view :NavbarSwitch="NavbarSwitch"></router-view>
@@ -21,6 +22,7 @@ import Navbar from "./../components/Navbar.vue";
 import UserProfile from "./../components/UserProfile.vue";
 import UserNavtabs from "../components/UserNavtabs.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
+import Spinner from "./../components/Spinner.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -30,6 +32,7 @@ export default {
     UserProfile,
     UserNavtabs,
     RelatedUsers,
+    Spinner,
   },
   data() {
     return {
@@ -71,8 +74,8 @@ export default {
   }
 }
 
-.middle-container{
-  height: calc(100vh); 
+.middle-container {
+  height: calc(100vh);
   overflow-y: scroll;
 }
 
@@ -94,7 +97,7 @@ export default {
     .navbar {
       grid-column: 1 / 2;
     }
-    .middle-container{
+    .middle-container {
       grid-column: 2 / 3;
     }
     .related-users {
