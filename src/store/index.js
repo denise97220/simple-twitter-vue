@@ -67,9 +67,9 @@ export default new Vuex.Store({
         return true
       } catch (error) {
         console.log("error", error);
-        console.error("無法取得當前使用者");
+        console.error("無法取得當前使用者")
 
-        return false;
+        return false
       }
     },
   },

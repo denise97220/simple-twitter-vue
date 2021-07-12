@@ -163,7 +163,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
     if (role === "user") {
-      next("/tweets");
+      next("/main");
     } else if (role === "admin") {
       next("/admin_main")
     }

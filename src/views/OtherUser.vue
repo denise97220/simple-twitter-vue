@@ -10,7 +10,7 @@
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage" />
       </div>
-      <router-view></router-view>
+      <router-view v-if="isRouterAlive"></router-view>
     </div>
     <div class="related-users">
       <RelatedUsers />
@@ -39,7 +39,14 @@ export default {
       nowPage: "other",
       currentUser: {},
       id: -1,
+      isRouterAlive: true,
     };
+  },
+  // reload
+  provide(){
+    return {
+      reload: this.reload
+    }
   },
   created() {
     const { id } = this.$route.params;
@@ -61,6 +68,18 @@ export default {
         });
       }
     },
+    // reload
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+      });
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = this.$route.params;
+    this.fetchUser(id);
+    next()
   },
 };
 </script>
