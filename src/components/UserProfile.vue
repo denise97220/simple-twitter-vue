@@ -236,6 +236,10 @@ export default {
       type: String,
       required: true,
     },
+    updateId: {
+      type: Number,
+      default: -1
+    }
   },
   components: {
     Spinner,
@@ -275,6 +279,9 @@ export default {
         };
       },
     },
+    updateId() {
+      this.fetchUser(this.updateId)
+    }
   },
   created() {
     const userId = this.$route.params.id;

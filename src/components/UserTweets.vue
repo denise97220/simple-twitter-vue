@@ -142,6 +142,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    updateId: {
+      type: Number,
+      default: -1
+    }
   },
   data() {
     return {
@@ -189,6 +193,20 @@ export default {
           const { data } = await userAPI.getSingleUserTweets({ userId });
           this.tweets = data;
         }
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
+        Fire.fire({
+          icon: "warning",
+          title: "無法取得推文，請稍後再試",
+        });
+        this.isLoading = false;
+      }
+    },
+    async fetchOtherUser(userId) {
+      try {
+        const { data } = await userAPI.getSingleUserTweets({ userId });
+        this.tweets = data;
         this.isLoading = false;
       } catch (error) {
         console.log(error);
@@ -285,6 +303,9 @@ export default {
       },
       deep: true,
     },
+    updateId() {
+      this.fetchOtherUser(this.updateId)
+    }
   },
   created() {
     this.nowPage = this.$route.name;

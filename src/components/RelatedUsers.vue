@@ -60,8 +60,6 @@ export default {
   components: {
     Spinner
   },
-  // reload
-  inject: ["reload"],
   data() {
     return {
       relatedUsers: [],
@@ -146,8 +144,7 @@ export default {
         this.$router.push("/user/self")
       } else {
         this.$router.push({ path: `/user/other/${id}/tweet` })
-        // reload
-        this.reload()
+        this.$emit("updateUser", id)
       }
     },
   },

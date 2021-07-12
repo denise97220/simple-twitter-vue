@@ -5,15 +5,15 @@
     </div>
     <div class="middle-container scrollbar">
       <div class="user-profile">
-        <UserProfile :nowPage="nowPage" />
+        <UserProfile :updateId="updateId" :nowPage="nowPage" />
       </div>
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage" />
       </div>
-      <router-view v-if="isRouterAlive"></router-view>
+      <router-view :updateId="updateId"></router-view>
     </div>
     <div class="related-users">
-      <RelatedUsers />
+      <RelatedUsers @updateUser="updateUser" />
     </div>
   </div>
 </template>
@@ -39,13 +39,7 @@ export default {
     return {
       nowPage: "other",
       id: -1,
-      isRouterAlive: true,
-    };
-  },
-  // reload
-  provide() {
-    return {
-      reload: this.reload,
+      updateId: -1
     };
   },
   created() {
@@ -68,13 +62,9 @@ export default {
         });
       }
     },
-    // reload
-    reload() {
-      this.isRouterAlive = false;
-      this.$nextTick(function () {
-        this.isRouterAlive = true;
-      });
-    },
+    updateUser(id) {
+      this.updateId = id
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
