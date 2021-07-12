@@ -13,6 +13,7 @@ export default new Vuex.Store({
       role: "",
     },
     isAuthenticated: false,
+    userIsFollowed: false
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       localStorage.removeItem("token")
     },
+    followed(state) {
+      state.userIsFollowed = !state.userIsFollowed
+    }
   },
   actions: {
     async fetchCurrentUser({ commit }) {

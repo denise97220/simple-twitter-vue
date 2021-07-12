@@ -1,5 +1,6 @@
 <template>
   <div class="rwd-container">
+    <Spinner v-if="isLoading" />
     <div class="user-container">
       <div class="navbar">
         <Navbar @updateTweets="updateTweets" />
@@ -21,6 +22,7 @@ import Navbar from "./../components/Navbar.vue";
 import UserProfile from "./../components/UserProfile.vue";
 import UserNavtabs from "../components/UserNavtabs.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
+import Spinner from "./../components/Spinner.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -30,6 +32,7 @@ export default {
     UserProfile,
     UserNavtabs,
     RelatedUsers,
+    Spinner,
   },
   data() {
     return {

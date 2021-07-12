@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Spinner v-if="isLoading" />
     <div class="cover" v-show="isShowModal"></div>
     <div class="user-navbar">
       <div class="icon" @click.stop.prevent="$router.go(-1)">
@@ -18,10 +17,12 @@
         </svg>
       </div>
       <div class="user-navbar-info">
+        <Spinner v-if="isLoading" />
         <div class="user-name">{{ User.name }}</div>
         <div class="user-tweets-length">{{ tweetLength }} 推文</div>
       </div>
     </div>
+
     <div class="user-profile">
       <div class="cover-photo">
         <img :src="User.cover" alt="cover" />
@@ -29,14 +30,16 @@
       <div class="user-avatar">
         <img :src="User.avatar" alt="avatar" />
       </div>
+      <Spinner v-if="isLoading" />
       <div class="edit-btn" v-if="nowPage === 'self'">
         <div @click.stop.prevent="showModal">編輯個人資料</div>
       </div>
       <div class="edit-btn" v-else>
         <!-- TODO: 追蹤判斷 -->
+
         <div
           class="follow-btn"
-          v-if="currentUser.isFollowed"
+          v-if="User.isFollowed"
           @click.stop.prevent="deleteFollowList(User.id)"
         >
           正在追蹤
@@ -65,7 +68,8 @@
             }"
           >
             <div class="user-following">
-              {{ User.Followings.length }} 個 <span>跟隨中 </span>
+              {{ User.Followings ? User.Followings.length : 0 }} 個
+              <span>跟隨中 </span>
             </div>
           </router-link>
           <router-link
@@ -75,7 +79,9 @@
             }"
           >
             <div class="user-follower">
-              {{ User.Followers.length }}位<span>跟隨者</span>
+              {{ User.Followers ? User.Followers.length : 0 }}位<span
+                >跟隨者</span
+              >
             </div>
           </router-link>
         </div>
@@ -230,10 +236,6 @@ export default {
       type: String,
       required: true,
     },
-    // currentUser: {
-    //   type: Object,
-    //   required: true,
-    // },
   },
   components: {
     Spinner,
@@ -264,6 +266,15 @@ export default {
     nowPage(newValue) {
       this.nowPage = newValue;
     },
+    "User.isFollowed": {
+      handler: function (val) {
+        console.log("user change", val);
+        this.User = {
+          ...this.User,
+          isFollowed: val,
+        };
+      },
+    },
   },
   created() {
     const userId = this.$route.params.id;
@@ -274,18 +285,14 @@ export default {
   methods: {
     async fetchUser(userId) {
       try {
-        this.isProcessing = true;
+        (this.isLoading = true), (this.isProcessing = true);
         const { data } = await userAPI.getSingleUserTweets({ userId });
         const Profile = await userAPI.getOtherUser({ userId });
         console.log("other-Profile", Profile);
         console.log("getotherTweets", data);
-        this.User = {
-          ...this.User,
-          ...Profile.data,
-        };
-
+        this.User = Profile.data;
         this.isLoading = false;
-        if (data) {
+        if (data || ![]) {
           return (this.tweetLength = data.length);
         } else {
           return 0;
@@ -327,13 +334,13 @@ export default {
     async addFollowList(id) {
       try {
         const { data } = await userAPI.follow({ id });
-        if (data.status !== "success") {
+        if (data.status === "error") {
           throw new Error(data.message);
         }
-        this.User = {
-          ...this.User,
-          isFollowed: true,
-        };
+        this.User.isFollowed = true;
+        Fire.fire({
+          icon: "success",
+        });
       } catch (error) {
         Fire.fire({
           icon: "warning",
@@ -341,17 +348,20 @@ export default {
         });
       }
     },
-    async deleteFollowList(userId) {
+    async deleteFollowList(UserId) {
       try {
-        const { data } = await userAPI.unfollow({ userId });
-        if (data.status !== "success") {
+        const { data } = await userAPI.unFollow({ UserId });
+        if (data.status === "error") {
           throw new Error(data.message);
         }
-        this.User = {
-          ...this.User,
-          isFollowed: false,
-        };
+        this.User.isFollowed = false;
+
+        Fire.fire({
+          icon: "success",
+          title: "已成功移除",
+        });
       } catch (error) {
+        console.error(error);
         Fire.fire({
           icon: "warning",
           title: "無法刪除，請稍候再說",
@@ -658,7 +668,7 @@ export default {
         font-size: 15px;
         span {
           position: absolute;
-          top: 10px;
+          top: 5px;
         }
       }
       input,
@@ -667,7 +677,7 @@ export default {
         height: 54px;
         font-size: 20px;
         color: #1c1c1c;
-        padding-top: 15px;
+        padding-top: 20px;
         padding-bottom: -10px;
         border: none;
         border-bottom: solid 3px #657786;
