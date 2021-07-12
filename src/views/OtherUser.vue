@@ -23,6 +23,8 @@ import Navbar from "./../components/Navbar.vue";
 import RelatedUsers from "./../components/RelatedUsers.vue";
 import UserNavtabs from "../components/UserNavtabs.vue";
 import UserProfile from "./../components/UserProfile.vue";
+import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
 import { mapState } from "vuex";
 
 export default {
