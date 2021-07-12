@@ -141,7 +141,7 @@
           <textarea
             class="twitter-text"
             placeholder="有什麼新鮮事？"
-            maxlength="140"
+            maxlength="200"
             v-model="tweetContent"
           ></textarea>
         </div>
@@ -159,6 +159,7 @@
 <script>
 import tweetAPI from "./../apis/tweet";
 import { Fire } from "./../utils/helper";
+import { Toast } from "./../utils/helper";
 import { mapState } from "vuex"
 
 export default {
@@ -178,7 +179,20 @@ export default {
       this.isShowModal = false;
     },
     async createTweet() {
-      if (!this.tweetContent.trim()) return
+      if (!this.tweetContent.trim()) {
+        Toast.fire({
+          icon: "warning",
+          title: "尚未輸入內容",
+        });
+        return 
+      } else if (this.tweetContent.length > 140) {
+        Toast.fire({
+          icon: "warning",
+          title: "內容超過字數限制！",
+        });
+        return 
+      }
+
       try {
         const description = this.tweetContent;
         const { data } = await tweetAPI.createTweet({ description });
@@ -187,7 +201,6 @@ export default {
           throw new Error(data.message);
         }
 
-        console.log(data.status);
         this.tweetContent = "";
         this.isShowModal = false;
         this.$emit("updateTweets");

@@ -26,15 +26,16 @@
       <Spinner v-if="isLoading" />
       <div class="tweet" v-else>
         <div class="author-info">
-          <router-link class="author-info-link" to="">
-            <div class="avatar">
-              <img class="avatar-img" :src="tweet.User.avatar" alt="" />
-            </div>
-            <div class="name-info">
-              <div class="name">{{ tweet.User.name }}</div>
-              <div class="account">{{ tweet.User.account }}</div>
-            </div>
-          </router-link>
+          <div 
+            class="avatar author-info-link" 
+            @click="redirectToProfile(tweet.User.id)"
+          >
+            <img class="avatar-img" :src="tweet.User.avatar" alt="" />
+          </div>
+          <div class="name-info">
+            <div class="name">{{ tweet.User.name }}</div>
+            <div class="account">{{ tweet.User.account }}</div>
+          </div>
         </div>
         <div class="tweet-content">{{ tweet.description }}</div>
         <div class="time">{{ tweet.createdAt | fromNow }}</div>
@@ -63,17 +64,22 @@
 
       <!-- tweet reply -->
       <div class="tweet-reply" v-for="reply in tweet.Replies" :key="reply.id">
-        <div class="reply-avatar">
-          <router-link to="">
-            <img class="avatar-img" :src="reply.User.avatar" alt="" />
-          </router-link>
+        <div 
+          class="reply-avatar" 
+          @click="redirectToProfile(reply.User.id)"
+        >
+          <img class="avatar-img" :src="reply.User.avatar" alt="" />
         </div>
         <div class="reply-info">
           <div class="reply-user">
-            <router-link class="reply-user-link" to="">
-              <h3 class="reply-user-name">{{ reply.User.name }}</h3>
-              <h3 class="reply-user-account">{{ reply.User.account }}．</h3>
-            </router-link>
+            <h3 
+              class="reply-user-name" 
+              @click="redirectToProfile(reply.User.id)"
+            >{{ reply.User.name }}</h3>
+            <h3 
+              class="reply-user-account" 
+              @click="redirectToProfile(reply.User.id)"
+            >{{ reply.User.account }}．</h3>
             {{ reply.createdAt | fromNow }}
           </div>
           <div class="tweet-author">
@@ -249,6 +255,7 @@ export default {
         const TweetId = this.tweet.id;
         const { data } = await tweetAPI.likeSingleTweet({ TweetId });
         this.tweet.isLike = true;
+        this.tweet.LikesCount += 1
 
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -266,6 +273,7 @@ export default {
         const TweetId = this.tweet.id;
         const { data } = await tweetAPI.unlikeSingleTweet({ TweetId });
         this.tweet.isLike = false;
+        this.tweet.LikesCount -= 1
 
         console.log(data.status);
         if (data.status !== "success") {
@@ -277,6 +285,14 @@ export default {
           icon: "warning",
           title: "無法取消喜歡，請稍後再試",
         });
+      }
+    },
+    redirectToProfile(id) {
+      if (id === this.currentUser.id) {
+        this.$router.push("/user/self")
+      } else {
+        this.$router.push({ path: `/user/other/${id}/tweet` })
+        this.$emit("updateUser", id)
       }
     },
   },
@@ -326,21 +342,27 @@ header {
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
+  .author-info {
+    display: flex;
+    align-items: center;
+  }
   .author-info-link {
     display: flex;
-    .name-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      font-size: 15px;
-      line-height: 22px;
-      margin-left: 10px;
-    }
-    .avatar-img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-    }
+    cursor: pointer;
+  }
+  .name-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 22px;
+    margin-left: 10px;
+  }
+  .avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
   }
   .tweet-content {
     font-size: 23px;
@@ -359,6 +381,13 @@ header {
     margin-top: 15px;
     line-height: 68px;
     font-size: 19px;
+  }
+}
+
+.reply-avatar, .reply-user-name, .reply-user-account {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
   }
 }
 

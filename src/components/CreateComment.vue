@@ -15,7 +15,7 @@
               id=""
               cols="30"
               rows="10"
-              maxlength="140"
+              maxlength="200"
               placeholder="有什麼新鮮事?"
             ></textarea>
           </div>
@@ -39,6 +39,7 @@
 
 <script>
 import { Fire } from "./../utils/helper";
+import { Toast } from "./../utils/helper";
 import tweetAPI from "./../apis/tweet";
 
 export default {
@@ -64,6 +65,20 @@ export default {
       this.User = this.currentUser;
     },
     async createTweet() {
+      if (!this.description.trim()) {
+        Toast.fire({
+          icon: "warning",
+          title: "尚未輸入內容",
+        });
+        return 
+      } else if (this.description.length > 140) {
+        Toast.fire({
+          icon: "warning",
+          title: "內容超過字數限制！",
+        });
+        return 
+      }
+
       try {
         this.isProcessing = true;
         if (!this.description.length) {
