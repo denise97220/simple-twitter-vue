@@ -1,114 +1,171 @@
 <template>
   <div class="container">
-    <div class="cover" v-show="isShowModal"></div>
-    <div class="user-navbar">
-      <div class="icon" @click.stop.prevent="$router.go(-1)">
-        <svg
-          width="17"
-          height="14"
-          viewBox="0 0 17 14"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M16 5.99988H3.41399L7.70699 1.70687C8.09699 1.31687 8.09699 0.683875 7.70699 0.292875C7.31699 -0.0981249 6.68399 -0.0971249 6.29299 0.292875L0.292988 6.29288C-0.0970117 6.68288 -0.0970117 7.31588 0.292988 7.70687L6.29299 13.7069C6.48799 13.9019 6.74299 13.9999 6.99999 13.9999C7.25699 13.9999 7.51199 13.9019 7.70699 13.7069C8.09699 13.3169 8.09699 12.6839 7.70699 12.2929L3.41399 7.99988H16C16.553 7.99988 17 7.55288 17 6.99988C17 6.44688 16.553 5.99988 16 5.99988Z"
-            fill="black"
-          />
-        </svg>
-      </div>
-      <div class="user-navbar-info">
-        <Spinner v-if="isLoading" />
-        <div class="user-name">{{ User.name }}</div>
-        <div class="user-tweets-length">{{ tweetLength }} 推文</div>
-      </div>
-    </div>
-
-    <div class="user-profile">
-      <div class="cover-photo">
-        <img :src="User.cover" alt="cover" />
-      </div>
-      <div class="user-avatar">
-        <img :src="User.avatar" alt="avatar" />
-      </div>
-      <Spinner v-if="isLoading" />
-      <div class="edit-btn" v-if="nowPage === 'self'">
-        <div @click.stop.prevent="showModal">編輯個人資料</div>
-      </div>
-      <div class="edit-btn" v-else>
-        <!-- TODO: 追蹤判斷 -->
-
-        <div
-          class="follow-btn"
-          v-if="User.isFollowed"
-          @click.stop.prevent="deleteFollowList(User.id)"
-        >
-          正在追蹤
-        </div>
-        <div
-          class="unfollow-btn"
-          v-else
-          @click.stop.prevent="addFollowList(User.id)"
-        >
-          追蹤
-        </div>
-      </div>
-      <div class="user-info">
-        <div class="name">{{ User.name }}</div>
-        <div class="user-account">
-          <a href="#">{{ User.account }}</a>
-        </div>
-        <div class="user-description">
-          {{ User.introduction }}
-        </div>
-        <div class="user-follow-info">
-          <router-link
-            :to="{
-              name: `user-${nowPage}-follow-following`,
-              params: { id: currentUser.id },
-            }"
+    <Spinner v-if="isLoading" />
+    <div v-else class="wrapper">
+      <div class="cover" v-show="isShowModal"></div>
+      <div class="user-navbar">
+        <div class="icon" @click.stop.prevent="$router.go(-1)">
+          <svg
+            width="17"
+            height="14"
+            viewBox="0 0 17 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <div class="user-following">
-              {{ User.Followings ? User.Followings.length : 0 }} 個
-              <span>跟隨中 </span>
+            <path
+              d="M16 5.99988H3.41399L7.70699 1.70687C8.09699 1.31687 8.09699 0.683875 7.70699 0.292875C7.31699 -0.0981249 6.68399 -0.0971249 6.29299 0.292875L0.292988 6.29288C-0.0970117 6.68288 -0.0970117 7.31588 0.292988 7.70687L6.29299 13.7069C6.48799 13.9019 6.74299 13.9999 6.99999 13.9999C7.25699 13.9999 7.51199 13.9019 7.70699 13.7069C8.09699 13.3169 8.09699 12.6839 7.70699 12.2929L3.41399 7.99988H16C16.553 7.99988 17 7.55288 17 6.99988C17 6.44688 16.553 5.99988 16 5.99988Z"
+              fill="black"
+            />
+          </svg>
+        </div>
+        <div class="user-navbar-info">
+          <Spinner v-if="isLoading" />
+          <div class="user-name">{{ User.name }}</div>
+          <div class="user-tweets-length">{{ tweetLength }} 推文</div>
+        </div>
+      </div>
+
+      <div class="user-profile">
+        <div class="cover-photo">
+          <img :src="User.cover" alt="cover" />
+        </div>
+        <div class="user-avatar">
+          <img :src="User.avatar" alt="avatar" />
+        </div>
+
+        <div class="edit-btn" v-if="nowPage === 'self'">
+          <div @click.stop.prevent="showModal">編輯個人資料</div>
+        </div>
+        <div class="edit-btn" v-else>
+          <!-- TODO: 追蹤判斷 -->
+
+          <div
+            class="follow-btn"
+            v-if="User.isFollowed"
+            @click.stop.prevent="deleteFollowList(User.id)"
+          >
+            正在追蹤
+          </div>
+          <div
+            class="unfollow-btn"
+            v-else
+            @click.stop.prevent="addFollowList(User.id)"
+          >
+            追蹤
+          </div>
+        </div>
+        <div class="user-info">
+          <div class="name">{{ User.name }}</div>
+          <div class="user-account">
+            <a href="#">{{ User.account }}</a>
+          </div>
+          <div class="user-description">
+            {{ User.introduction }}
+          </div>
+          <div class="user-follow-info">
+            <router-link
+              :to="{
+                name: `user-${nowPage}-follow-following`,
+                params: {
+                  id: this.$route.params.id
+                    ? this.$route.params.id
+                    : currentUser.id,
+                },
+              }"
+            >
+              <div class="user-following">
+                {{ User.Followings.length ? User.Followings.length : 0 }} 個
+                <span>跟隨中 </span>
+              </div>
+            </router-link>
+            <router-link
+              :to="{
+                name: `user-${nowPage}-follow-follower`,
+                params: {
+                  id: this.$route.params.id
+                    ? this.$route.params.id
+                    : currentUser.id,
+                },
+              }"
+            >
+              <div class="user-follower">
+                {{ User.Followers.length ? User.Followers.length : 0 }}位<span
+                  >跟隨者</span
+                >
+              </div>
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <!-- modal -->
+
+      <div class="twitter-edit-modal" v-show="isShowModal">
+        <form class="modal-container" @submit.stop.prevent="handleSubmit">
+          <div class="modal-header">
+            <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
+            <div class="title">編輯個人資料</div>
+            <button
+              class="save-btn main-btn"
+              type="submit"
+              :class="{ 'disabled-btn': isProcessing }"
+              :disabled="isProcessing"
+            >
+              儲存
+            </button>
+          </div>
+          <div class="modal-form">
+            <div class="modal-cover-photo">
+              <img :src="User.cover" alt="cover" />
+              <div class="cover-photo-icon">
+                <div class="icon-photo">
+                  <label for="cover">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M19.708 22H4.292C3.028 22 2 20.972 2 19.708V7.375C2 6.11 3.028 5.083 4.292 5.083H6.438C7.633 3.17 9.722 2 12 2C14.277 2 16.367 3.17 17.562 5.083H19.708C20.972 5.083 22 6.11 22 7.375V19.708C22 20.972 20.972 22 19.708 22ZM4.292 6.583C3.855 6.583 3.5 6.938 3.5 7.375V19.708C3.5 20.145 3.855 20.5 4.292 20.5H19.708C20.145 20.5 20.5 20.145 20.5 19.708V7.375C20.5 6.938 20.145 6.583 19.708 6.583H17.258C16.941 6.633 16.626 6.488 16.476 6.201C15.596 4.536 13.882 3.501 12 3.501C10.117 3.501 8.402 4.536 7.524 6.203C7.364 6.505 7.022 6.663 6.691 6.583H4.293H4.292Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M12 8.16699C9.32001 8.16699 7.14001 10.347 7.14001 13.027C7.14001 15.707 9.32001 17.887 12 17.887C14.68 17.887 16.86 15.707 16.86 13.027C16.86 10.347 14.68 8.16699 12 8.16699ZM14 13.75H12.75V15C12.75 15.414 12.414 15.75 12 15.75C11.586 15.75 11.25 15.414 11.25 15V13.75H10C9.58601 13.75 9.25001 13.414 9.25001 13C9.25001 12.586 9.58601 12.25 10 12.25H11.25V11C11.25 10.586 11.586 10.25 12 10.25C12.414 10.25 12.75 10.586 12.75 11V12.25H14C14.414 12.25 14.75 12.586 14.75 13C14.75 13.414 14.414 13.75 14 13.75Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </label>
+                  <input
+                    type="file"
+                    name="cover"
+                    id="cover"
+                    class="input-file"
+                    accept="image/*"
+                    @change="handleCoverChange"
+                    hidden
+                  />
+                </div>
+                <div class="icon-delete">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.414 7.99988L15.207 2.20687C15.597 1.81687 15.597 1.18388 15.207 0.792875C14.817 0.401875 14.184 0.402875 13.793 0.792875L8 6.58588L2.207 0.792875C1.817 0.402875 1.184 0.402875 0.792997 0.792875C0.401997 1.18288 0.402997 1.81587 0.792997 2.20687L6.586 7.99988L0.792997 13.7929C0.402997 14.1829 0.402997 14.8159 0.792997 15.2069C0.987997 15.4019 1.243 15.4999 1.5 15.4999C1.757 15.4999 2.012 15.4019 2.207 15.2069L8 9.41387L13.793 15.2069C13.988 15.4019 14.243 15.4999 14.5 15.4999C14.757 15.4999 15.012 15.4019 15.207 15.2069C15.597 14.8169 15.597 14.1839 15.207 13.7929L9.414 7.99988Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
-          </router-link>
-          <router-link
-            :to="{
-              name: `user-${nowPage}-follow-follower`,
-              params: { id: currentUser.id },
-            }"
-          >
-            <div class="user-follower">
-              {{ User.Followers ? User.Followers.length : 0 }}位<span
-                >跟隨者</span
-              >
-            </div>
-          </router-link>
-        </div>
-      </div>
-    </div>
-    <!-- modal -->
-
-    <div class="twitter-edit-modal" v-show="isShowModal">
-      <form class="modal-container" @submit.stop.prevent="handleSubmit">
-        <div class="modal-header">
-          <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
-          <div class="title">編輯個人資料</div>
-          <button
-            class="save-btn main-btn"
-            type="submit"
-            :class="{ 'disabled-btn': isProcessing }"
-            :disabled="isProcessing"
-          >
-            儲存
-          </button>
-        </div>
-        <div class="modal-form">
-          <div class="modal-cover-photo">
-            <img :src="User.cover" alt="cover" />
-            <div class="cover-photo-icon">
+            <div class="user-avatar">
+              <img :src="User.avatar" alt="avatar" />
               <div class="icon-photo">
-                <label for="cover">
+                <label for="avatar">
                   <svg
                     width="24"
                     height="24"
@@ -128,97 +185,51 @@
                 </label>
                 <input
                   type="file"
-                  name="cover"
-                  id="cover"
+                  name="avatar"
+                  id="avatar"
                   class="input-file"
                   accept="image/*"
-                  @change="handleCoverChange"
+                  @change="handleAvatarChange"
                   hidden
                 />
               </div>
-              <div class="icon-delete">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.414 7.99988L15.207 2.20687C15.597 1.81687 15.597 1.18388 15.207 0.792875C14.817 0.401875 14.184 0.402875 13.793 0.792875L8 6.58588L2.207 0.792875C1.817 0.402875 1.184 0.402875 0.792997 0.792875C0.401997 1.18288 0.402997 1.81587 0.792997 2.20687L6.586 7.99988L0.792997 13.7929C0.402997 14.1829 0.402997 14.8159 0.792997 15.2069C0.987997 15.4019 1.243 15.4999 1.5 15.4999C1.757 15.4999 2.012 15.4019 2.207 15.2069L8 9.41387L13.793 15.2069C13.988 15.4019 14.243 15.4999 14.5 15.4999C14.757 15.4999 15.012 15.4019 15.207 15.2069C15.597 14.8169 15.597 14.1839 15.207 13.7929L9.414 7.99988Z"
-                    fill="white"
+            </div>
+            <div class="user-text">
+              <div class="form-label name">
+                <label for="name" class="label">
+                  <span>名稱</span>
+                  <input
+                    v-model="User.name"
+                    name="name"
+                    class="name-input"
+                    type="text"
+                    autofocus
                   />
-                </svg>
+                </label>
+                <div class="name-length">
+                  {{ User.name ? name.length : "0" }}/50
+                </div>
+              </div>
+              <div class="form-label description">
+                <label for="introduction" class="label">
+                  <span>自我介紹 </span>
+                  <textarea
+                    v-model="User.introduction"
+                    class="description"
+                    name="introduction"
+                    id="introduction"
+                    cols="30"
+                    rows="10"
+                  ></textarea>
+                </label>
+                <div class="description-length">
+                  {{ introduction.length ? introduction.length : "0" }}/160
+                </div>
               </div>
             </div>
           </div>
-          <div class="user-avatar">
-            <img :src="User.avatar" alt="avatar" />
-            <div class="icon-photo">
-              <label for="avatar">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19.708 22H4.292C3.028 22 2 20.972 2 19.708V7.375C2 6.11 3.028 5.083 4.292 5.083H6.438C7.633 3.17 9.722 2 12 2C14.277 2 16.367 3.17 17.562 5.083H19.708C20.972 5.083 22 6.11 22 7.375V19.708C22 20.972 20.972 22 19.708 22ZM4.292 6.583C3.855 6.583 3.5 6.938 3.5 7.375V19.708C3.5 20.145 3.855 20.5 4.292 20.5H19.708C20.145 20.5 20.5 20.145 20.5 19.708V7.375C20.5 6.938 20.145 6.583 19.708 6.583H17.258C16.941 6.633 16.626 6.488 16.476 6.201C15.596 4.536 13.882 3.501 12 3.501C10.117 3.501 8.402 4.536 7.524 6.203C7.364 6.505 7.022 6.663 6.691 6.583H4.293H4.292Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M12 8.16699C9.32001 8.16699 7.14001 10.347 7.14001 13.027C7.14001 15.707 9.32001 17.887 12 17.887C14.68 17.887 16.86 15.707 16.86 13.027C16.86 10.347 14.68 8.16699 12 8.16699ZM14 13.75H12.75V15C12.75 15.414 12.414 15.75 12 15.75C11.586 15.75 11.25 15.414 11.25 15V13.75H10C9.58601 13.75 9.25001 13.414 9.25001 13C9.25001 12.586 9.58601 12.25 10 12.25H11.25V11C11.25 10.586 11.586 10.25 12 10.25C12.414 10.25 12.75 10.586 12.75 11V12.25H14C14.414 12.25 14.75 12.586 14.75 13C14.75 13.414 14.414 13.75 14 13.75Z"
-                    fill="white"
-                  />
-                </svg>
-              </label>
-              <input
-                type="file"
-                name="avatar"
-                id="avatar"
-                class="input-file"
-                accept="image/*"
-                @change="handleAvatarChange"
-                hidden
-              />
-            </div>
-          </div>
-          <div class="user-text">
-            <div class="form-label name">
-              <label for="name" class="label">
-                <span>名稱</span>
-                <input
-                  v-model="User.name"
-                  name="name"
-                  class="name-input"
-                  type="text"
-                  autofocus
-                />
-              </label>
-              <div class="name-length">
-                {{ User.name ? name.length : "0" }}/50
-              </div>
-            </div>
-            <div class="form-label description">
-              <label for="introduction" class="label">
-                <span>自我介紹 </span>
-                <textarea
-                  v-model="User.introduction"
-                  class="description"
-                  name="introduction"
-                  id="introduction"
-                  cols="30"
-                  rows="10"
-                ></textarea>
-              </label>
-              <div class="description-length">
-                {{ introduction.length ? introduction.length : "0" }}/160
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -254,7 +265,7 @@ export default {
         cover: "",
         introduction: "",
         Followers: [],
-        Following: [],
+        Followings: [],
         isFollowed: false,
       },
       isShowModal: false,
@@ -297,7 +308,10 @@ export default {
         const Profile = await userAPI.getOtherUser({ userId });
         console.log("other-Profile", Profile);
         console.log("getotherTweets", data);
-        this.User = Profile.data;
+        this.User = {
+          ...this.User,
+          ...Profile.data,
+        };
         this.isLoading = false;
         if (data || ![]) {
           return (this.tweetLength = data.length);
@@ -341,6 +355,7 @@ export default {
     async addFollowList(id) {
       try {
         const { data } = await userAPI.follow({ id });
+        console.log(data.status);
         if (data.status === "error") {
           throw new Error(data.message);
         }
@@ -355,9 +370,10 @@ export default {
         });
       }
     },
-    async deleteFollowList(UserId) {
+    async deleteFollowList(userId) {
       try {
-        const { data } = await userAPI.unFollow({ UserId });
+        const { data } = await userAPI.unFollow({ userId });
+        console.log(data.status);
         if (data.status === "error") {
           throw new Error(data.message);
         }
