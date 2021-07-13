@@ -4,41 +4,43 @@
     <Spinner v-if="isLoading" />
     <div class="related-users-card" v-else>
       <div class="header">跟隨誰</div>
-        <div class="single-user" 
-          v-for="user in relatedUsers" :key="user.id" 
-          @click="redirectToProfile(user.id)"
-        >
-          <div class="avatar">
-            <img class="avatar-img" :src="user.avatar" alt="">
-          </div>
-          <div class="info">
-            <div class="name">{{ user.name }}</div>
-            <div class="account">{{ user.account }}</div>
-          </div>
-          <button 
-            class="main-btn following-btn" 
-            @click.stop.prevent="unFollow(user.id)" 
-            v-if="user.isFollowed"
-          >正在跟隨</button>
-          <button 
-            class="follow-btn" 
-            @click.stop.prevent="follow(user.id)" 
-            v-else
-          >跟隨</button>
+      <div
+        class="single-user"
+        v-for="user in relatedUsers"
+        :key="user.id"
+        @click="redirectToProfile(user.id)"
+      >
+        <div class="avatar">
+          <img class="avatar-img" :src="user.avatar" alt="" />
         </div>
+        <div class="info">
+          <div class="name">{{ user.name }}</div>
+          <div class="account">{{ user.account }}</div>
+        </div>
+        <button
+          class="main-btn following-btn"
+          @click.stop.prevent="unFollow(user.id)"
+          v-if="user.isFollowed"
+        >
+          正在跟隨
+        </button>
+        <button class="follow-btn" @click.stop.prevent="follow(user.id)" v-else>
+          跟隨
+        </button>
+      </div>
     </div>
-     <!-- footer -->
+    <!-- footer -->
     <div class="footer">
-      <label 
-        class="navbar-toggle-label" 
+      <label
+        class="navbar-toggle-label"
         for="navbar-toggle"
         v-if="!isShowMore"
         @click="showMore"
       >
         <div class="show-more-btn">顯示更多</div>
       </label>
-      <label 
-        class="navbar-toggle-label" 
+      <label
+        class="navbar-toggle-label"
         for="navbar-toggle"
         v-else
         @click="showLess"
@@ -50,111 +52,140 @@
 </template>
 
 <script>
-import Spinner from "./../components/Spinner.vue"
-import userAPI from "./../apis/user"
-import { Fire } from "./../utils/helper"
-import { mapState } from "vuex"
+import Spinner from "./../components/Spinner.vue";
+import userAPI from "./../apis/user";
+import { Fire } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "RelatedUsers",
   components: {
-    Spinner
+    Spinner,
+  },
+  props: {
+    isFollowStatus: {
+      type: Object,
+    },
   },
   data() {
     return {
       relatedUsers: [],
       isShowMore: false,
-      isLoading: true
-    }
+      isLoading: true,
+    };
+  },
+  watch: {
+    isFollowStatus(newValue) {
+      this.relatedUsers = this.relatedUsers.map((user) => {
+        if (user.id === newValue.id) {
+          return (user = {
+            ...user,
+            isFollowed: newValue.isFollowed,
+          });
+        } else {
+          return user;
+        }
+      });
+      this.$emit("tap-follow-button", {
+        id: newValue.id,
+        isFollowed: newValue.isFollowed,
+      });
+    },
   },
   methods: {
     showMore() {
-      this.isShowMore = true
+      this.isShowMore = true;
     },
     showLess() {
-      this.isShowMore = false
+      this.isShowMore = false;
     },
     async follow(id) {
       try {
-        const { data } = await userAPI.follow({ id })
+        const { data } = await userAPI.follow({ id });
 
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
 
-        this.relatedUsers = this.relatedUsers.map(user => {
+        this.relatedUsers = this.relatedUsers.map((user) => {
           if (user.id === id) {
-            return user = {
+            return (user = {
               ...user,
-              isFollowed: true
-            }
+              isFollowed: true,
+            });
           } else {
-            return user
+            return user;
           }
-        })
-      } catch(error) {
+        });
+        this.$emit("related-to-userFollow", {
+          isFollowed: true,
+        });
+      } catch (error) {
         Fire.fire({
           icon: "warning",
-          title: "無法追蹤，請稍後再試"
-        })
-      } 
+          title: "無法追蹤，請稍後再試",
+        });
+      }
     },
     async unFollow(userId) {
       try {
-        const { data } = await userAPI.unFollow({ userId })
+        const { data } = await userAPI.unFollow({ userId });
 
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
 
-        this.relatedUsers = this.relatedUsers.map(user => {
-        if (user.id === userId) {
-          return user = {
-            ...user,
-            isFollowed: false
+        this.relatedUsers = this.relatedUsers.map((user) => {
+          if (user.id === userId) {
+            return (user = {
+              ...user,
+              isFollowed: false,
+            });
+          } else {
+            return user;
           }
-        } else {
-          return user
-        }
-      })
-      } catch(error) {
+        });
+        this.$emit("related-to-userFollow", {
+          isFollowed: false,
+        });
+      } catch (error) {
         Fire.fire({
           icon: "warning",
-          title: "無法取消追蹤，請稍後再試"
-        })
-      } 
+          title: "無法取消追蹤，請稍後再試",
+        });
+      }
     },
     async fetchTopUsers() {
       try {
-        const { data } = await userAPI.getTopUsers()
-        const { topUsers } = data
-        this.relatedUsers = topUsers
-        this.isLoading = false
-      } catch(error) {
-        console.log(error)
+        const { data } = await userAPI.getTopUsers();
+        const { topUsers } = data;
+        this.relatedUsers = topUsers;
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
-          title: "無法取得使用者資料，請稍後再試"
-        })
-        this.isLoading = false
+          title: "無法取得使用者資料，請稍後再試",
+        });
+        this.isLoading = false;
       }
     },
     redirectToProfile(id) {
       if (id === this.currentUser.id) {
-        this.$router.push("/user/self")
+        this.$router.push("/user/self");
       } else {
-        this.$router.push({ path: `/user/other/${id}/tweet` })
-        this.$emit("updateUser", id)
+        this.$router.push({ path: `/user/other/${id}/tweet` });
+        this.$emit("updateUser", id);
       }
     },
   },
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState(["currentUser"]),
   },
   created() {
-    this.fetchTopUsers()
+    this.fetchTopUsers();
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -167,7 +198,7 @@ export default {
 .related-users-card {
   width: 335px;
   height: 450px;
-  background-color: #F5F8FA;
+  background-color: #f5f8fa;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
   margin-top: 10px;
@@ -179,9 +210,10 @@ export default {
     height: 35px;
     padding-top: 10px;
     padding-left: 15px;
-    border-bottom: 1px solid #E6ECF0;
+    border-bottom: 1px solid #e6ecf0;
   }
-  .following-btn, .follow-btn {
+  .following-btn,
+  .follow-btn {
     width: 92px;
     height: 30px;
     border-radius: 100px;
@@ -194,7 +226,7 @@ export default {
     border: solid 1px $mainColor;
     color: $mainColor;
     cursor: pointer;
-    transition: background-color .1s linear;
+    transition: background-color 0.1s linear;
     &:hover {
       background-color: #e3e3e3;
     }
@@ -218,9 +250,9 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  border-bottom: 1px solid #E6ECF0;
+  border-bottom: 1px solid #e6ecf0;
   position: relative;
-  transition: background-color .2s linear;
+  transition: background-color 0.2s linear;
   cursor: pointer;
   .avatar-img {
     width: 42px;
@@ -234,7 +266,7 @@ export default {
     font-weight: bold;
     font-size: 15px;
     line-height: 20px;
-    color: #1C1C1C;
+    color: #1c1c1c;
     .account {
       color: #657786;
     }
@@ -242,10 +274,10 @@ export default {
   &:hover {
     background-color: #eeeeee;
   }
- .footer {
+  .footer {
     width: 350px;
     height: 45px;
-    background-color: #F5F8FA;
+    background-color: #f5f8fa;
     border: solid 1px;
     line-height: 45px;
   }
@@ -255,14 +287,14 @@ label {
   cursor: pointer;
   width: 320px;
   height: 40px;
-  background-color: #F5F8FA;
+  background-color: #f5f8fa;
   color: $mainColor;
   line-height: 45px;
   padding-left: 15px;
   padding-bottom: 5px;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
-  transition: background-color .2s linear;
+  transition: background-color 0.2s linear;
   &:hover {
     background-color: #eeeeee;
   }

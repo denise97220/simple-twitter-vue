@@ -89,7 +89,7 @@
               }"
             >
               <div class="user-follower">
-                {{ followerLength }}位<span>跟隨者</span>
+                {{ followerLength }}位 <span>跟隨者</span>
               </div>
             </router-link>
           </div>
@@ -252,6 +252,9 @@ export default {
       type: Number,
       default: -1,
     },
+    relatedFollowStatus: {
+      type: Object,
+    },
   },
   components: {
     Spinner,
@@ -269,13 +272,12 @@ export default {
         Followings: [],
         isFollowed: false,
       },
+
       isShowModal: false,
       name: "",
       introduction: "",
-      tweets: [],
-      tweetLength: -1,
-      followerLength: "",
-      followingLength: "",
+      followerLength: "-",
+      followingLength: "-",
       isProcessing: false,
       isLoading: true,
     };
@@ -284,26 +286,15 @@ export default {
     nowPage(newValue) {
       this.nowPage = newValue;
     },
-    "User.isFollowed": {
-      handler: function (val) {
-        this.User = {
-          ...this.User,
-          isFollowed: val,
-        };
-      },
-    },
-    "USer.Followers": {
-      handler: function (val) {
-        console.log("watch user followers", val);
-      },
-    },
-    "USer.Followings": {
-      handler: function (val) {
-        console.log("watch user followings", val);
-      },
-    },
     updateId() {
       this.fetchUser(this.updateId);
+    },
+    relatedFollowStatus(newValue) {
+      const { isFollowed } = newValue;
+      this.User = {
+        ...this.User,
+        isFollowed: isFollowed,
+      };
     },
   },
   created() {
@@ -385,9 +376,13 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
-        console.log(data);
         this.User.isFollowed = true;
+
         this.renderFollowCount(id);
+        this.$emit("tap-follow-button", {
+          id: id,
+          isFollowed: true,
+        });
         Fire.fire({
           icon: "success",
         });
@@ -404,9 +399,13 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
-        console.log(data);
+
         this.User.isFollowed = false;
         this.renderFollowCount(userId);
+        this.$emit("tap-follow-button", {
+          id: userId,
+          isFollowed: false,
+        });
         Fire.fire({
           icon: "success",
           title: "已成功移除",

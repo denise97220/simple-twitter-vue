@@ -84,6 +84,10 @@ export default {
         if (data.status || userInfo.data.status === "error") {
           throw new Error(data.message);
         }
+        this.User = {
+          ...this.User,
+          ...this.currentUser,
+        };
 
         this.UserTitle = {
           ...userInfo.data,

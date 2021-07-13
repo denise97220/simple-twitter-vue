@@ -88,6 +88,10 @@ export default {
             return follow;
           }
         });
+        this.$emit("tap-follow-button", {
+          id: id,
+          isFollowed: true,
+        });
       } catch (error) {
         Fire.fire({
           icon: "warning",
@@ -111,6 +115,10 @@ export default {
           } else {
             return follow;
           }
+        });
+        this.$emit("tap-follow-button", {
+          id: userId,
+          isFollowed: false,
         });
       } catch (error) {
         Fire.fire({
