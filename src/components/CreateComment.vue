@@ -81,7 +81,7 @@ export default {
 
       try {
         this.isProcessing = true;
-        if (!this.description.length) {
+        if (!this.description.length || !this.description.trim()) {
           Fire.fire({
             icon: "info",
             title: "請輸入推文...",
@@ -89,13 +89,15 @@ export default {
           this.isProcessing = false;
           return;
         }
-        const response = await tweetAPI.createTweet({
+        const { data } = await tweetAPI.createTweet({
           description: this.description,
         });
-        console.log(response);
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
         this.description = "";
         this.isProcessing = false;
-        this.$emit("updateTweets")
+        this.$emit("updateTweets");
       } catch {
         this.isProcessing = false;
         Fire.fire({

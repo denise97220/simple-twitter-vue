@@ -154,7 +154,6 @@ export default {
           });
           return;
         }
-
         const { data } = await adminAPI.signUp({
           account: this.account,
           name: this.name,
@@ -162,13 +161,14 @@ export default {
           password: this.password,
           checkPassword: this.checkPassword,
         });
-        if (data.status !== "success") {
+        if (data.status === "error") {
           throw new Error(data.message);
         }
         this.isProcessing = false;
         console.log("signup success!");
         this.$router.push("/");
       } catch (error) {
+        console.log(error);
         Fire.fire({
           icon: "warning",
           title: "無法註冊，請稍後再試！",

@@ -13,7 +13,7 @@ export default new Vuex.Store({
       role: "",
     },
     isAuthenticated: false,
-    userIsFollowed: false
+    userIsFollowedId: false
   },
   mutations: {
     setCurrentUser(state, currentUser) {
