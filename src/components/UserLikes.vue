@@ -125,12 +125,14 @@ import tweetAPI from "./../apis/tweet";
 import { Fire } from "./../utils/helper";
 import { mapState } from "vuex";
 import Spinner from "./../components/Spinner.vue";
+import { fromNowFilter } from "./../utils/mixins";
 
 export default {
   name: "UserTweets",
   components: {
     Spinner,
   },
+  mixins: [fromNowFilter],
   data() {
     return {
       tweets: [],

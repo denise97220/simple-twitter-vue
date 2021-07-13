@@ -6,7 +6,7 @@
       </div>
     </router-link>
 
-    <router-link :to="{ name: `user-${nowPage}-reply`, params: { id: pageId } }">
+    <router-link :to="{ name: `user-${nowPage}-reply`, params: { id: pageId }}">
       <div class="list reply">
         <h2 class="list-title reply-title">推文與回覆</h2>
       </div>
@@ -36,6 +36,7 @@ export default {
   },
   created() {
     this.pageId = this.$route.params.id
+    console.log(this.nowPage)
   },
 };
 </script>
