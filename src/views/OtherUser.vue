@@ -5,7 +5,12 @@
     </div>
     <div class="middle-container scrollbar">
       <div class="user-profile">
-        <UserProfile :updateId="updateId" :nowPage="nowPage" />
+        <UserProfile
+          :updateId="updateId"
+          :nowPage="nowPage"
+          @tap-follow-button="tapFollowButton"
+          :relatedFollowStatus="relatedFollowStatus"
+        />
       </div>
       <div class="user-tweets">
         <UserNavtabs :nowPage="nowPage" />
@@ -13,7 +18,11 @@
       <router-view :updateId="updateId"></router-view>
     </div>
     <div class="related-users">
-      <RelatedUsers @updateUser="updateUser" />
+      <RelatedUsers
+        @updateUser="updateUser"
+        :isFollowStatus="isFollowStatus"
+        @related-to-userFollow="relatedToUserFollow"
+      />
     </div>
   </div>
 </template>
@@ -37,13 +46,27 @@ export default {
     return {
       nowPage: "other",
       id: -1,
-      updateId: -1
+      updateId: -1,
+      isFollowStatus: {},
+      relatedFollowStatus: {},
     };
+  },
+  watch: {
+    relatedFollowStatus(newValue) {
+      this.relatedFollowStatus = newValue;
+    },
   },
   methods: {
     updateUser(id) {
-      this.updateId = id
-    }
+      this.updateId = id;
+    },
+    tapFollowButton(payload) {
+      this.isFollowStatus = payload;
+    },
+    relatedToUserFollow(payload) {
+      console.log("emit from related test", payload);
+      this.relatedFollowStatus = payload;
+    },
   },
   computed: {
     ...mapState(["currentUser"]),
