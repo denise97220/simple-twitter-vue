@@ -153,5 +153,4 @@ export default {
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
 @import "./src/assets/scss/follower.scss";
-
 </style>

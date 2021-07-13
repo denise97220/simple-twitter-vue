@@ -125,35 +125,36 @@ export default {
   },
   methods: {
     async handleSubmit() {
+      if (this.password !== this.checkPassword) {
+        Fire.fire({
+          icon: "warning",
+          title: "密碼輸入錯誤",
+        });
+        return;
+      }
+      if (
+        !this.account ||
+        !this.name ||
+        !this.email ||
+        !this.password ||
+        !this.checkPassword
+      ) {
+        Fire.fire({
+          icon: "warning",
+          title: "請輸入所有欄位",
+        });
+        return;
+      }
+      if (this.password.length < 6) {
+        Fire.fire({
+          icon: "warning",
+          title: "密碼長度不足",
+        });
+        return;
+      }
       try {
         this.isProcessing = true;
-        if (this.password !== this.checkPassword) {
-          Fire.fire({
-            icon: "warning",
-            title: "密碼輸入錯誤",
-          });
-          return;
-        }
-        if (
-          !this.account ||
-          !this.name ||
-          !this.email ||
-          !this.password ||
-          !this.checkPassword
-        ) {
-          Fire.fire({
-            icon: "warning",
-            title: "請輸入所有欄位",
-          });
-          return;
-        }
-        if (this.password.length < 6) {
-          Fire.fire({
-            icon: "warning",
-            title: "密碼長度不足",
-          });
-          return;
-        }
+
         const { data } = await adminAPI.signUp({
           account: this.account,
           name: this.name,

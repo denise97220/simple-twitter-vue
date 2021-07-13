@@ -106,7 +106,13 @@
           <div class="modal-header">
             <div class="close-btn" @click.stop.prevent="closeModal">Ｘ</div>
             <div class="title">編輯個人資料</div>
-            <button class="save-btn main-btn" type="submit">儲存</button>
+            <button
+              class="save-btn main-btn"
+              type="submit"
+              :disabled="!isProcessing"
+            >
+              儲存
+            </button>
           </div>
           <div class="modal-form">
             <div class="modal-cover-photo">
@@ -369,11 +375,12 @@ export default {
           throw new Error(data.message);
         }
         this.tweets = data;
-        this.isProcessing = false;
         Fire.fire({
           icon: "success",
           title: "資料已儲存！",
         });
+        this.isShowModal = false;
+        this.isProcessing = false;
       } catch (error) {
         this.isProcessing = false;
         console.error(error);
