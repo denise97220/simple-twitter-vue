@@ -52,6 +52,26 @@ export default {
   components: {
     Spinner,
   },
+  props: {
+    relateToUser: {
+      type: Object,
+    },
+  },
+  watch: {
+    relateToUser(newValue) {
+      const { id, isFollowed } = newValue;
+      this.Followings = this.Followings.map((user) => {
+        if (user.followingId === id) {
+          return (user = {
+            ...user,
+            isFollowed: isFollowed,
+          });
+        } else {
+          return user;
+        }
+      });
+    },
+  },
   data() {
     return {
       id: this.$route.params.id,

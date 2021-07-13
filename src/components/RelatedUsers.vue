@@ -118,6 +118,7 @@ export default {
           }
         });
         this.$emit("related-to-userFollow", {
+          id: id,
           isFollowed: true,
         });
       } catch (error) {
@@ -146,6 +147,7 @@ export default {
           }
         });
         this.$emit("related-to-userFollow", {
+          id: userId,
           isFollowed: false,
         });
       } catch (error) {
