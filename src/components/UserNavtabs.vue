@@ -51,6 +51,7 @@ export default {
   color: #657786;
   border: solid 1px #e6ecf0;
   border-top: none;
+  margin-bottom: -2px;
 }
 .router-link {
   color: #657786;

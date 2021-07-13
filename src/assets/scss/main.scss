@@ -50,9 +50,10 @@ input:focus, textarea:focus {
   outline: none;
 }
 
-a {
+ a {
   text-decoration: none;
-}
+  color: #1c1c1c;
+ }
 
 .router-link-active {
   text-decoration: none;

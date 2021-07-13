@@ -295,6 +295,9 @@ export default {
         this.$emit("updateUser", id)
       }
     },
+    goback() {
+      this.$router.go(-1)
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
@@ -333,6 +336,10 @@ header {
   .header-content {
     margin-left: 43px;
   }
+}
+
+.goback-btn {
+  cursor: pointer;
 }
 
 .tweet {
