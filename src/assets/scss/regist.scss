@@ -69,5 +69,12 @@ form {
     }
     
   }
+  input {
+     transition: border .1s linear;
+    &:focus {
+    border: solid 2px $mainColor;
+    border-bottom: solid 3px $mainColor;
+  }
+  }
 
 }

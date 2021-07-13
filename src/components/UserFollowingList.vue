@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <!-- Follow List -->
-    <div class="follow-list">
+    <Spinner v-if="isLoading" />
+    <div v-else class="follow-list">
       <!--  card    -->
       <div
         class="follow-card"
@@ -45,13 +45,18 @@
 <script>
 import userAPI from "./../apis/user";
 import { Fire } from "./../utils/helper";
+import Spinner from "./../components/Spinner.vue";
 
 export default {
   name: "UserFollowingList",
+  components: {
+    Spinner,
+  },
   data() {
     return {
       id: this.$route.params.id,
       Followings: [],
+      isLoading: true,
     };
   },
   created() {
@@ -62,6 +67,7 @@ export default {
       try {
         const { data } = await userAPI.getUserFollowings({ userId });
         this.Followings = data;
+        this.isLoading = false;
       } catch (error) {
         console.error(error);
       }

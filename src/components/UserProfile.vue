@@ -21,7 +21,7 @@
         <div class="user-navbar-info">
           <Spinner v-if="isLoading" />
           <div class="user-name">{{ User.name }}</div>
-          <div class="user-tweets-length">{{ tweetLength }} 推文</div>
+          <div class="user-tweets-length">{{ User.tweetsCount }} 推文</div>
         </div>
       </div>
 
@@ -74,7 +74,7 @@
               }"
             >
               <div class="user-following">
-                {{ User.Followings.length ? User.Followings.length : 0 }} 個
+                {{ followingLength }} 個
                 <span>跟隨中 </span>
               </div>
             </router-link>
@@ -89,9 +89,7 @@
               }"
             >
               <div class="user-follower">
-                {{ User.Followers.length ? User.Followers.length : 0 }}位<span
-                  >跟隨者</span
-                >
+                {{ followerLength }}位<span>跟隨者</span>
               </div>
             </router-link>
           </div>
@@ -104,14 +102,7 @@
           <div class="modal-header">
             <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
             <div class="title">編輯個人資料</div>
-            <button
-              class="save-btn main-btn"
-              type="submit"
-              :class="{ 'disabled-btn': isProcessing }"
-              :disabled="isProcessing"
-            >
-              儲存
-            </button>
+            <button class="save-btn main-btn" type="submit">儲存</button>
           </div>
           <div class="modal-form">
             <div class="modal-cover-photo">
@@ -147,18 +138,28 @@
                   />
                 </div>
                 <div class="icon-delete">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9.414 7.99988L15.207 2.20687C15.597 1.81687 15.597 1.18388 15.207 0.792875C14.817 0.401875 14.184 0.402875 13.793 0.792875L8 6.58588L2.207 0.792875C1.817 0.402875 1.184 0.402875 0.792997 0.792875C0.401997 1.18288 0.402997 1.81587 0.792997 2.20687L6.586 7.99988L0.792997 13.7929C0.402997 14.1829 0.402997 14.8159 0.792997 15.2069C0.987997 15.4019 1.243 15.4999 1.5 15.4999C1.757 15.4999 2.012 15.4019 2.207 15.2069L8 9.41387L13.793 15.2069C13.988 15.4019 14.243 15.4999 14.5 15.4999C14.757 15.4999 15.012 15.4019 15.207 15.2069C15.597 14.8169 15.597 14.1839 15.207 13.7929L9.414 7.99988Z"
-                      fill="white"
-                    />
-                  </svg>
+                  <label for="deleteCover">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9.414 7.99988L15.207 2.20687C15.597 1.81687 15.597 1.18388 15.207 0.792875C14.817 0.401875 14.184 0.402875 13.793 0.792875L8 6.58588L2.207 0.792875C1.817 0.402875 1.184 0.402875 0.792997 0.792875C0.401997 1.18288 0.402997 1.81587 0.792997 2.20687L6.586 7.99988L0.792997 13.7929C0.402997 14.1829 0.402997 14.8159 0.792997 15.2069C0.987997 15.4019 1.243 15.4999 1.5 15.4999C1.757 15.4999 2.012 15.4019 2.207 15.2069L8 9.41387L13.793 15.2069C13.988 15.4019 14.243 15.4999 14.5 15.4999C14.757 15.4999 15.012 15.4019 15.207 15.2069C15.597 14.8169 15.597 14.1839 15.207 13.7929L9.414 7.99988Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </label>
+                  <input
+                    type="checkbox"
+                    name="deleteCover"
+                    id="deleteCover"
+                    class="input-file"
+                    @change="handleDeleteCover"
+                    hidden
+                  />
                 </div>
               </div>
             </div>
@@ -273,6 +274,8 @@ export default {
       introduction: "",
       tweets: [],
       tweetLength: -1,
+      followerLength: "",
+      followingLength: "",
       isProcessing: false,
       isLoading: true,
     };
@@ -289,11 +292,22 @@ export default {
         };
       },
     },
+    "USer.Followers": {
+      handler: function (val) {
+        console.log("watch user followers", val);
+      },
+    },
+    "USer.Followings": {
+      handler: function (val) {
+        console.log("watch user followings", val);
+      },
+    },
     updateId() {
       this.fetchUser(this.updateId);
     },
   },
   created() {
+    // Check nowPage User Id
     const userId = this.$route.params.id;
     const id = userId ? this.$route.params.id : this.currentUser.id;
     this.fetchUser(id);
@@ -301,36 +315,41 @@ export default {
   methods: {
     async fetchUser(userId) {
       try {
-        (this.isLoading = true), (this.isProcessing = true);
-        const { data } = await userAPI.getSingleUserTweets({ userId });
-        const Profile = await userAPI.getOtherUser({ userId });
-        const followingList = await userAPI.getUserFollowings({ userId });
-        const followerList = await userAPI.getUserFollowers({ userId });
-        if (
-          data.status ||
-          Profile.data.status ||
-          followingList.data.status ||
-          followerList.data.status === "error"
-        ) {
+        this.isLoading = true;
+        this.isProcessing = true;
+
+        const { data } = await userAPI.getOtherUser({ userId });
+        if (data.status === "error") {
           throw new Error(data.message);
         }
+        // Render Now User Profile
         this.User = {
           ...this.User,
-          ...Profile.data,
+          ...data,
         };
-        this.User.Followers = followerList.data;
-        (this.User.Followings = followingList.data), (this.isLoading = false);
-        if (data || ![]) {
-          return (this.tweetLength = data.length);
-        } else {
-          return 0;
-        }
+        // Render Profile follow count
+        this.renderFollowCount(userId);
+        this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
         Fire.fire({
           icon: "warning",
           title: "無法取得資料",
         });
+        console.error(error);
+      }
+    },
+    async renderFollowCount(userId) {
+      try {
+        const followingList = await userAPI.getUserFollowings({ userId });
+        const followerList = await userAPI.getUserFollowers({ userId });
+        this.User.Followers = followerList.data;
+        this.User.Followings = followingList.data;
+
+        // Render follow number count
+        this.followerLength = followerList.data.length;
+        this.followingLength = followingList.data.length;
+      } catch (error) {
         console.error(error);
       }
     },
@@ -341,6 +360,7 @@ export default {
           userId: this.currentUser.id,
           formData,
         });
+        console.log("edit profile:", data);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
@@ -365,7 +385,9 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
+        console.log(data);
         this.User.isFollowed = true;
+        this.renderFollowCount(id);
         Fire.fire({
           icon: "success",
         });
@@ -382,8 +404,9 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
+        console.log(data);
         this.User.isFollowed = false;
-
+        this.renderFollowCount(userId);
         Fire.fire({
           icon: "success",
           title: "已成功移除",
@@ -403,7 +426,6 @@ export default {
       this.isShowModal = false;
     },
     handleSubmit(e) {
-      console.log(e);
       const form = e.target;
       const formData = new FormData(form);
       this.EditUserProfile(formData);
@@ -419,6 +441,23 @@ export default {
       console.log(files);
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.cover = imageURL;
+    },
+    handleDeleteCover() {
+      Fire.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.User.cover = "https://i.imgur.com/OMO0FM1.jpeg";
+          Fire.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
     },
   },
   computed: {

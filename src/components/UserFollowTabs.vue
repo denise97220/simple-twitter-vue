@@ -16,8 +16,8 @@
         </svg>
       </div>
       <div class="user-navbar-info">
-        <div class="user-name">Ashley</div>
-        <div class="user-tweets-length">25 推文</div>
+        <div class="user-name">{{ UserTitle.name }}</div>
+        <div class="user-tweets-length">{{ UserTitle.tweetsCount }} 推文</div>
       </div>
     </div>
     <!-- Follow Navtabs -->
@@ -56,6 +56,10 @@ export default {
   data() {
     return {
       User: {},
+      UserTitle: {
+        name: "",
+        tweetCount: "",
+      },
     };
   },
   watch: {
@@ -75,13 +79,14 @@ export default {
     async fetchUser(userId) {
       try {
         const { data } = await userAPI.getUserFollowings({ userId });
-        if (data.status === "error") {
+        const userInfo = await userAPI.getOtherUser({ userId });
+
+        if (data.status || userInfo.data.status === "error") {
           throw new Error(data.message);
         }
-        console.log(data);
-        this.User = {
-          ...this.User,
-          ...this.currentUser,
+
+        this.UserTitle = {
+          ...userInfo.data,
         };
       } catch (error) {
         console.error(error);
