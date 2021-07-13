@@ -290,11 +290,12 @@ export default {
       this.fetchUser(this.updateId);
     },
     relatedFollowStatus(newValue) {
-      const { isFollowed } = newValue;
+      const { id, isFollowed } = newValue;
       this.User = {
         ...this.User,
         isFollowed: isFollowed,
       };
+      this.renderFollowCount(id);
     },
   },
   created() {
