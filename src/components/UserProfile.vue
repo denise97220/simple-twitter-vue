@@ -2,7 +2,11 @@
   <div class="container">
     <Spinner v-if="isLoading" />
     <div v-else class="wrapper">
-      <div class="cover" @click.stop.prevent="closeModal" v-show="isShowModal"></div>
+      <div
+        class="cover"
+        @click.stop.prevent="closeModal"
+        v-show="isShowModal"
+      ></div>
       <div class="user-navbar">
         <div class="icon" @click.stop.prevent="$router.go(-1)">
           <svg
@@ -255,6 +259,9 @@ export default {
     relatedFollowStatus: {
       type: Object,
     },
+    relateToUser: {
+      type: Object,
+    },
   },
   components: {
     Spinner,
@@ -291,11 +298,16 @@ export default {
     },
     relatedFollowStatus(newValue) {
       const { id, isFollowed } = newValue;
+      console.log(id);
       this.User = {
         ...this.User,
         isFollowed: isFollowed,
       };
       this.renderFollowCount(id);
+    },
+    relateToUser(newValue) {
+      console.log(newValue);
+      this.renderFollowCount(this.currentUser.id);
     },
   },
   created() {

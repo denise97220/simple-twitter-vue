@@ -6,12 +6,14 @@
       </div>
       <div class="middle-container scrollbar">
         <div class="user-profile">
-          <UserProfile :nowPage="nowPage" />
+          <UserProfile :nowPage="nowPage" :relateToUser="relateToUser" />
         </div>
         <div class="user-tweets"><UserNavtabs :nowPage="nowPage" /></div>
         <router-view :NavbarSwitch="NavbarSwitch"></router-view>
       </div>
-      <div class="related-users"><RelatedUsers /></div>
+      <div class="related-users">
+        <RelatedUsers @related-to-userFollow="relatedToUserFollow" />
+      </div>
     </div>
   </div>
 </template>
@@ -35,11 +37,15 @@ export default {
     return {
       nowPage: "self",
       NavbarSwitch: false,
+      relateToUser: {},
     };
   },
   methods: {
     updateTweets() {
       this.NavbarSwitch = !this.NavbarSwitch;
+    },
+    relatedToUserFollow(payload) {
+      this.relateToUser = payload;
     },
   },
   computed: {
