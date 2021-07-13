@@ -13,7 +13,7 @@
             <h3 class="reply-user-name">{{ reply.User.name }}</h3>
             <h3 class="reply-user-account">{{ reply.User.account }}．</h3>
           </router-link>
-          2小時
+          {{ reply.createdAt | fromNow }}
         </div>
         <div class="tweet-author">
           <h3 class="reply-text">回覆</h3>
@@ -33,12 +33,14 @@ import userAPI from "./../apis/user"
 import { Fire } from "./../utils/helper"
 import { mapState } from "vuex"
 import Spinner from "./../components/Spinner.vue"
+import { fromNowFilter } from "./../utils/mixins";
 
 export default {
   name: "UserTweet",
   components: {
     Spinner
   },
+  mixins: [fromNowFilter],
   data() {
     return {
       replies: [],

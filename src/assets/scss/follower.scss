@@ -1,0 +1,84 @@
+$borderColor: #e6ecf0;
+
+* {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+@mixin border-box($length: 20px) {
+  width: $length;
+  height: $length;
+  border: solid 1px #c4c4c4;
+  border-radius: 100px;
+}
+
+.follow-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: solid 1px $borderColor;
+  border-top: none;
+  padding: 15px;
+  padding-right: 25px;
+  position: relative;
+  .user-info {
+    position: absolute;
+    width: 60%;
+    left: 80px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .avatar > img {
+    @include border-box(50px);
+    object-fit: cover;
+  }
+  .unfollow-btn {
+    width: 3.5rem;
+    height: 1.5rem;
+    text-align: center;
+    justify-self: end;
+    line-height: 1.5rem;
+    background-color: #ffffff;
+    font-weight: 500;
+    font-size: 15px;
+    color: $mainColor;
+    border: 1px solid $mainColor;
+    border-radius: 100px;
+    &:hover {
+      cursor: pointer;
+      color: $mainColorHover;
+    }
+  }
+  .follow-btn {
+    width: 120%;
+    height: 1.5rem;
+    text-align: center;
+    justify-self: end;
+    line-height: 1.5rem;
+    background-color: $mainColor;
+    font-weight: 500;
+    font-size: 15px;
+    color: #ffffff;
+    border: 1px solid $mainColor;
+    border-radius: 100px;
+    margin-right: 10px;
+    &:hover {
+      cursor: pointer;
+      color: #ffffff;
+      background: $mainColorHover;
+    }
+  }
+  .name {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .user-account, .tweet-content {
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 5px;
+  }
+  .tweet-content {
+    line-height: 22px;
+    color: #657786;
+  }
+}

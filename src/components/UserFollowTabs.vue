@@ -113,7 +113,8 @@ $borderColor: #e6ecf0;
   border-bottom: none;
   align-items: center;
   justify-content: center;
-  grid-gap: 20px;
+  padding-top: 10px;
+  grid-gap: 5px;
   .icon {
     text-align: center;
     &:hover {
@@ -122,12 +123,13 @@ $borderColor: #e6ecf0;
   }
   .user-name {
     font-size: 19px;
-    font-weight: 900;
+    font-weight: 700;
   }
   .user-tweets-length {
     font-size: 13px;
     font-weight: 500;
     color: #657786;
+    padding-top: 10px;
   }
 }
 
@@ -144,6 +146,7 @@ $borderColor: #e6ecf0;
     width: 130px;
     text-align: center;
     font-weight: 700;
+    margin-bottom: 3px;
     &:hover {
       cursor: pointer;
     }
