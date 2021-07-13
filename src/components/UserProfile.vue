@@ -2,7 +2,7 @@
   <div class="container">
     <Spinner v-if="isLoading" />
     <div v-else class="wrapper">
-      <div class="cover" v-show="isShowModal"></div>
+      <div class="cover" @click.stop.prevent="closeModal" v-show="isShowModal"></div>
       <div class="user-navbar">
         <div class="icon" @click.stop.prevent="$router.go(-1)">
           <svg
@@ -100,7 +100,7 @@
       <div class="twitter-edit-modal" v-show="isShowModal">
         <form class="modal-container" @submit.stop.prevent="handleSubmit">
           <div class="modal-header">
-            <div class="close-btn" @click.stop.prevent="closeModal()">Ｘ</div>
+            <div class="close-btn" @click.stop.prevent="closeModal">Ｘ</div>
             <div class="title">編輯個人資料</div>
             <button class="save-btn main-btn" type="submit">儲存</button>
           </div>
@@ -662,7 +662,8 @@ export default {
         background: $mainColor;
         border-radius: 100px;
         text-align: center;
-        line-height: 30px;
+        line-height: 20px;
+        font-size: 15px;
         &:hover {
           cursor: pointer;
           background-color: $mainColorHover;
@@ -671,6 +672,7 @@ export default {
       }
       .close-btn {
         color: $mainColor;
+        padding-bottom: 7px;
       }
     }
     .modal-form {
@@ -726,7 +728,7 @@ export default {
       }
       .form-label {
         position: relative;
-        margin: 15px;
+        margin: 10px;
       }
 
       .label {
@@ -734,17 +736,19 @@ export default {
         font-size: 15px;
         span {
           position: absolute;
-          top: 5px;
+          top: 10px;
+          left: 10px;
         }
       }
       input,
       textarea {
         width: 570px;
-        height: 54px;
-        font-size: 20px;
+        height: 40px;
+        font-size: 18px;
         color: #1c1c1c;
-        padding-top: 20px;
+        padding-top: 30px;
         padding-bottom: -10px;
+        padding-left: 10px;
         border: none;
         border-bottom: solid 3px #657786;
         border-radius: 0px 0px 4px 4px;

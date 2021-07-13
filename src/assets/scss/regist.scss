@@ -31,16 +31,18 @@ form {
 
   input {
     width: 540px;
-    height: 40px;
+    height: 60px;
     font-size: 20px;
     color:#1C1C1C ;
     margin-top: 20px;
     padding-top: 15px;
-    padding-bottom:-10px ;
+    padding-bottom: -10px;
+    padding-left: 10px;
     border: none;
     border-bottom: solid 3px #657786;
-    border-radius: 0px 0px 4px 4px;
+    border-radius: 4px;
     background : #F5F8Fa;
+    box-sizing: border-box;
   }
   .account-form-label, .name-form-label , .email-form-label ,.password-form-label, .check-password-form-label{
     position: relative;

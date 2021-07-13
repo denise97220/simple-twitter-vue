@@ -151,7 +151,7 @@ $borderColor: #e6ecf0;
   .router-link-active {
     text-decoration: none;
     color: $mainColor;
-    border-bottom: 3px solid $mainColor;
+    border-bottom: 2px solid $mainColor;
   }
 }
 </style>
