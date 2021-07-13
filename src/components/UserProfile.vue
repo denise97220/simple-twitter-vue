@@ -505,7 +505,7 @@ export default {
 
     .user-name {
       font-size: 19px;
-      font-weight: 900;
+      font-weight: 700;
       margin-top: 6px;
     }
     .user-tweets-length {
@@ -593,7 +593,7 @@ export default {
     padding: 15px;
     .name {
       font-size: 19px;
-      font-weight: 900;
+      font-weight: 700;
       margin-bottom: 10px;
     }
     .user-account {
