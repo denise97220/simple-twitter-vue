@@ -124,6 +124,7 @@ import Spinner from "./../components/Spinner.vue";
 import userAPI from "./../apis/user";
 import tweetAPI from "./../apis/tweet";
 import { Fire } from "./../utils/helper";
+import { Toast } from "./../utils/helper";
 import { mapState } from "vuex";
 import { fromNowFilter } from "./../utils/mixins";
 
@@ -219,6 +220,19 @@ export default {
       }
     },
     async replyTweet() {
+      if (!this.comment.trim()) {
+        Toast.fire({
+          icon: "warning",
+          title: "尚未輸入內容",
+        });
+        return 
+      } else if (this.comment.length > 140) {
+        Toast.fire({
+          icon: "warning",
+          title: "內容超過字數限制！",
+        });
+        return 
+      }
       try {
         const tweet_id = this.nowModal.TweetId;
         const comment = this.comment;
