@@ -36,7 +36,6 @@ export default {
   },
   created() {
     this.pageId = this.$route.params.id
-    console.log(this.nowPage)
   },
 };
 </script>
