@@ -3,7 +3,8 @@
     <div class="header">
       <div class="tweets-title">推文清單</div>
     </div>
-    <div class="tweets-list">
+    <Spinner v-if="isLoading" />
+    <div v-else class="tweets-list">
       <div class="tweet-card" v-for="tweet in adminTweets" :key="tweet.id">
         <div class="avatar">
           <img :src="tweet.User.avatar" alt="" />
@@ -32,11 +33,17 @@
 <script>
 import AdminAPI from "./../apis/admin";
 import { Fire } from "./../utils/helper";
+import Spinner from "./../components/Spinner.vue"
+
 export default {
   name: "AdminTweetsList",
+  components: {
+    Spinner
+  },
   data() {
     return {
       adminTweets: [],
+      isLoading: true
     };
   },
   created() {
@@ -47,7 +54,9 @@ export default {
       try {
         const { data } = await AdminAPI.tweets();
         this.adminTweets = data;
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         console.log(error);
       }
     },
@@ -86,6 +95,7 @@ export default {
 .header {
   width: 100%;
   height: 55px;
+  border-left: solid 1px #E6ECF0;
 }
 .tweets-title {
   width: 127px;

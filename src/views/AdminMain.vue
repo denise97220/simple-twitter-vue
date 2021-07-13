@@ -35,7 +35,7 @@ export default {
 
 .wrapper {
   display: grid;
-  grid-template-columns: 378px 1062px;
+  grid-template-columns: 1fr 3fr;
   height: 100%;
 }
 </style>

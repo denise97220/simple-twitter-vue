@@ -3,7 +3,8 @@
     <header>
       <div class="header-text">使用者列表</div>
     </header>
-    <div class="user-card-wrapper">
+    <Spinner v-if="isLoading" />
+    <div v-else class="user-card-wrapper">
       <div class="user-card" v-for="user in users" :key="user.id">
         <router-link to="">
           <div class="user-card-inner-wrapper">
@@ -38,12 +39,17 @@
 <script>
 import adminAPI from './../apis/admin'
 import { Fire } from './../utils/helper'
+import Spinner from "./../components/Spinner.vue"
 
 export default {
   name: "AdminUsersCard",
+  components: {
+    Spinner
+  },
   data() {
     return {
-      users: []
+      users: [],
+      isLoading: true
     }
   },
   methods: {
@@ -51,9 +57,10 @@ export default {
       try {
         const { data } = await adminAPI.getUsers()
         this.users = data
-
+        this.isLoading = false
       } catch(error) {
         console.log(error)
+        this.isLoading = false
         Fire.fire({
           icon: "warning",
           title: "無法取得使用者資料，請稍後再試"

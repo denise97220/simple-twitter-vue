@@ -222,7 +222,6 @@ export default {
   },
   created() {
     this.nowPage = this.$route.name
-    console.log(this.nowPage)
   }
 };
 </script>
@@ -261,10 +260,9 @@ export default {
 }
 
 .logo-wrapper {
-  width: 120%;
+  width: 100%;
   height: 50px;
   margin-bottom: 10px;
-  padding-left: 15px;
   border-radius: 30px;
   transition: background-color 0.2s linear;
 }
