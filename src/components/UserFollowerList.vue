@@ -59,6 +59,26 @@ export default {
       isLoading: true,
     };
   },
+  props: {
+    relateToUser: {
+      type: Object,
+    },
+  },
+  watch: {
+    relateToUser(newValue) {
+      const { id, isFollowed } = newValue;
+      this.Followers = this.Followers.map((user) => {
+        if (user.followerId === id) {
+          return (user = {
+            ...user,
+            isFollowed: isFollowed,
+          });
+        } else {
+          return user;
+        }
+      });
+    },
+  },
   created() {
     this.fetchUserFollowers(this.id);
   },

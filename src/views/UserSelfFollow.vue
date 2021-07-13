@@ -8,10 +8,16 @@
         <div class="follow-tabs">
           <UserFollowTabs :currentUser="currentUser" />
         </div>
-        <router-view @tap-follow-button="tapFollowButton"></router-view>
+        <router-view
+          @tap-follow-button="tapFollowButton"
+          :relateToUser="relateToUser"
+        ></router-view>
       </div>
       <div class="related-users">
-        <RelatedUsers :isFollowStatus="isFollowStatus" />
+        <RelatedUsers
+          :isFollowStatus="isFollowStatus"
+          @related-to-userFollow="relatedToUserFollow"
+        />
       </div>
     </div>
   </div>
@@ -33,11 +39,21 @@ export default {
   data() {
     return {
       isFollowStatus: {},
+      relatedFollowStatus: {},
+      relateToUser: {},
     };
+  },
+  watch: {
+    relatedFollowStatus(newValue) {
+      this.relatedFollowStatus = newValue;
+    },
   },
   methods: {
     tapFollowButton(payload) {
       this.isFollowStatus = payload;
+    },
+    relatedToUserFollow(payload) {
+      this.relateToUser = payload;
     },
   },
   computed: {
