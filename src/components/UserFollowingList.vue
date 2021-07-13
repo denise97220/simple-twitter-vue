@@ -180,7 +180,7 @@ $borderColor: #e6ecf0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     .follow-btn {
-      width: 70%;
+      width: 5rem;
       height: 1.5rem;
       grid-column: 4/4;
       text-align: center;

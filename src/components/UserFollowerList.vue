@@ -202,7 +202,7 @@ $borderColor: #e6ecf0;
       }
     }
     .follow-btn {
-      width: 70%;
+      width: 5rem;
       height: 1.5rem;
       grid-column: 4/4;
       text-align: center;
