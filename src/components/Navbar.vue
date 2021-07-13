@@ -260,8 +260,9 @@ export default {
 }
 
 .logo-wrapper {
-  width: 100%;
+  width: 120%;
   height: 50px;
+  padding-left: 15px;
   margin-bottom: 10px;
   border-radius: 30px;
   transition: background-color 0.2s linear;

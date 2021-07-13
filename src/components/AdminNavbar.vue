@@ -98,6 +98,12 @@ export default {
       nowPage: ""
     }
   },
+  methods: {
+    logout() {
+      this.$store.commit("revokeAuthentication");
+      this.$router.push("/login");
+    },
+  },
   created() {
     this.nowPage = this.$route.name
   }

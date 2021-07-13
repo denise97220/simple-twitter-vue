@@ -175,6 +175,7 @@ form {
 
   .form-label {
     position: relative;
+    width: 100%;
   }
 
   .label {
@@ -185,7 +186,7 @@ form {
   }
 
   .input {
-    width: 632px;
+    width: 95%;
     height: 26px;
     background: #F5F8FA;
     border: none;

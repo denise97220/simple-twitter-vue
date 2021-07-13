@@ -35,8 +35,15 @@ export default {
 
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 3fr 0.5fr;
   height: 100%;
+  .admin-navbar{
+    position: fixed;
+    grid-column: 1 / 2;
+  }
+  .admin-tweets-list {
+    grid-column: 2 / 3;
+  }
 }
 </style>
 

@@ -27,7 +27,7 @@ export default {
 
 .setting-container {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 4fr;
+  grid-template-columns: 0.1fr 1fr 4fr 2fr;
   grid-gap: 30px;
 
   .navbar {
@@ -35,7 +35,12 @@ export default {
   }
   .setting-form {
     grid-column: 3 / 4;
-    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .setting-container {
+    grid-template-columns: 0.1fr 1fr 4fr 0.1fr;
   }
 }
 </style>

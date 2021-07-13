@@ -87,6 +87,7 @@ export default {
   font-weight: bold;
 }
 .container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -96,9 +97,14 @@ export default {
   width: 100%;
   height: 55px;
   border-left: solid 1px #E6ECF0;
+  border-right: solid 1px #E6ECF0;
+  box-sizing: border-box; 
+}
+.tweets-list {
+  border: 1px #e6ecf0 solid;
 }
 .tweets-title {
-  width: 127px;
+  width: 100%;
   height: 26px;
   font-size: 18px;
   font-weight: 700;
@@ -107,13 +113,15 @@ export default {
   margin: 15px auto 14px 25px;
 }
 .tweet-card {
+  width: 100%;
   position: relative;
   display: flex;
   padding-left: 15px;
   font-style: normal;
-  border: 1px #e6ecf0 solid;
+  border-bottom: 1px #e6ecf0 solid;
   padding-top: 10px;
   padding-bottom: 20px;
+  box-sizing: border-box; 
   .avatar img {
     width: 50px;
     height: 50px;
