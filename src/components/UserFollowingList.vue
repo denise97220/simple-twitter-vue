@@ -88,6 +88,10 @@ export default {
             return follow;
           }
         });
+        this.$emit("tap-follow-button", {
+          id: id,
+          isFollowed: true,
+        });
       } catch (error) {
         console.error(error);
       }
@@ -100,7 +104,6 @@ export default {
           throw new Error(data.message);
         }
         this.Followings = this.Followings.map((follow) => {
-          console.log("test follow");
           if (follow.followingId === userId) {
             return (follow = {
               ...follow,
@@ -109,6 +112,10 @@ export default {
           } else {
             return follow;
           }
+        });
+        this.$emit("tap-follow-button", {
+          id: userId,
+          isFollowed: false,
         });
       } catch (error) {
         Fire.fire({

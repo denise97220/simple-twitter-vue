@@ -8,10 +8,10 @@
         <div class="follow-tabs">
           <UserFollowTabs :currentUser="currentUser" />
         </div>
-        <router-view></router-view>
+        <router-view @tap-follow-button="tapFollowButton"></router-view>
       </div>
       <div class="related-users">
-        <RelatedUsers />
+        <RelatedUsers :isFollowStatus="isFollowStatus" />
       </div>
     </div>
   </div>
@@ -31,7 +31,14 @@ export default {
     RelatedUsers,
   },
   data() {
-    return {};
+    return {
+      isFollowStatus: {},
+    };
+  },
+  methods: {
+    tapFollowButton(payload) {
+      this.isFollowStatus = payload;
+    },
   },
   computed: {
     ...mapState(["currentUser"]),
@@ -59,7 +66,7 @@ export default {
 }
 
 .middle-container {
-  height: calc(100vh); 
+  height: calc(100vh);
   overflow-y: scroll;
 }
 
@@ -75,13 +82,13 @@ export default {
 }
 
 @media screen and (max-width: 1359px) {
-  .follow-container  {
+  .follow-container {
     grid-template-columns: 1fr 2fr 0.2fr;
     grid-gap: 10px;
     .navbar {
       grid-column: 1 / 2;
     }
-    .middle-container{
+    .middle-container {
       grid-column: 2 / 3;
     }
     .related-users {
