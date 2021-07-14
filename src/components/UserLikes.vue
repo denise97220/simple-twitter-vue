@@ -12,7 +12,6 @@
           class="avatar-img"
           :src="tweet.User.avatar"
           alt=""
-          @click="redirectToProfile(tweet.User.id)"
         />
       </div>
       <div class="reply-user-info" @click="redirectToTweet(tweet.TweetId)">
@@ -240,13 +239,6 @@ export default {
           icon: "warning",
           title: "無法取消喜歡，請稍後再試",
         });
-      }
-    },
-    redirectToProfile(id) {
-      if (id === this.currentUser.id) {
-        this.$router.push("/user/self");
-      } else {
-        this.$router.push({ path: `/user/other/${id}` });
       }
     },
     redirectToTweet(id) {

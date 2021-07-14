@@ -374,12 +374,12 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
+        this.isShowModal = false;
         this.tweets = data;
         Fire.fire({
           icon: "success",
           title: "資料已儲存！",
         });
-        this.isShowModal = false;
         this.isProcessing = false;
       } catch (error) {
         this.isProcessing = false;

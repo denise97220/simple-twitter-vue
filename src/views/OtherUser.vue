@@ -71,6 +71,11 @@ export default {
   computed: {
     ...mapState(["currentUser"]),
   },
+  beforeRouteUpdate(to, from, next) {
+    const id = to.params.id
+    this.updateId = id
+    next()
+  },
 };
 </script>
 

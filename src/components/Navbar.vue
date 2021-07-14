@@ -103,7 +103,7 @@
       <button class="main-btn twitter-btn" @click.stop.prevent="showModal">
         推文
       </button>
-      <div class="logout">
+      <div @click.stop.prevent="logout" class="logout">
         <svg
           width="20"
           height="18"
@@ -118,7 +118,7 @@
             stroke-linejoin="round"
           />
         </svg>
-        <div class="logout-text" @click.stop.prevent="logout">登出</div>
+        <div class="logout-text">登出</div>
       </div>
     </div>
 
@@ -395,6 +395,12 @@ export default {
     width: 80%;
     border-radius: 100%;
     padding-left: 0px;
+  }
+  .home {
+    padding-right: 3px;
+  }
+  .setting {
+    padding-right: 2px;
   }
   .logout {
     padding-left: 20px;
