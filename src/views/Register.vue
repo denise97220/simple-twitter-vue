@@ -152,6 +152,23 @@ export default {
         });
         return;
       }
+
+      // adminAPI
+      //   .signUp({
+      //     account: this.account,
+      //     name: this.name,
+      //     email: this.email,
+      //     password: this.password,
+      //     checkPassword: this.checkPassword,
+      //   })
+      //   .then((response) => {
+      //     const xhr = new XMLHttpRequest();
+      //     xhr.responseType = "json";
+      //     const { data } = response;
+      //     console.log(xhr)
+      //     console.log(data);
+      //   });
+
       try {
         this.isProcessing = true;
 
@@ -162,18 +179,24 @@ export default {
           password: this.password,
           checkPassword: this.checkPassword,
         });
-        if (data.status === "error") {
+        if (data.status !== "success") {
           throw new Error(data.message);
         }
         this.isProcessing = false;
         console.log("signup success!");
         this.$router.push("/");
       } catch (error) {
-        console.log(error);
-        Fire.fire({
-          icon: "warning",
-          title: "無法註冊，請稍後再試！",
-        });
+        if (error.response.data.message == "This email is exist.") {
+          Fire.fire({
+            icon: "warning",
+            title: "此帳號已註冊",
+          });
+        } else {
+          Fire.fire({
+            icon: "warning",
+            title: "無法註冊，請稍後再試！",
+          });
+        }
       }
     },
   },
