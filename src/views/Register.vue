@@ -166,10 +166,15 @@ export default {
           throw new Error(data.message);
         }
         this.isProcessing = false;
-        console.log("signup success!");
         this.$router.push("/");
       } catch (error) {
-        if (error.response.data.message == "This email is exist.") {
+        const message = error.response.data.message
+        if (message == "This email is exist.") {
+          Fire.fire({
+            icon: "warning",
+            title: "此 email 已註冊",
+          });
+        } else if (message == "This account is exist.") {
           Fire.fire({
             icon: "warning",
             title: "此帳號已註冊",
@@ -180,6 +185,9 @@ export default {
             title: "無法註冊，請稍後再試！",
           });
         }
+        this.isProcessing = false;
+        this.password = ""
+        this.checkPassword = ""
       }
     },
   },
