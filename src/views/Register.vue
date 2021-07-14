@@ -152,23 +152,6 @@ export default {
         });
         return;
       }
-
-      // adminAPI
-      //   .signUp({
-      //     account: this.account,
-      //     name: this.name,
-      //     email: this.email,
-      //     password: this.password,
-      //     checkPassword: this.checkPassword,
-      //   })
-      //   .then((response) => {
-      //     const xhr = new XMLHttpRequest();
-      //     xhr.responseType = "json";
-      //     const { data } = response;
-      //     console.log(xhr)
-      //     console.log(data);
-      //   });
-
       try {
         this.isProcessing = true;
 
