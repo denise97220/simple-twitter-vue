@@ -217,7 +217,7 @@
                   />
                 </label>
                 <div class="name-length">
-                  {{ User.name ? name.length : "0" }}/50
+                  {{ User.name.length ? User.name.length : "0" }}/50
                 </div>
               </div>
               <div class="form-label description">
@@ -233,7 +233,9 @@
                   ></textarea>
                 </label>
                 <div class="description-length">
-                  {{ introduction.length ? introduction.length : "0" }}/160
+                  {{
+                    User.introduction.length ? User.introduction.length : "0"
+                  }}/160
                 </div>
               </div>
             </div>
