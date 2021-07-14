@@ -109,7 +109,6 @@
             <button
               class="save-btn main-btn"
               type="submit"
-              :disabled="!isProcessing"
             >
               儲存
             </button>
@@ -365,7 +364,6 @@ export default {
     },
     async EditUserProfile(formData) {
       try {
-        this.isProcessing = true;
         const { data } = await userAPI.editUserProfile({
           userId: this.currentUser.id,
           formData,
@@ -380,9 +378,7 @@ export default {
           icon: "success",
           title: "資料已儲存！",
         });
-        this.isProcessing = false;
       } catch (error) {
-        this.isProcessing = false;
         console.error(error);
         Fire.fire({
           icon: "warning",

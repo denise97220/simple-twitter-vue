@@ -18,6 +18,9 @@
   &:hover {
     background-color: $tweetHover;
   }
+  .reply-user-info {
+    width: 100%;
+  }
 }
 
 .reply-icon-wrapper:hover,
