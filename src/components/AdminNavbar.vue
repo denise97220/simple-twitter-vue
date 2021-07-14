@@ -68,7 +68,7 @@
           </div>
         </router-link>
       </div>
-      <div class="logout">
+      <div class="logout" @click.stop.prevent="logout">
         <svg
           width="20"
           height="18"
