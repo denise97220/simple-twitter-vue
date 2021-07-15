@@ -109,6 +109,7 @@
             <button
               class="save-btn main-btn"
               type="submit"
+              :class="{ 'disabled-btn': isProcessing }"
             >
               儲存
             </button>
@@ -217,7 +218,7 @@
                   />
                 </label>
                 <div class="name-length">
-                  {{ User.name.length ? User.name.length : "0" }}/50
+                  {{ User.name ? User.name.length : "0" }}/50
                 </div>
               </div>
               <div class="form-label description">
@@ -233,9 +234,7 @@
                   ></textarea>
                 </label>
                 <div class="description-length">
-                  {{
-                    User.introduction.length ? User.introduction.length : "0"
-                  }}/160
+                  {{ User.introduction ? User.introduction.length : "0" }}/160
                 </div>
               </div>
             </div>
@@ -366,21 +365,23 @@ export default {
     },
     async EditUserProfile(formData) {
       try {
+        this.isProcessing = true;
         const { data } = await userAPI.editUserProfile({
           userId: this.currentUser.id,
           formData,
         });
-        console.log("edit profile:", data);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
         this.isShowModal = false;
         this.tweets = data;
+        this.isProcessing = false;
         Fire.fire({
           icon: "success",
           title: "資料已儲存！",
         });
       } catch (error) {
+        this.isProcessing = false;
         console.error(error);
         Fire.fire({
           icon: "warning",
@@ -471,7 +472,8 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.User.cover = "https://i.imgur.com/OMO0FM1.jpeg";
+          this.User.cover =
+            "https://images.unsplash.com/27/perspective.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80";
           Fire.fire("Deleted!", "Your file has been deleted.", "success");
         }
       });
