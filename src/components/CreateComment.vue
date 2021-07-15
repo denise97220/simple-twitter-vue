@@ -70,13 +70,13 @@ export default {
           icon: "warning",
           title: "尚未輸入內容",
         });
-        return 
+        return;
       } else if (this.description.length > 140) {
         Toast.fire({
           icon: "warning",
           title: "內容超過字數限制！",
         });
-        return 
+        return;
       }
 
       try {
@@ -158,6 +158,7 @@ $border-color: #e6ecf0;
       width: 100%;
       max-height: 100px;
       font-size: 18px;
+      white-space: pre-wrap;
     }
     .btn-place {
       position: absolute;

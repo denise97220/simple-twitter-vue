@@ -110,6 +110,7 @@
               class="save-btn main-btn"
               type="submit"
               :class="{ 'disabled-btn': isProcessing }"
+              :disabled="isProcessing"
             >
               儲存
             </button>
