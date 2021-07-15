@@ -15,7 +15,7 @@
               <a href="#">{{ tweet.User.name }}</a>
             </div>
             <div class="user-account">
-              <a href="#">@{{ tweet.User.account }} · 3小時</a>
+              <a href="#">{{ tweet.User.account }} · 3小時</a>
             </div>
           </div>
           <div class="tweet-comment">
@@ -33,17 +33,17 @@
 <script>
 import AdminAPI from "./../apis/admin";
 import { Fire } from "./../utils/helper";
-import Spinner from "./../components/Spinner.vue"
+import Spinner from "./../components/Spinner.vue";
 
 export default {
   name: "AdminTweetsList",
   components: {
-    Spinner
+    Spinner,
   },
   data() {
     return {
       adminTweets: [],
-      isLoading: true
+      isLoading: true,
     };
   },
   created() {
@@ -54,9 +54,9 @@ export default {
       try {
         const { data } = await AdminAPI.tweets();
         this.adminTweets = data;
-        this.isLoading = false
+        this.isLoading = false;
       } catch (error) {
-        this.isLoading = false
+        this.isLoading = false;
         console.log(error);
       }
     },
@@ -96,9 +96,9 @@ export default {
 .header {
   width: 100%;
   height: 55px;
-  border-left: solid 1px #E6ECF0;
-  border-right: solid 1px #E6ECF0;
-  box-sizing: border-box; 
+  border-left: solid 1px #e6ecf0;
+  border-right: solid 1px #e6ecf0;
+  box-sizing: border-box;
 }
 .tweets-list {
   border: 1px #e6ecf0 solid;
@@ -121,7 +121,7 @@ export default {
   border-bottom: 1px #e6ecf0 solid;
   padding-top: 10px;
   padding-bottom: 20px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   .avatar img {
     width: 50px;
     height: 50px;

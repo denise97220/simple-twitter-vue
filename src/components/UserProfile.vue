@@ -304,7 +304,6 @@ export default {
     },
     relatedFollowStatus(newValue) {
       const { id, isFollowed } = newValue;
-      console.log(id);
       this.User = {
         ...this.User,
         isFollowed: isFollowed,
@@ -337,6 +336,9 @@ export default {
           ...this.User,
           ...data,
         };
+        this.followerLength = this.User.Followers.length;
+        this.followingLength = this.User.Followings.length;
+
         // Render Profile follow count
         this.renderFollowCount(userId);
         this.isLoading = false;
@@ -396,8 +398,7 @@ export default {
           throw new Error(data.message);
         }
         this.User.isFollowed = true;
-
-        this.renderFollowCount(id);
+        this.followerLength = this.followerLength + 1;
         this.$emit("tap-follow-button", {
           id: id,
           isFollowed: true,
@@ -420,7 +421,9 @@ export default {
         }
 
         this.User.isFollowed = false;
-        this.renderFollowCount(userId);
+        this.followerLength = this.followerLength - 1;
+
+        // this.renderFollowCount(userId);
         this.$emit("tap-follow-button", {
           id: userId,
           isFollowed: false,
