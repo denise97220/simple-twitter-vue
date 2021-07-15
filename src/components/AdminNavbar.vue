@@ -165,6 +165,9 @@ export default {
     color: #1c1c1c;
     padding-bottom: 2px;
   }
+  .selfinfo-title {
+    margin-left: -3px;
+  }
 }
 
 .home {
