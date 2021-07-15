@@ -241,7 +241,7 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.fetchData()
+        this.fetchOtherUser(this.updateId)
         this.comment = "";
         this.isShowModal = false;
       } catch (error) {

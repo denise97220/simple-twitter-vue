@@ -16,12 +16,12 @@ import Navbar from "./../components/Navbar.vue";
 import ChatPublic from "./../components/ChatPublic.vue";
 
 export default {
-  name: "AdminMain",
+  name: "ChatRoom",
   components: {
     Navbar,
     ChatPublic,
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
