@@ -37,27 +37,72 @@
           <img :src="User.avatar" alt="avatar" />
         </div>
 
-        <div class="edit-btn" v-if="nowPage === 'self'">
+        <div class="user-self-btn" v-if="nowPage === 'self'">
           <div @click.stop.prevent="showModal">編輯個人資料</div>
         </div>
-        <div class="edit-btn" v-else>
-          <!-- TODO: 追蹤判斷 -->
-
-          <div
-            class="follow-btn"
-            v-if="User.isFollowed"
-            @click.stop.prevent="deleteFollowList(User.id)"
-          >
-            正在追蹤
+        <div class="user-btns" v-else>
+          <div class="message-btn">
+            <svg
+              width="20"
+              height="19"
+              viewBox="0 0 20 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.25 0.0180664H2.75C1.233 0.0180664 0 1.25207 0 2.77007V15.2651C0 16.7831 1.233 18.0181 2.75 18.0181H17.25C18.767 18.0181 20 16.7831 20 15.2651V2.77007C20 1.25207 18.767 0.0180664 17.25 0.0180664ZM2.75 1.51807H17.25C17.94 1.51807 18.5 2.07807 18.5 2.76807V3.48207L10.45 8.84907C10.177 9.02907 9.824 9.03107 9.55 8.84707L1.5 3.48207V2.76807C1.5 2.07807 2.06 1.51807 2.75 1.51807ZM17.25 16.5161H2.75C2.06 16.5161 1.5 15.9561 1.5 15.2661V5.24007L8.74 10.0701C9.123 10.3261 9.562 10.4541 10 10.4541C10.44 10.4541 10.877 10.3261 11.26 10.0711L18.5 5.24107V15.2631C18.5 15.9531 17.94 16.5131 17.25 16.5131V16.5161Z"
+                fill="#FF6600"
+              />
+            </svg>
           </div>
-          <div
-            class="unfollow-btn"
-            v-else
-            @click.stop.prevent="addFollowList(User.id)"
-          >
-            追蹤
+          <div class="noti-btn" v-if="!isNotify" @click="turnNotify">
+            <svg
+              width="24"
+              height="22"
+              viewBox="0 0 24 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M23.24 3.26003H20.815V0.832031C20.815 0.418031 20.479 0.0820312 20.065 0.0820312C19.651 0.0820312 19.315 0.418031 19.315 0.832031V3.26003H16.89C16.476 3.26003 16.14 3.59503 16.14 4.01003C16.14 4.42503 16.476 4.76003 16.89 4.76003H19.316V7.18403C19.316 7.59803 19.652 7.93403 20.066 7.93403C20.48 7.93403 20.816 7.59803 20.816 7.18403V4.76003H23.241C23.656 4.76003 23.991 4.42303 23.991 4.01003C23.991 3.59703 23.655 3.26003 23.241 3.26003H23.24ZM17.01 10.866C17.03 8.43203 16.228 6.26903 14.752 4.77603C13.428 3.43403 11.636 2.69203 9.70604 2.68303H9.69304C7.76304 2.69303 5.97104 3.43303 4.64704 4.77503C3.17204 6.27003 2.37004 8.43303 2.39004 10.867C2.42604 15 0.467036 16.56 0.390036 16.62C0.130036 16.813 0.0230359 17.15 0.124036 17.458C0.226036 17.766 0.514036 17.973 0.836036 17.973H5.55204C5.66204 20.199 7.49204 21.98 9.74604 21.98C12 21.98 13.829 20.2 13.94 17.973H18.565C18.885 17.973 19.169 17.767 19.272 17.463C19.375 17.159 19.272 16.82 19.017 16.625C18.935 16.561 16.974 15 17.009 10.865L17.01 10.866ZM9.74504 20.48C8.31904 20.48 7.15904 19.37 7.05104 17.972H12.439C12.331 19.372 11.171 20.479 9.74504 20.479V20.48ZM2.45504 16.473C3.15704 15.378 3.91204 13.569 3.88904 10.855C3.87204 8.79303 4.50304 7.05503 5.71404 5.83003C6.75704 4.77403 8.17204 4.19003 9.70004 4.18403C11.227 4.19103 12.643 4.77403 13.685 5.83003C14.895 7.05603 15.525 8.79303 15.508 10.855C15.486 13.569 16.24 15.378 16.945 16.473H2.45504Z"
+                fill="#FF6600"
+              />
+            </svg>
+          </div>
+          <div class="noti-btn user-notify" v-else @click="turnNotify">
+            <svg
+              width="25"
+              height="23"
+              viewBox="0 0 25 23"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M23.6095 0.150052C23.2345 -0.0339485 22.7875 0.120052 22.6035 0.490052L19.7395 6.26605L18.0365 4.45605C17.7535 4.15305 17.2785 4.14005 16.9765 4.42405C16.6745 4.70805 16.6605 5.18405 16.9445 5.48405L19.3875 8.08005C19.5305 8.23005 19.7275 8.31505 19.9335 8.31505C19.9695 8.31505 20.0065 8.31205 20.0435 8.30705C20.2865 8.27105 20.4955 8.11705 20.6055 7.89705L23.9475 1.15705C24.1315 0.785051 23.9795 0.335052 23.6075 0.151052L23.6095 0.150052ZM19.0175 16.6251C18.9345 16.5611 16.9735 15.0001 17.0075 10.8651C17.0295 8.43205 16.2275 6.26905 14.7515 4.77505C13.4275 3.43505 11.6355 2.69205 9.70555 2.68305H9.69255C7.76255 2.69305 5.97055 3.43305 4.64655 4.77505C3.17155 6.27005 2.36955 8.43305 2.38955 10.8671C2.42555 15.0001 0.466548 16.5601 0.389548 16.6201C0.129548 16.8131 0.0225476 17.1501 0.123548 17.4581C0.225548 17.7661 0.513548 17.9731 0.835548 17.9731H4.91555C5.00355 20.5431 7.10855 22.6131 9.70055 22.6131C12.2925 22.6131 14.3985 20.5431 14.4855 17.9731H18.5675C18.8875 17.9731 19.1715 17.7671 19.2745 17.4631C19.3775 17.159 19.2725 16.8201 19.0185 16.6251H19.0175ZM9.69955 20.5131C8.26555 20.5131 7.09955 19.3861 7.01555 17.9731H12.3835C12.2985 19.3861 11.1335 20.5131 9.69955 20.5131Z"
+                fill="white"
+              />
+            </svg>
+          </div>
+
+          <div class="edit-btn">
+            <!--  追蹤判斷 -->
+            <div
+              class="follow-btn"
+              v-if="User.isFollowed"
+              @click.stop.prevent="deleteFollowList(User.id)"
+            >
+              正在追蹤
+            </div>
+            <div
+              class="unfollow-btn"
+              v-else
+              @click.stop.prevent="addFollowList(User.id)"
+            >
+              追蹤
+            </div>
           </div>
         </div>
+
         <div class="user-info">
           <div class="name">{{ User.name }}</div>
           <div class="user-account">
@@ -293,6 +338,7 @@ export default {
       followingLength: "-",
       isProcessing: false,
       isLoading: true,
+      isNotify: false,
     };
   },
   watch: {
@@ -481,6 +527,9 @@ export default {
         }
       });
     },
+    turnNotify() {
+      this.isNotify = !this.isNotify;
+    },
   },
   computed: {
     ...mapState(["currentUser"]),
@@ -555,45 +604,85 @@ export default {
       border: 4px solid #ffffff;
     }
   }
-
-  .edit-btn {
+  .user-self-btn {
     position: absolute;
-    color: $mainColor;
-    right: 0px;
+    display: flex;
+    right: 1rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
     width: 122px;
-    height: 40px;
-    border: 1px solid #ff6600;
+    height: 1.8rem;
+    justify-content: center;
+    align-items: center;
+    color: $mainColor;
+    border: solid 1px $mainColor;
     border-radius: 100px;
-    text-align: center;
-    line-height: 40px;
-    margin-top: 10px;
-    margin-right: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
     &:hover {
       cursor: pointer;
-      color: $mainColorHover;
-      border-color: $mainColorHover;
+      $color: $mainColorHover;
     }
-    .follow-btn {
-      background: $mainColor;
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: bold;
+  }
+  .user-btns {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem;
+    .message-btn,
+    .noti-btn {
+      display: flex;
+      width: 40px;
+      height: 40px;
       border-radius: 100px;
-      &:hover {
-        cursor: pointer;
-        background: $mainColorHover;
-      }
-    }
-    .unfollow-btn {
-      background: #fff;
-      color: $mainColor;
-      font-size: 15px;
-      font-weight: bold;
-      border-radius: 100px;
+      border: solid 1px $mainColor;
+      margin-right: 0.5rem;
+      justify-content: center;
+      align-items: center;
       &:hover {
         cursor: pointer;
         color: $mainColorHover;
         border-color: $mainColorHover;
+      }
+    }
+    .user-notify {
+      background: $mainColor;
+    }
+    .edit-btn {
+      color: $mainColor;
+      width: 122px;
+      height: 40px;
+      border: 1px solid #ff6600;
+      border-radius: 100px;
+      text-align: center;
+      line-height: 40px;
+      &:hover {
+        cursor: pointer;
+        color: $mainColorHover;
+        border-color: $mainColorHover;
+      }
+      .follow-btn {
+        background: $mainColor;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 100px;
+        &:hover {
+          cursor: pointer;
+          background: $mainColorHover;
+        }
+      }
+      .unfollow-btn {
+        background: #fff;
+        color: $mainColor;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 100px;
+        &:hover {
+          cursor: pointer;
+          color: $mainColorHover;
+          border-color: $mainColorHover;
+        }
       }
     }
   }
