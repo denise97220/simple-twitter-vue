@@ -153,7 +153,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem("token")
   let isAuthenticated = false
-  let role = store.state.currentUser.role
+  // let role = store.state.currentUser.role
 
   if (token) {
     isAuthenticated = await store.dispatch("fetchCurrentUser")
@@ -167,13 +167,16 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    if (role === "user") {
-      next("/main");
-    } else if (role === "admin") {
-      next("/admin_main")
-    }
+    next("/main");
     return
-  }
+  } 
+
+  if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
+    next("/main");
+    return;
+  } 
+
+
   next()
 });
 
