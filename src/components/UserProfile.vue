@@ -303,12 +303,14 @@ export default {
       this.fetchUser(this.updateId);
     },
     relatedFollowStatus(newValue) {
-      const { id, isFollowed } = newValue;
-      this.User = {
-        ...this.User,
-        isFollowed: isFollowed,
-      };
-      this.renderFollowCount(id);
+      if (newValue.id === this.User.id) {
+        const { id, isFollowed } = newValue;
+        this.User = {
+          ...this.User,
+          isFollowed: isFollowed,
+        };
+        this.renderFollowCount(id);
+      }
     },
     relateToUser(newValue) {
       console.log(newValue);
@@ -453,13 +455,11 @@ export default {
     },
     handleAvatarChange(e) {
       const files = e.target.files;
-      console.log(files);
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.avatar = imageURL;
     },
     handleCoverChange(e) {
       const files = e.target.files;
-      console.log(files);
       const imageURL = window.URL.createObjectURL(files[0]);
       this.User.cover = imageURL;
     },
