@@ -19,10 +19,10 @@
       <div class="send-box">
         <input 
           class="dialog-input"  
-          v-model="message" 
           type="text"
+          v-model="message"
         >
-        <div class="send-btn">send</div>
+        <div class="send-btn" @click.stop.prevent="send">send</div>
       </div>
     </div>
     <div class="online-users">
@@ -32,68 +32,52 @@
 </template>
 
 <script>
-// import Vue from 'vue'
-// import store from './../store'
-// import VueSocketIO from 'vue-socket.io'
-// import SocketIO from 'socket.io-client'
+import Vue from 'vue'
+import store from './../store'
+import VueSocketIO from 'vue-socket.io'
+import SocketIO from 'socket.io-client'
 
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: SocketIO('https://1f926ed08a12.ngrok.io', {
-//     reconnectionDelayMax: 10000,
-//     auth: {
-//       token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjI2MzU5NTQ3fQ.VPmXUK2zl6vIUCcTgVucLh0QD6Ydmhc0wGZgZfxDXnc"
-//     },
-//     // query: {
-//     //   "my-key": "my-value"
-//     // }
-//   }),
-//   vuex: {
-//     store,
-//     actionPrefix: "SOCKET_",
-//     mutationPrefix: "SOCKET_",
-//     options: { path: "/"}
-//   },
-//   extraHeaders: {
-//   'Access-Control-Allow-Credentials':true
-//   },
-//   allowEIO3: true
-//   })
-// )
+Vue.use(
+  new VueSocketIO({
+    debug: true,
+    connection: SocketIO("https://7118cd871ec1.ngrok.io", {
+      auth: {
+        token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjI2NDEwNjYzfQ._czlz2LTzcgJXwkQCSN3EVKOeANpqxuJWeJ7vnWKDAQ",
+      },
+    }),
+    vuex: {
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_",
+    },
+  })
+);
 
-// export default {
-//   name: "ChatPublic",
-//   data() {
-//     return {
-//       message: ""
-//     }
-//   },
-//   created() {
-//     this.disconnectSever()
-//     this.connectSever()
-//     this.$socket.emit("chat message", "hi")
-//   },
-//   methods: {
-//     disconnectSever() {
-//       this.$socket.disconnect()
-//     },
-//     connectSever() {
-//       this.$socket.connect()
-//     },
-//   },
-//   sockets: {
-//     connect() {
-//       console.log('socket connected')
-//     },
-//     allOnlineUsers(users) {
-//       this.onlineUsers = users
-//     },
-//     online(onlineCount) {
-//       this.onlineCount = onlineCount
-//     },
-//   },
 
-// }
+export default {
+  name: "ChatPublic",
+  data() {
+    return {
+      message: ""
+    }
+  },
+  sockets: {
+    connect: function () {
+      console.log("socket connected");
+    },
+  },
+  created() {
+    this.$socket.connect()
+  },
+  methods: {
+    send() {
+      this.$socket.emit("chat message", this.message)
+      this.message = ""
+    }
+  },
+
+}
 </script>
 
 <style lang="scss" scoped>
