@@ -241,7 +241,7 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.fetchOtherUser(this.updateId)
+        this.fetchOtherUser(this.$route.params.id)
         this.comment = "";
         this.isShowModal = false;
       } catch (error) {
