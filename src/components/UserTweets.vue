@@ -241,7 +241,12 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.fetchOtherUser(this.$route.params.id)
+        if (this.$route.name === "other-user") {
+          this.fetchOtherUser(this.$route.params.id)
+        } else if (this.$route.name === "main") {
+          this.fetchData()
+        }
+        
         this.comment = "";
         this.isShowModal = false;
       } catch (error) {
