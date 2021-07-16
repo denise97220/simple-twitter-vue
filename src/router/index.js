@@ -171,12 +171,6 @@ router.beforeEach(async (to, from, next) => {
     return
   } 
 
-  if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    next("/main");
-    return;
-  } 
-
-
   next()
 });
 
