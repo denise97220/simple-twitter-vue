@@ -52,6 +52,7 @@ export default {
     };
   },
   watch: {
+    // change profile status
     relatedFollowStatus(newValue) {
       this.relatedFollowStatus = newValue;
     },
@@ -63,8 +64,8 @@ export default {
     tapFollowButton(payload) {
       this.isFollowStatus = payload;
     },
+    // from related to user profile status
     relatedToUserFollow(payload) {
-      console.log("emit from related test", payload);
       this.relatedFollowStatus = payload;
     },
   },
@@ -72,9 +73,9 @@ export default {
     ...mapState(["currentUser"]),
   },
   beforeRouteUpdate(to, from, next) {
-    const id = to.params.id
-    this.updateId = id
-    next()
+    const id = to.params.id;
+    this.updateId = id;
+    next();
   },
 };
 </script>
