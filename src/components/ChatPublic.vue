@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="send-box">
-        <input class="dialog-input" type="text" v-model="message" />
+        <input class="dialog-input" type="text" v-model="tempMessage" />
         <div class="send-btn" @click.stop.prevent="send">send</div>
       </div>
     </div>
@@ -75,13 +75,16 @@ import Vue from "vue";
 import store from "./../store";
 import VueSocketIO from "vue-socket.io";
 import SocketIO from "socket.io-client";
+import { mapState } from "vuex";
+
+const token = localStorage.getItem("token")
+
 Vue.use(
   new VueSocketIO({
     debug: true,
     connection: SocketIO("https://7118cd871ec1.ngrok.io", {
       auth: {
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjI2NDEwNjYzfQ._czlz2LTzcgJXwkQCSN3EVKOeANpqxuJWeJ7vnWKDAQ",
+        token
       },
     }),
     vuex: {
@@ -96,6 +99,7 @@ export default {
   data() {
     return {
       id: 1,
+      tempMessage: "",
       message: [
         {
           name: "許丹",
@@ -133,9 +137,21 @@ export default {
   created() {},
   methods: {
     send() {
-      this.$socket.emit("chatMessage", this.message);
-      this.message = "";
+      const time = new Date()
+      this.$socket.emit("chatMessage", {
+        message: this.tempMessage,
+        currentUser: {
+          id: this.currentUser.id,
+          name: this.currentUser.name,
+          avatar: this.currentUser.avatar
+        },
+        time
+      });
+      this.tempMessage = "";
     },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
 };
 </script>
