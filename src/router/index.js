@@ -124,6 +124,11 @@ const routes = [
     component: () => import("../views/ChatRoom.vue"),
   },
   {
+    path: "/notify",
+    name: "notify",
+    component: () => import("../views/Notify.vue"),
+  },
+  {
     path: "/admin",
     name: "admin-login",
     component: () => import("../views/AdminLogin.vue"),
