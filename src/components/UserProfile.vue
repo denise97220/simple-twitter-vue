@@ -368,6 +368,7 @@ export default {
     const userId = this.$route.params.id;
     const id = userId ? this.$route.params.id : this.currentUser.id;
     this.fetchUser(id);
+    this.$socket.emit("eventA", "hi");
   },
   methods: {
     async fetchUser(userId) {
@@ -533,6 +534,17 @@ export default {
   },
   computed: {
     ...mapState(["currentUser"]),
+  },
+  sockets: {
+    connect() {
+      console.log("socket connected");
+    },
+    disconnect() {
+      console.log("socket disconnected");
+    },
+    eventA() {
+      console.log("success")
+    }
   },
 };
 </script>

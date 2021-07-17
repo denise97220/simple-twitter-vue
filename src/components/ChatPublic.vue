@@ -71,31 +71,10 @@
 </template>
 
 <script>
-import Vue from "vue";
-import store from "./../store";
-import VueSocketIO from "vue-socket.io";
-import SocketIO from "socket.io-client";
 import { mapState } from "vuex";
 import chatAPI from './../apis/chat'
 import uuidv4 from 'uuid'
 
-const token = localStorage.getItem("token")
-
-Vue.use(
-  new VueSocketIO({
-    debug: true,
-    connection: SocketIO("https://7118cd871ec1.ngrok.io", {
-      auth: {
-        token
-      },
-    }),
-    vuex: {
-      store,
-      actionPrefix: "SOCKET_",
-      mutationPrefix: "SOCKET_",
-    },
-  })
-);
 export default {
   name: "ChatPublic",
   data() {

@@ -54,6 +54,29 @@ img {
 </style>
 
 <script>
+import Vue from "vue";
+import store from "./store";
+import VueSocketIO from "vue-socket.io";
+import SocketIO from "socket.io-client";
+
+const token = localStorage.getItem("token")
+
+Vue.use(
+  new VueSocketIO({
+    debug: true,
+    connection: SocketIO("https://bb4a29077591.ngrok.io", {
+      auth: {
+        token
+      },
+    }),
+    vuex: {
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_",
+    },
+  })
+);
+
 export default {};
 </script>
 
