@@ -44,10 +44,18 @@ $accountColor: #657786;
 
   .single-notify {
     border: 1px solid red;
-
+    padding: 0.5rem;
     .avatar > img {
       width: 50px;
       height: 50px;
+      border-radius: 100px;
+    }
+    .notify-title {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .notify-content {
+      color: #657786;
     }
   }
 }
