@@ -37,42 +37,16 @@
     <div class="online-users">
       <div class="user-top">上線使用者(5)</div>
       <div class="user-list">
-        <div class="user-card">
+        <div class="user-card" v-for="user in onlineUser" :key="user.id">
           <div class="user-avatar">
             <img
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.18169-9/30623878_2126472630703933_1331523221500535509_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=8bfeb9&_nc_ohc=xfGfnyD9CgIAX-tdZVd&_nc_ht=scontent.ftpe13-1.fna&oh=3c85861785e538c40a3f89634fcd07fb&oe=60F61540"
+              :src="user.avatar"
               alt="avatar"
             />
           </div>
-          <div class="user-info">Ashley <span>@ashley</span></div>
+          <div class="user-info">{{ user.name }} <span>{{ user.account }}</span></div>
         </div>
-        <div class="user-card">
-          <div class="user-avatar">
-            <img
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.18169-9/30623878_2126472630703933_1331523221500535509_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=8bfeb9&_nc_ohc=xfGfnyD9CgIAX-tdZVd&_nc_ht=scontent.ftpe13-1.fna&oh=3c85861785e538c40a3f89634fcd07fb&oe=60F61540"
-              alt="avatar"
-            />
-          </div>
-          <div class="user-info">Ashley <span>@ashley</span></div>
-        </div>
-        <div class="user-card">
-          <div class="user-avatar">
-            <img
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.18169-9/30623878_2126472630703933_1331523221500535509_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=8bfeb9&_nc_ohc=xfGfnyD9CgIAX-tdZVd&_nc_ht=scontent.ftpe13-1.fna&oh=3c85861785e538c40a3f89634fcd07fb&oe=60F61540"
-              alt="avatar"
-            />
-          </div>
-          <div class="user-info">Ashley <span>@ashley</span></div>
-        </div>
-        <div class="user-card">
-          <div class="user-avatar">
-            <img
-              src="https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.18169-9/30623878_2126472630703933_1331523221500535509_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=8bfeb9&_nc_ohc=xfGfnyD9CgIAX-tdZVd&_nc_ht=scontent.ftpe13-1.fna&oh=3c85861785e538c40a3f89634fcd07fb&oe=60F61540"
-              alt="avatar"
-            />
-          </div>
-          <div class="user-info">Ashley <span>@ashley</span></div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -90,7 +64,8 @@ export default {
       id: 1,
       tempMessage: "",
       message: [],
-      onlineUser: [],
+      onlineMessage: "",
+      onlineUser: []
     };
   },
   sockets: {
@@ -101,12 +76,13 @@ export default {
       console.log("socket disconnected");
     },
     announce(data) {
-      this.onlineUser = data;
-      console.log(data);
+      this.onlineUser = data.users;
+      this.onlineMessage = data.message
+      console.log(data)
+      console.log(this.onlineUser)
     },
     chatMessage(msg) {
       this.message.unshift(msg);
-      console.log(msg);
     },
   },
   methods: {
@@ -133,6 +109,11 @@ export default {
         console.log(error);
       }
     },
+  },
+  watch: {
+    onlineUser() {
+
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
