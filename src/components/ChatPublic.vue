@@ -137,6 +137,7 @@ $accountColor: #657786;
 .user-top,
 .dialog-title {
   border: $borderColor 1px solid;
+  height: 3%;
   border-bottom: none;
   font-size: 1rem;
   padding: 0.5rem;
@@ -146,21 +147,21 @@ $accountColor: #657786;
 }
 .dialog-box {
   grid-column: 1 / 2;
-  height: 100%;
+  height: 100vh;
 }
 .online-users {
   grid-column: 2 / 3;
 }
 .dialog-show-box {
-  height: 80%;
+  height: 82%;
   border: solid 1px #e6ecf0;
   position: relative;
-  // padding: 10px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
 }
 .send-box {
+  height: 8%;
   display: flex;
   align-items: center;
   bottom: 0;
@@ -178,8 +179,6 @@ $accountColor: #657786;
     }
   }
   .send-btn {
-    // background: $mainColor;
-    // color: #ffffff;
     width: 3rem;
     font-size: 1rem;
     padding: 0.2rem;
@@ -245,25 +244,7 @@ $accountColor: #657786;
     }
   }
 }
-// online style
-.chatroom-container {
-  display: grid;
-  grid-template-columns: 2fr 1.2fr;
-}
-.dialog-box {
-  grid-column: 1 / 2;
-  height: 100%;
-}
-.online-users {
-  grid-column: 2 / 3;
-}
-.dialog-show-box {
-  height: calc(100vh - 100px);
-  border: solid 1px #e6ecf0;
-}
-.send-box {
-  display: flex;
-}
+
 .single-message {
   display: flex;
   .avatar {
@@ -276,17 +257,7 @@ $accountColor: #657786;
     }
   }
 }
-// online user css
-.chatroom-container {
-  display: grid;
-  grid-template-columns: 2fr 1.2fr;
-}
-.dialog-box {
-  grid-column: 1 / 2;
-}
-.online-users {
-  grid-column: 2 / 3;
-}
+
 // online users
 .user-card {
   border: $borderColor 1px solid;
