@@ -31,7 +31,9 @@
           />
         </div>
 
-        <div class="send-btn" @click.stop.prevent="send">send</div>
+        <div class="send-btn" @click.stop.prevent="send">
+          <img src="sendMsg.svg" alt="" />
+        </div>
       </div>
     </div>
     <div class="online-users">
@@ -39,14 +41,12 @@
       <div class="user-list">
         <div class="user-card" v-for="user in onlineUser" :key="user.id">
           <div class="user-avatar">
-            <img
-              :src="user.avatar"
-              alt="avatar"
-            />
+            <img :src="user.avatar" alt="avatar" />
           </div>
-          <div class="user-info">{{ user.name }} <span>{{ user.account }}</span></div>
+          <div class="user-info">
+            {{ user.name }} <span>{{ user.account }}</span>
+          </div>
         </div>
-        
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@ export default {
       tempMessage: "",
       message: [],
       onlineMessage: "",
-      onlineUser: []
+      onlineUser: [],
     };
   },
   sockets: {
@@ -77,7 +77,7 @@ export default {
     },
     announce(data) {
       this.onlineUser = data.users;
-      this.onlineMessage = data.message
+      this.onlineMessage = data.message;
     },
     chatMessage(msg) {
       this.message.unshift(msg);
@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     send() {
+      if (!this.tempMessage.trim()) return;
       const time = new Date();
       const msg = {
         id: uuidv4(),
@@ -125,6 +126,10 @@ export default {
 @import "./src/assets/scss/main.scss";
 $borderColor: #e6ecf0;
 $accountColor: #657786;
+* {
+  border: 1px solid red;
+}
+
 .chatroom-container {
   display: grid;
   grid-template-columns: 2fr 1.2fr;
@@ -147,7 +152,7 @@ $accountColor: #657786;
   grid-column: 2 / 3;
 }
 .dialog-show-box {
-  height: calc(100vh - 100px);
+  height: 80%;
   border: solid 1px #e6ecf0;
   position: relative;
   // padding: 10px;
@@ -156,27 +161,25 @@ $accountColor: #657786;
   overflow-y: scroll;
 }
 .send-box {
-  position: absolute;
   display: flex;
   align-items: center;
   bottom: 0;
-  height: 3rem;
   padding: 0.5rem;
-  // border: 1px solid $borderColor;
+  border: 1px solid $borderColor;
   .send-input {
     input {
       background: $borderColor;
       width: 35rem;
       border-radius: 30px;
-      font-size: 1rem;
+      font-size: 1.2rem;
       outline: none;
       border: none;
       padding-left: 0.5rem;
     }
   }
   .send-btn {
-    background: $mainColor;
-    color: #ffffff;
+    // background: $mainColor;
+    // color: #ffffff;
     width: 3rem;
     font-size: 1rem;
     padding: 0.2rem;
