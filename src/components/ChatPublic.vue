@@ -153,6 +153,7 @@ $accountColor: #657786;
   // padding: 10px;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
 .send-box {
   position: absolute;
