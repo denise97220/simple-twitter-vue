@@ -1,28 +1,30 @@
 <template>
-  <div class="relpy-list-container">
-    <div class="navbar">
-      <Navbar />
-    </div>
-    <div class="middle-container scrollbar">
-      <div class="user-profile">
-        <UserProfile
-          :updateId="updateId"
-          :nowPage="nowPage"
-          @tap-follow-button="tapFollowButton"
-          :relatedFollowStatus="relatedFollowStatus"
+  <div class="rwd-container">
+    <div class="relpy-list-container">
+      <div class="navbar">
+        <Navbar />
+      </div>
+      <div class="middle-container scrollbar">
+        <div class="user-profile">
+          <UserProfile
+            :updateId="updateId"
+            :nowPage="nowPage"
+            @tap-follow-button="tapFollowButton"
+            :relatedFollowStatus="relatedFollowStatus"
+          />
+        </div>
+        <div class="user-tweets">
+          <UserNavtabs :nowPage="nowPage" />
+        </div>
+        <router-view :updateId="updateId"></router-view>
+      </div>
+      <div class="related-users">
+        <RelatedUsers
+          @updateUser="updateUser"
+          :isFollowStatus="isFollowStatus"
+          @related-to-userFollow="relatedToUserFollow"
         />
       </div>
-      <div class="user-tweets">
-        <UserNavtabs :nowPage="nowPage" />
-      </div>
-      <router-view :updateId="updateId"></router-view>
-    </div>
-    <div class="related-users">
-      <RelatedUsers
-        @updateUser="updateUser"
-        :isFollowStatus="isFollowStatus"
-        @related-to-userFollow="relatedToUserFollow"
-      />
     </div>
   </div>
 </template>

@@ -2,22 +2,22 @@
   <div class="chatroom-container">
     <div class="dialog-box">
       <div class="dialog-title">公開聊天室</div>
-      <div class="dialog-show-box">
+      <div class="dialog-show-box" id="scroll-box">
         <div
           :class="{
-            'single-message-left': msg.id !== id,
-            'single-message-right': msg.id === id,
+            'single-message-left': msg.User.id !== currentUser.id,
+            'single-message-right': msg.User.id === currentUser.id,
           }"
-          v-for="msg in message"
+          v-for="msg in message.slice().reverse()"
           :key="msg.id"
         >
           <div class="avatar">
-            <img :src="msg.avatar" alt="" />
+            <img :src="msg.User.avatar" alt="" />
           </div>
           <div class="info">
-            <div class="name">{{ msg.name }}</div>
-            <div class="message">{{ msg.content }}</div>
-            <div class="time">下午 7:32</div>
+            <div class="name">{{ msg.User.name }}</div>
+            <div class="message">{{ msg.text }}</div>
+            <div class="time">{{ msg.createdAt }}</div>
           </div>
         </div>
       </div>
@@ -76,6 +76,8 @@ import store from "./../store";
 import VueSocketIO from "vue-socket.io";
 import SocketIO from "socket.io-client";
 import { mapState } from "vuex";
+import chatAPI from './../apis/chat'
+import uuidv4 from 'uuid'
 
 const token = localStorage.getItem("token")
 
@@ -100,24 +102,8 @@ export default {
     return {
       id: 1,
       tempMessage: "",
-      message: [
-        {
-          name: "許丹",
-          avatar:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=3z9b6hhmzNkAX-KN0xP&_nc_ht=scontent.ftpe13-1.fna&oh=a4852c36890e38e7ecebe0662cb39e45&oe=60F60119",
-          content: "哈囉大家好",
-          time: new Date(),
-          id: 1,
-        },
-        {
-          name: "Ashley",
-          avatar:
-            "https://scontent.ftpe13-1.fna.fbcdn.net/v/t1.6435-9/71811070_3308025969215205_7462679326622744576_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=3z9b6hhmzNkAX-KN0xP&_nc_ht=scontent.ftpe13-1.fna&oh=a4852c36890e38e7ecebe0662cb39e45&oe=60F60119",
-          content: "哈囉大家好",
-          time: new Date(),
-          id: 2,
-        },
-      ],
+      message: [],
+      onlineUser: []
     };
   },
   sockets: {
@@ -128,30 +114,49 @@ export default {
       console.log("socket disconnected");
     },
     announce(data) {
-      console.log(data);
+      this.onlineUser = data
+      console.log(this.onlineUser)
     },
     chatMessage(msg) {
-      console.log(msg);
+      this.message.unshift(msg)
+      console.log(msg)
     },
   },
-  created() {},
   methods: {
     send() {
       const time = new Date()
-      this.$socket.emit("chatMessage", {
-        message: this.tempMessage,
-        currentUser: {
+      const msg = {
+        id: uuidv4(),
+        text: this.tempMessage,
+        User: {
           id: this.currentUser.id,
           name: this.currentUser.name,
           avatar: this.currentUser.avatar
         },
-        time
-      });
+        createdAt: time
+      }
+      this.$socket.emit("chatMessage", msg);
       this.tempMessage = "";
     },
+    async getMessages() {
+      try {
+        const { data } = await chatAPI.getMessages()
+        this.message = data
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
+  },
+  created() {
+    this.getMessages()
+    
+  },
+  updated(){     
+    let box = document.getElementById('scroll-box');
+    box.scrollTop = box.scrollHeight;
   },
 };
 </script>
@@ -176,6 +181,7 @@ export default {
   padding: 10px;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
 .send-box {
   display: flex;
