@@ -22,7 +22,15 @@
         </div>
       </div>
       <div class="send-box">
-        <input class="dialog-input" type="text" v-model="tempMessage" />
+        <div class="send-input">
+          <input
+            class="dialog-input"
+            type="text"
+            placeholder="輸入訊息..."
+            v-model="tempMessage"
+          />
+        </div>
+
         <div class="send-btn" @click.stop.prevent="send">send</div>
       </div>
     </div>
@@ -72,8 +80,8 @@
 
 <script>
 import { mapState } from "vuex";
-import chatAPI from './../apis/chat'
-import uuidv4 from 'uuid'
+import chatAPI from "./../apis/chat";
+import uuidv4 from "uuid";
 
 export default {
   name: "ChatPublic",
@@ -82,7 +90,7 @@ export default {
       id: 1,
       tempMessage: "",
       message: [],
-      onlineUser: []
+      onlineUser: [],
     };
   },
   sockets: {
@@ -93,48 +101,47 @@ export default {
       console.log("socket disconnected");
     },
     announce(data) {
-      this.onlineUser = data
-      console.log(this.onlineUser)
+      this.onlineUser = data;
+      console.log(this.onlineUser);
     },
     chatMessage(msg) {
-      this.message.unshift(msg)
-      console.log(msg)
+      this.message.unshift(msg);
+      console.log(msg);
     },
   },
   methods: {
     send() {
-      const time = new Date()
+      const time = new Date();
       const msg = {
         id: uuidv4(),
         text: this.tempMessage,
         User: {
           id: this.currentUser.id,
           name: this.currentUser.name,
-          avatar: this.currentUser.avatar
+          avatar: this.currentUser.avatar,
         },
-        createdAt: time
-      }
+        createdAt: time,
+      };
       this.$socket.emit("chatMessage", msg);
       this.tempMessage = "";
     },
     async getMessages() {
       try {
-        const { data } = await chatAPI.getMessages()
-        this.message = data
+        const { data } = await chatAPI.getMessages();
+        this.message = data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    },
   },
   computed: {
     ...mapState(["currentUser"]),
   },
   created() {
-    this.getMessages()
-    
+    this.getMessages();
   },
-  updated(){     
-    let box = document.getElementById('scroll-box');
+  updated() {
+    let box = document.getElementById("scroll-box");
     box.scrollTop = box.scrollHeight;
   },
 };
@@ -142,9 +149,21 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/assets/scss/main.scss";
+$borderColor: #e6ecf0;
+$accountColor: #657786;
 .chatroom-container {
   display: grid;
   grid-template-columns: 2fr 1.2fr;
+}
+.user-top,
+.dialog-title {
+  border: $borderColor 1px solid;
+  border-bottom: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-weight: 700;
 }
 .dialog-box {
   grid-column: 1 / 2;
@@ -157,18 +176,51 @@ export default {
   height: calc(100vh - 100px);
   border: solid 1px #e6ecf0;
   position: relative;
-  padding: 10px;
+  // padding: 10px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
 }
 .send-box {
+  position: absolute;
   display: flex;
+  align-items: center;
+  bottom: 0;
+  height: 3rem;
+  padding: 0.5rem;
+  // border: 1px solid $borderColor;
+  .send-input {
+    input {
+      background: $borderColor;
+      width: 35rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      outline: none;
+      border: none;
+      padding-left: 0.5rem;
+    }
+  }
+  .send-btn {
+    background: $mainColor;
+    color: #ffffff;
+    width: 3rem;
+    font-size: 1rem;
+    padding: 0.2rem;
+    text-align: center;
+    border-radius: 10px;
+    margin-left: 1rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 .single-message-left,
 .single-message-right {
   display: flex;
+  position: relative;
+  display: flex;
+  padding: 0.5rem;
   .avatar {
+    align-self: center;
     width: 50px;
     height: 50px;
     img {
@@ -186,8 +238,8 @@ export default {
     .message {
       max-width: 220px;
       background-color: rgb(228, 228, 228);
-      padding: 5px;
-      border-radius: 10px;
+      padding: 10px;
+      border-radius: 20px 20px 20px 0px;
       margin-top: 5px;
       margin-bottom: 5px;
       line-height: 24px;
@@ -208,14 +260,13 @@ export default {
       max-width: 230px;
       background-color: rgb(228, 228, 228);
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 20px 20px 0px 20px;
       margin-top: 5px;
       margin-bottom: 5px;
       line-height: 24px;
     }
   }
 }
-
 // online style
 .chatroom-container {
   display: grid;
@@ -259,19 +310,6 @@ export default {
   grid-column: 2 / 3;
 }
 // online users
-$borderColor: #e6ecf0;
-$accountColor: #657786;
-.online-users {
-  font-weight: 700;
-}
-.user-top {
-  border: $borderColor 1px solid;
-  border-bottom: none;
-  font-size: 1rem;
-  padding: 0.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
 .user-card {
   border: $borderColor 1px solid;
   display: flex;
