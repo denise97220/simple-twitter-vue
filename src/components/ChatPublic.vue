@@ -102,7 +102,7 @@ export default {
     },
     announce(data) {
       this.onlineUser = data;
-      console.log(this.onlineUser);
+      console.log(data);
     },
     chatMessage(msg) {
       this.message.unshift(msg);
