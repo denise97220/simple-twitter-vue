@@ -5,5 +5,14 @@ export const fromNowFilter = {
     fromNow(dateTime) {
       return dateTime ? moment(dateTime).fromNow() : '-'
     }
+
+  }
+}
+
+export const momentFilter = {
+  filters: {
+    timeFilter(dateTime) {
+      return dateTime ? moment(dateTime).format('LT') : ''
+    }
   }
 }
