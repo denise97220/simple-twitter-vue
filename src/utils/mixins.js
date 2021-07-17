@@ -12,7 +12,7 @@ export const fromNowFilter = {
 export const momentFilter = {
   filters: {
     timeFilter(dateTime) {
-      return dateTime ? moment(dateTime).format('LT') : ''
+      return dateTime ? moment(dateTime).calendar() : ''
     }
   }
 }
