@@ -17,7 +17,7 @@
           <div class="info">
             <div class="name">{{ msg.User.name }}</div>
             <div class="message">{{ msg.text }}</div>
-            <div class="time">{{ msg.createdAt }}</div>
+            <div class="time">{{ msg.createdAt | timeFilter }}</div>
           </div>
         </div>
       </div>
@@ -82,9 +82,11 @@
 import { mapState } from "vuex";
 import chatAPI from "./../apis/chat";
 import uuidv4 from "uuid";
+import { momentFilter } from "./../utils/mixins";
 
 export default {
   name: "ChatPublic",
+  mixins: [momentFilter],
   data() {
     return {
       id: 1,
