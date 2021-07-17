@@ -13,7 +13,7 @@ export default new Vuex.Store({
       role: "",
     },
     isAuthenticated: false,
-    userIsFollowedId: false
+    chatUserId: -1,
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -24,13 +24,16 @@ export default new Vuex.Store({
       state.isAuthenticated = true;
     },
     revokeAuthentication(state) {
-      state.currentUser = {}
-      state.isAuthenticated = false
-      localStorage.removeItem("token")
+      state.currentUser = {};
+      state.isAuthenticated = false;
+      localStorage.removeItem("token");
     },
     followed(state) {
-      state.userIsFollowed = !state.userIsFollowed
-    }
+      state.userIsFollowed = !state.userIsFollowed;
+    },
+    setChatUserId(state, id) {
+      state.chatUserId = id;
+    },
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -68,12 +71,12 @@ export default new Vuex.Store({
           Likes,
         });
 
-        return true
+        return true;
       } catch (error) {
         console.log("error", error);
-        console.error("無法取得當前使用者")
+        console.error("無法取得當前使用者");
 
-        return false
+        return false;
       }
     },
   },

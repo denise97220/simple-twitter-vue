@@ -41,7 +41,7 @@
           <div @click.stop.prevent="showModal">編輯個人資料</div>
         </div>
         <div class="user-btns" v-else>
-          <div class="message-btn">
+          <div class="message-btn" @click="redirectToMessage">
             <svg
               width="20"
               height="19"
@@ -530,9 +530,22 @@ export default {
     turnNotify() {
       this.isNotify = !this.isNotify;
     },
+    redirectToMessage() {
+      const id = this.$route.params.id;
+      this.$store.commit("setChatUserId", id);
+      this.$router.push("/chat_private")
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
+  },
+  sockets: {
+    connect() {
+      console.log("socket connected");
+    },
+    disconnect() {
+      console.log("socket disconnected");
+    },
   },
 };
 </script>
@@ -688,7 +701,7 @@ export default {
   }
 
   .user-info {
-    margin-top: 100px;
+    margin-top: 50px;
     padding: 15px;
     .name {
       font-size: 19px;
