@@ -12,6 +12,7 @@ export const fromNowFilter = {
 export const momentFilter = {
   filters: {
     timeFilter(dateTime) {
+      moment.locale("zh-tw")
       return dateTime ? moment(dateTime).calendar() : ''
     }
   }
