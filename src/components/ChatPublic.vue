@@ -78,8 +78,6 @@ export default {
     announce(data) {
       this.onlineUser = data.users;
       this.onlineMessage = data.message
-      console.log(data)
-      console.log(this.onlineUser)
     },
     chatMessage(msg) {
       this.message.unshift(msg);
@@ -109,11 +107,6 @@ export default {
         console.log(error);
       }
     },
-  },
-  watch: {
-    onlineUser() {
-
-    }
   },
   computed: {
     ...mapState(["currentUser"]),

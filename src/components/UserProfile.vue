@@ -41,7 +41,7 @@
           <div @click.stop.prevent="showModal">編輯個人資料</div>
         </div>
         <div class="user-btns" v-else>
-          <div class="message-btn">
+          <div class="message-btn" @click="redirectToMessage">
             <svg
               width="20"
               height="19"
@@ -368,7 +368,6 @@ export default {
     const userId = this.$route.params.id;
     const id = userId ? this.$route.params.id : this.currentUser.id;
     this.fetchUser(id);
-    this.$socket.emit("eventA", "hi");
   },
   methods: {
     async fetchUser(userId) {
@@ -531,6 +530,11 @@ export default {
     turnNotify() {
       this.isNotify = !this.isNotify;
     },
+    redirectToMessage() {
+      const id = this.$route.params.id;
+      this.$store.commit("setChatUserId", id);
+      this.$router.push("/chat_private")
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
@@ -542,9 +546,6 @@ export default {
     disconnect() {
       console.log("socket disconnected");
     },
-    eventA() {
-      console.log("success")
-    }
   },
 };
 </script>

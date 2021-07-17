@@ -12,9 +12,6 @@ export default {
     disconnect() {
       console.log("socket disconnected");
     },
-    eventA(msg) {
-      console.log(msg)
-    }
   },
 }
 </script>
