@@ -112,11 +112,12 @@ $accountColor: #657786;
 .chatroom-container {
   display: grid;
   grid-template-columns: 2fr 1.2fr;
+  height: 100%;
 }
 .user-top,
 .dialog-title {
   border: $borderColor 1px solid;
-  height: 3%;
+  height: 30px;
   border-bottom: none;
   font-size: 1rem;
   padding: 0.5rem;
@@ -126,13 +127,13 @@ $accountColor: #657786;
 }
 .dialog-box {
   grid-column: 1 / 2;
-  height: 100vh;
+  height: 100%;
 }
 .online-users {
   grid-column: 2 / 3;
 }
 .dialog-show-box {
-  height: 82%;
+  height: calc(100vh - 150px);
   border: solid 1px #e6ecf0;
   position: relative;
   display: flex;
@@ -140,11 +141,11 @@ $accountColor: #657786;
   overflow-y: scroll;
 }
 .send-box {
-  height: 8%;
+  height: 50px;
   display: flex;
   align-items: center;
   bottom: 0;
-  padding: 0.5rem;
+  padding: 1rem;
   border: 1px solid $borderColor;
   .send-input {
     input {
@@ -154,7 +155,9 @@ $accountColor: #657786;
       font-size: 1.2rem;
       outline: none;
       border: none;
-      padding-left: 0.5rem;
+      padding: 10px;
+      padding-left: 20px;
+      box-sizing: border-box;
     }
   }
   .send-btn {
@@ -175,12 +178,13 @@ $accountColor: #657786;
   position: relative;
   display: flex;
   padding: 0.5rem;
+  margin-top: 10px;
   .avatar {
     align-self: center;
     width: 50px;
     height: 50px;
     img {
-      width: 100%;
+       width: 100%;
       height: 100%;
       border-radius: 50%;
     }
@@ -190,11 +194,14 @@ $accountColor: #657786;
     .name,
     .time {
       font-size: 14px;
+      padding-left: 5px;
     }
     .message {
+      display: inline-block;
+      min-width: 30px;
       max-width: 220px;
       background-color: rgb(228, 228, 228);
-      padding: 10px;
+      padding: 8px 12px 8px 12px;
       border-radius: 20px 20px 20px 0px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -211,15 +218,15 @@ $accountColor: #657786;
     .name,
     .time {
       text-align: right;
+      padding-right: 7px;
     }
     .message {
-      max-width: 230px;
-      background-color: rgb(228, 228, 228);
-      padding: 10px;
       border-radius: 20px 20px 0px 20px;
-      margin-top: 5px;
-      margin-bottom: 5px;
-      line-height: 24px;
+      position: absolute;
+      right: 73px;
+    }
+    .time {
+      margin-top: 60px;
     }
   }
 }
