@@ -121,6 +121,7 @@ export default {
       console.log("join room!")
     },
     chatMessage(msg) {
+      if(msg.RoomId !== this.chatRoomId) return
       this.chatMessage.unshift(msg)
     },
     disconnect() {
