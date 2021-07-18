@@ -533,6 +533,7 @@ export default {
     redirectToMessage() {
       const id = this.$route.params.id;
       this.$store.commit("setChatUserId", id);
+      this.$socket.emit("createRoom", id)
       this.$router.push("/chat_private")
     }
   },
@@ -546,6 +547,12 @@ export default {
     disconnect() {
       console.log("socket disconnected");
     },
+    createRoom() {
+      console.log("create room")
+    },
+    newRoom(id) {
+      this.$store.commit("setChatRoomId", id);
+    }
   },
 };
 </script>

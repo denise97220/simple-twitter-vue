@@ -13,7 +13,7 @@ export default new Vuex.Store({
       role: "",
     },
     isAuthenticated: false,
-    chatUserId: -1,
+    chatRoomId: -1,
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -31,8 +31,8 @@ export default new Vuex.Store({
     followed(state) {
       state.userIsFollowed = !state.userIsFollowed;
     },
-    setChatUserId(state, id) {
-      state.chatUserId = id;
+    setChatRoomId(state, id) {
+      state.chatRoomId = id;
     },
   },
   actions: {

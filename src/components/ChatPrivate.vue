@@ -38,7 +38,7 @@
           class="user-card"
           v-for="user in chatUser"
           :key="user.id"
-          @click.stop.prevent="showDialogBox(user.Room.id, user.User.id, user.Room.name)"
+          @click.stop.prevent="showDialogBox(user.Room.id, user.Room.name)"
         >
           <div class="user-avatar">
             <img :src="user.User.avatar" alt="avatar" />
@@ -55,6 +55,7 @@
 <script>
 import { mapState } from "vuex";
 import { momentFilter } from "./../utils/mixins";
+import { Fire } from "./../utils/helper";
 import chatAPI from "./../apis/chat";
 import uuidv4 from "uuid";
 
@@ -79,15 +80,13 @@ export default {
         console.log(error);
       }
     },
-    async showDialogBox(RoomId, userId, RoomName) {
+    async showDialogBox(RoomId, RoomName) {
       try {
         this.$socket.emit("joinRoom", RoomName)
         const { data } = await chatAPI.getChatUserMsg({ RoomId });
         this.chatMessage = data;
         this.tempRoomName = RoomName
         this.tempRoomId = RoomId
-        console.log(this.tempRoomName, this.tempRoomId)
-        this.$store.commit("setChatUserId", userId);
       } catch (error) {
         console.log(error);
       }
@@ -107,6 +106,13 @@ export default {
         },
         createdAt: time,
       };
+      if(msg.RoomId === -1) {
+        Fire.fire({
+          icon: "warning",
+          title: "請選擇聊天室",
+        });
+        return 
+      } 
       this.$socket.emit("chatMessage", msg)
       this.tempMessage = "";
     },
@@ -117,19 +123,20 @@ export default {
     },
     chatMessage(msg) {
       this.chatMessage.unshift(msg)
-      console.log(msg)
     },
   },
   computed: {
-    ...mapState(["chatUserId"]),
+    ...mapState(["chatRoomId"]),
     ...mapState(["currentUser"]),
   },
   created() {
-    const id = this.chatUserId;
     this.getChatUser();
-    if (id !== -1) {
-      this.showDialogBox(id);
-    }
+    this.tempRoomId = this.chatRoomId
+    this.showDialogBox(this.tempRoomId)
+  },
+  updated() {
+    let box = document.getElementById("scroll-box")
+    box.scrollTop = box.scrollHeight;
   },
 };
 </script>
