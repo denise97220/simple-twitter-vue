@@ -60,6 +60,7 @@ import { mapState } from "vuex";
 import chatAPI from "./../apis/chat";
 import uuidv4 from "uuid";
 import { momentFilter } from "./../utils/mixins";
+import { Toast } from "./../utils/helper";
 
 export default {
   name: "ChatPublic",
@@ -87,6 +88,9 @@ export default {
     chatMessage(msg) {
       this.message.unshift(msg);
     },
+    joinPublic() {
+      console.log("join!")
+    }
   },
   methods: {
     send() {
@@ -117,8 +121,17 @@ export default {
   computed: {
     ...mapState(["currentUser"]),
   },
+  watch: {
+    onlineMessage() {
+      Toast.fire({
+        icon: "success",
+        title: this.onlineMessage,
+      });
+    }
+  },
   created() {
     this.getMessages();
+    this.$socket.emit("joinPublic")
   },
   updated() {
     let box = document.getElementById("scroll-box");

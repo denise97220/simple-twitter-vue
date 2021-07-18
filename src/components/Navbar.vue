@@ -270,7 +270,7 @@
               v-model="tweetContent"
             ></textarea>
 
-            <emoji-picker @emoji="append" :search="search">
+            <emoji-picker @emoji="append">
               <div
                 class="emoji-invoker"
                 slot="emoji-invoker"
@@ -298,9 +298,6 @@
                   class="emoji-picker-wrapper"
                   :style="{ top: display.y + 'px', left: display.x + 'px' }"
                 >
-                  <div class="emoji-picker__search">
-                    <input type="text" v-model="search" v-focus />
-                  </div>
                   <div>
                     <div
                       v-for="(emojiGroup, category) in emojis"

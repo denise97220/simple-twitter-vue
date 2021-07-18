@@ -810,7 +810,6 @@ export default {
           width: 600px;
           height: 200px;
           object-fit: cover;
-          filter: blur(1px);
         }
         .cover-photo-icon {
           position: absolute;
@@ -820,7 +819,7 @@ export default {
           align-items: center;
           top: 50%;
           transform: translateY(-50%);
-          right: 40%;
+          right: 42%;
           transform: translateY(-50%);
           .icon-photo,
           .icon-delete {
