@@ -113,7 +113,6 @@ export default {
         this.$router.push("/main");
       } catch (error) {
         console.log(error);
-
         this.isProcessing = false;
         this.password = "";
         Fire.fire({

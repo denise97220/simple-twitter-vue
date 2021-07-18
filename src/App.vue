@@ -64,6 +64,7 @@ const token = localStorage.getItem("token");
 Vue.use(
   new VueSocketIO({
     debug: true,
+    autoConnect: false,
     connection: SocketIO("https://bb4a29077591.ngrok.io", {
       auth: {
         token,

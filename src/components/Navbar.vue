@@ -395,6 +395,7 @@ export default {
     logout() {
       this.$store.commit("revokeAuthentication");
       this.$router.push("/login");
+      this.$socket.disconnect()
     },
   },
   directives: {
@@ -409,6 +410,11 @@ export default {
   },
   created() {
     this.nowPage = this.$route.name;
+  },
+  sockets: {
+    disconnect() {
+      console.log("socket disconnected");
+    },
   },
 };
 </script>

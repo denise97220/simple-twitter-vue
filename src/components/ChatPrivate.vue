@@ -121,11 +121,9 @@ export default {
       console.log("join room!")
     },
     chatMessage(msg) {
+      console.log(this.chatRoomId)
       if(msg.RoomId !== this.chatRoomId) return
       this.chatMessage.unshift(msg)
-    },
-    disconnect() {
-      console.log("socket disconnected");
     },
   },
   computed: {
@@ -140,9 +138,6 @@ export default {
     let box = document.getElementById("scroll-box")
     box.scrollTop = box.scrollHeight;
   },
-  destroyed() {
-    this.$socket.emit("disconnect")
-  }
 };
 </script>
 

@@ -133,6 +133,7 @@ export default {
     }
   },
   created() {
+    this.$socket.connect()
     this.getMessages();
     this.$socket.emit("joinPublic")
   },
