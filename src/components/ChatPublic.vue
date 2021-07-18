@@ -16,8 +16,10 @@
           </div>
           <div class="info">
             <div class="name">{{ msg.User.name }}</div>
-            <div class="message">{{ msg.text }}</div>
-            <div class="time">{{ msg.createdAt | timeFilter }}</div>
+            <div class="content">
+              <div class="message">{{ msg.text }}</div>
+              <div class="time">{{ msg.createdAt | timeFilter }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -28,6 +30,7 @@
             type="text"
             placeholder="輸入訊息..."
             v-model="tempMessage"
+            @keyup.enter="send"
           />
         </div>
 
@@ -37,7 +40,7 @@
       </div>
     </div>
     <div class="online-users">
-      <div class="user-top">上線使用者(5)</div>
+      <div class="user-top">上線使用者</div>
       <div class="user-list">
         <div class="user-card" v-for="user in onlineUser" :key="user.id">
           <div class="user-avatar">
@@ -125,171 +128,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/main.scss";
-$borderColor: #e6ecf0;
-$accountColor: #657786;
-* {
-  border: 1px solid red;
-}
+@import "./src/assets/scss/chat.scss";
 
-.chatroom-container {
-  display: grid;
-  grid-template-columns: 2fr 1.2fr;
-  height: 100%;
-}
-.user-top,
-.dialog-title {
-  border: $borderColor 1px solid;
-  height: 30px;
-  border-bottom: none;
-  font-size: 1rem;
-  padding: 0.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  font-weight: 700;
-}
-.dialog-box {
-  grid-column: 1 / 2;
-  height: 100%;
-}
-.online-users {
-  grid-column: 2 / 3;
-}
-.dialog-show-box {
-  height: calc(100vh - 150px);
-  border: solid 1px #e6ecf0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-}
-.send-box {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  bottom: 0;
-  padding: 1rem;
-  border: 1px solid $borderColor;
-  .send-input {
-    input {
-      background: $borderColor;
-      width: 35rem;
-      border-radius: 30px;
-      font-size: 1.2rem;
-      outline: none;
-      border: none;
-      padding: 10px;
-      padding-left: 20px;
-      box-sizing: border-box;
-    }
-  }
-  .send-btn {
-    width: 3rem;
-    font-size: 1rem;
-    padding: 0.2rem;
-    text-align: center;
-    border-radius: 10px;
-    margin-left: 1rem;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-.single-message-left,
-.single-message-right {
-  display: flex;
-  position: relative;
-  display: flex;
-  padding: 0.5rem;
-  margin-top: 10px;
-  .avatar {
-    align-self: center;
-    width: 50px;
-    height: 50px;
-    img {
-       width: 100%;
-      height: 100%;
-      border-radius: 50%;
-    }
-  }
-  .info {
-    padding-left: 10px;
-    .name,
-    .time {
-      font-size: 14px;
-      padding-left: 5px;
-    }
-    .message {
-      display: inline-block;
-      min-width: 30px;
-      max-width: 220px;
-      background-color: rgb(228, 228, 228);
-      padding: 8px 12px 8px 12px;
-      border-radius: 20px 20px 20px 0px;
-      margin-top: 5px;
-      margin-bottom: 5px;
-      line-height: 24px;
-    }
-  }
-}
-.single-message-right {
-  right: 0px;
-  flex-direction: row-reverse;
-  padding-right: 10px;
-  .info {
-    padding-right: 10px;
-    .name,
-    .time {
-      text-align: right;
-      padding-right: 7px;
-    }
-    .message {
-      border-radius: 20px 20px 0px 20px;
-      position: absolute;
-      right: 73px;
-    }
-    .time {
-      margin-top: 60px;
-    }
-  }
-}
-
-.single-message {
-  display: flex;
-  .avatar {
-    width: 50px;
-    height: 50px;
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-    }
-  }
-}
-
-// online users
-.user-card {
-  border: $borderColor 1px solid;
-  display: flex;
-  align-items: center;
-  padding: 0.1rem;
-  line-height: 21px;
-  .user-avatar > img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    border-color: $borderColor;
-    padding: 0.3rem;
-    object-fit: cover;
-  }
-  .user-info > span {
-    padding-left: 1px;
-    color: $accountColor;
-    font-weight: 500;
-  }
-  &:hover {
-    cursor: pointer;
-    background-color: #eeeeee;
-  }
-}
 </style>
