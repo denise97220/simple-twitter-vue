@@ -4,8 +4,11 @@
       <div class="dialog-title">私人聊天室</div>
       <div class="dialog-show-box" id="scroll-box">
         <div
-          class="single-message-left"
-          v-for="msg in chatMessage"
+          :class="{
+            'single-message-left': msg.User.id !== currentUser.id,
+            'single-message-right': msg.User.id === currentUser.id,
+          }"
+          v-for="msg in chatMessage.slice().reverse()"
           :key="msg.id"
         >
           <div class="avatar">
@@ -20,10 +23,10 @@
       </div>
       <div class="send-box">
         <div class="send-input">
-          <input class="dialog-input" type="text" placeholder="輸入訊息..." />
+          <input @keyup.enter="send" v-model="tempMessage" class="dialog-input" type="text" placeholder="輸入訊息..." />
         </div>
 
-        <div class="send-btn">
+        <div class="send-btn" @click.stop.prevent="send">
           <img src="sendMsg.svg" alt="" />
         </div>
       </div>
@@ -34,14 +37,14 @@
         <div
           class="user-card"
           v-for="user in chatUser"
-          :key="user.RoomId"
-          @click.stop.prevent="showDialogBox(user.RoomId, user.id)"
+          :key="user.id"
+          @click.stop.prevent="showDialogBox(user.Room.id, user.User.id, user.Room.name)"
         >
           <div class="user-avatar">
-            <img :src="user.avatar" alt="avatar" />
+            <img :src="user.User.avatar" alt="avatar" />
           </div>
           <div class="user-info">
-            {{ user.name }} <span>{{ user.account }}</span>
+            {{ user.User.name }} <span>{{ user.User.account }}</span>
           </div>
         </div>
       </div>
@@ -51,8 +54,9 @@
 
 <script>
 import { mapState } from "vuex";
-import chatAPI from "./../apis/chat";
 import { momentFilter } from "./../utils/mixins";
+import chatAPI from "./../apis/chat";
+import uuidv4 from "uuid";
 
 export default {
   name: "ChatPrivate",
@@ -61,6 +65,9 @@ export default {
     return {
       chatUser: [],
       chatMessage: [],
+      tempRoomName: "",
+      tempRoomId: -1,
+      tempMessage: ""
     };
   },
   methods: {
@@ -72,21 +79,50 @@ export default {
         console.log(error);
       }
     },
-    async showDialogBox(RoomId, userId) {
+    async showDialogBox(RoomId, userId, RoomName) {
       try {
+        this.$socket.emit("joinRoom", RoomName)
         const { data } = await chatAPI.getChatUserMsg({ RoomId });
         this.chatMessage = data;
-        console.log(data);
-        console.log(RoomId);
+        this.tempRoomName = RoomName
+        this.tempRoomId = RoomId
+        console.log(this.tempRoomName, this.tempRoomId)
         this.$store.commit("setChatUserId", userId);
       } catch (error) {
         console.log(error);
       }
     },
+    send() {
+      if (!this.tempMessage.trim()) return
+      const time = new Date()
+      const msg = {
+        id: uuidv4(),
+        RoomName: this.tempRoomName,
+        RoomId: this.tempRoomId,
+        text: this.tempMessage,
+        User: {
+          id: this.currentUser.id,
+          name: this.currentUser.name,
+          avatar: this.currentUser.avatar,
+        },
+        createdAt: time,
+      };
+      this.$socket.emit("chatMessage", msg)
+      this.tempMessage = "";
+    },
   },
-  sockets: {},
+  sockets: {
+    joinRoom() {
+      console.log("join room!")
+    },
+    chatMessage(msg) {
+      this.chatMessage.unshift(msg)
+      console.log(msg)
+    },
+  },
   computed: {
     ...mapState(["chatUserId"]),
+    ...mapState(["currentUser"]),
   },
   created() {
     const id = this.chatUserId;

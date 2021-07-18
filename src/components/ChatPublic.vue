@@ -76,26 +76,29 @@ export default {
   },
   sockets: {
     connect() {
-      console.log("socket connected");
+      console.log("socket connected")
     },
     disconnect() {
-      console.log("socket disconnected");
+      console.log("socket disconnected")
     },
     announce(data) {
       this.onlineUser = data.users;
       this.onlineMessage = data.message;
     },
     chatMessage(msg) {
-      this.message.unshift(msg);
+      this.message.unshift(msg)
     },
     joinPublic() {
       console.log("join!")
+    },
+    leavePublic() {
+      console.log("leave!")
     }
   },
   methods: {
     send() {
-      if (!this.tempMessage.trim()) return;
-      const time = new Date();
+      if (!this.tempMessage.trim()) return
+      const time = new Date()
       const msg = {
         id: uuidv4(),
         text: this.tempMessage,
@@ -106,15 +109,15 @@ export default {
         },
         createdAt: time,
       };
-      this.$socket.emit("chatMessage", msg);
+      this.$socket.emit("chatMessage", msg)
       this.tempMessage = "";
     },
     async getMessages() {
       try {
-        const { data } = await chatAPI.getMessages();
-        this.message = data;
+        const { data } = await chatAPI.getMessages()
+        this.message = data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
   },
@@ -122,7 +125,7 @@ export default {
     ...mapState(["currentUser"]),
   },
   watch: {
-    onlineMessage() {
+    onlineUser() {
       Toast.fire({
         icon: "success",
         title: this.onlineMessage,
@@ -133,8 +136,11 @@ export default {
     this.getMessages();
     this.$socket.emit("joinPublic")
   },
+  destroyed() {
+    this.$socket.emit("leavePublic")
+  },
   updated() {
-    let box = document.getElementById("scroll-box");
+    let box = document.getElementById("scroll-box")
     box.scrollTop = box.scrollHeight;
   },
 };
