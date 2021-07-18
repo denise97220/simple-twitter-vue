@@ -134,7 +134,7 @@ export default {
   },
   created() {
     this.getChatUser();
-    this.showDialogBox(this.chatRoomId)
+    this.chatRoomId = -1
   },
   updated() {
     let box = document.getElementById("scroll-box")
