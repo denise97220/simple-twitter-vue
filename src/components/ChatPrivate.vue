@@ -14,17 +14,13 @@
           <div class="info">
             <div class="name">{{ msg.User.name }}</div>
             <div class="message">{{ msg.text }}</div>
-            <div class="time">{{ msg.createdAt }}</div>
+            <div class="time">{{ msg.createdAt | timeFilter }}</div>
           </div>
         </div>
       </div>
       <div class="send-box">
         <div class="send-input">
-          <input
-            class="dialog-input"
-            type="text"
-            placeholder="輸入訊息..."
-          />
+          <input class="dialog-input" type="text" placeholder="輸入訊息..." />
         </div>
 
         <div class="send-btn">
@@ -35,10 +31,12 @@
     <div class="online-users">
       <div class="user-top">私人聊天室(5)</div>
       <div class="user-list">
-        <div class="user-card" 
-          v-for="user in chatUser" 
-          :key="user.RoomId" 
-          @click.stop.prevent="showDialogBox(user.RoomId, user.id)">
+        <div
+          class="user-card"
+          v-for="user in chatUser"
+          :key="user.RoomId"
+          @click.stop.prevent="showDialogBox(user.RoomId, user.id)"
+        >
           <div class="user-avatar">
             <img :src="user.avatar" alt="avatar" />
           </div>
@@ -54,50 +52,49 @@
 <script>
 import { mapState } from "vuex";
 import chatAPI from "./../apis/chat";
+import { momentFilter } from "./../utils/mixins";
 
 export default {
   name: "ChatPrivate",
+  mixins: [momentFilter],
   data() {
     return {
       chatUser: [],
-      chatMessage: []
-    }
+      chatMessage: [],
+    };
   },
   methods: {
     async getChatUser() {
       try {
-        const { data } = await chatAPI.getChatUserList()
-        this.chatUser = data
+        const { data } = await chatAPI.getChatUserList();
+        this.chatUser = data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }, 
+    },
     async showDialogBox(RoomId, userId) {
       try {
-        const { data } = await chatAPI.getChatUserMsg({ RoomId })
-        this.chatMessage = data
-        console.log(data)
-        console.log(RoomId)
+        const { data } = await chatAPI.getChatUserMsg({ RoomId });
+        this.chatMessage = data;
+        console.log(data);
+        console.log(RoomId);
         this.$store.commit("setChatUserId", userId);
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
-      
-    }
+    },
   },
-  sockets: {
-
-  },
+  sockets: {},
   computed: {
-    ...mapState(["chatUserId"])
+    ...mapState(["chatUserId"]),
   },
   created() {
-    const id = this.chatUserId
-    this.getChatUser()
-    if(id !== -1) {
-      this.showDialogBox(id)
+    const id = this.chatUserId;
+    this.getChatUser();
+    if (id !== -1) {
+      this.showDialogBox(id);
     }
-  }
+  },
 };
 </script>
 
