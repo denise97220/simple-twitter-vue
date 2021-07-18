@@ -5,5 +5,15 @@ export const fromNowFilter = {
     fromNow(dateTime) {
       return dateTime ? moment(dateTime).fromNow() : '-'
     }
+
+  }
+}
+
+export const momentFilter = {
+  filters: {
+    timeFilter(dateTime) {
+      moment.locale("zh-tw")
+      return dateTime ? moment(dateTime).calendar() : ''
+    }
   }
 }

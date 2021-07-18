@@ -18,7 +18,7 @@
               maxlength="200"
               placeholder="有什麼新鮮事?"
             ></textarea>
-            <emoji-picker @emoji="append" :search="search">
+            <emoji-picker @emoji="append">
               <div
                 class="emoji-invoker"
                 slot="emoji-invoker"
@@ -32,9 +32,6 @@
               </div>
               <div class="emoji-picker" slot="emoji-picker" slot-scope="{ emojis, insert, display }">
                 <div class="emoji-picker-wrapper" :style="{ top: display.y + 'px', left: display.x + 'px' }">
-                  <div class="emoji-picker__search">
-                    <input type="text" v-model="search" v-focus>
-                  </div>
                   <div>
                     <div v-for="(emojiGroup, category) in emojis" :key="category">
                       <h5>{{ category }}</h5>

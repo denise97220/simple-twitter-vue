@@ -109,10 +109,10 @@ export default {
 
         localStorage.setItem("token", data.token);
         this.$store.commit("setCurrentUser", data.user);
+        this.$store.commit("setChatRoomId", -1);
         this.$router.push("/main");
       } catch (error) {
         console.log(error);
-
         this.isProcessing = false;
         this.password = "";
         Fire.fire({

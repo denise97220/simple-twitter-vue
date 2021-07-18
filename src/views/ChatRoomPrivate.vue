@@ -5,7 +5,7 @@
         <Navbar />
       </div>
       <div class="chatroom">
-        <ChatPublic />
+        <ChatPrivate />
       </div>
     </div>
   </div>
@@ -13,13 +13,13 @@
 
 <script>
 import Navbar from "./../components/Navbar.vue";
-import ChatPublic from "./../components/ChatPublic.vue";
+import ChatPrivate from "./../components/ChatPrivate.vue";
 
 export default {
   name: "ChatRoom",
   components: {
     Navbar,
-    ChatPublic,
+    ChatPrivate,
   },
 }
 </script>
@@ -39,5 +39,4 @@ export default {
     width: 100%;
   }
 }
-
 </style>

@@ -124,6 +124,16 @@ const routes = [
     component: () => import("../views/ChatRoom.vue"),
   },
   {
+    path: "/chat_private",
+    name: "chat-room-private",
+    component: () => import("../views/ChatRoomPrivate.vue"),
+  },
+  {
+    path: "/notify",
+    name: "notify",
+    component: () => import("../views/Notify.vue"),
+  },
+  {
     path: "/admin",
     name: "admin-login",
     component: () => import("../views/AdminLogin.vue"),
