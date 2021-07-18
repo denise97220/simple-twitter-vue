@@ -532,7 +532,6 @@ export default {
     },
     redirectToMessage() {
       const id = this.$route.params.id;
-      this.$store.commit("setChatUserId", id);
       this.$socket.emit("createRoom", id)
       this.$router.push("/chat_private")
     }

@@ -67,7 +67,6 @@ export default {
       chatUser: [],
       chatMessage: [],
       tempRoomName: "",
-      tempRoomId: -1,
       tempMessage: ""
     };
   },
@@ -86,7 +85,7 @@ export default {
         const { data } = await chatAPI.getChatUserMsg({ RoomId });
         this.chatMessage = data;
         this.tempRoomName = RoomName
-        this.tempRoomId = RoomId
+        this.$store.commit("setChatRoomId", RoomId);
       } catch (error) {
         console.log(error);
       }
@@ -97,7 +96,7 @@ export default {
       const msg = {
         id: uuidv4(),
         RoomName: this.tempRoomName,
-        RoomId: this.tempRoomId,
+        RoomId: this.chatRoomId,
         text: this.tempMessage,
         User: {
           id: this.currentUser.id,
@@ -124,6 +123,9 @@ export default {
     chatMessage(msg) {
       this.chatMessage.unshift(msg)
     },
+    disconnect() {
+      console.log("socket disconnected");
+    },
   },
   computed: {
     ...mapState(["chatRoomId"]),
@@ -131,13 +133,15 @@ export default {
   },
   created() {
     this.getChatUser();
-    this.tempRoomId = this.chatRoomId
-    this.showDialogBox(this.tempRoomId)
+    this.showDialogBox(this.chatRoomId)
   },
   updated() {
     let box = document.getElementById("scroll-box")
     box.scrollTop = box.scrollHeight;
   },
+  destroyed() {
+    this.$socket.emit("disconnect")
+  }
 };
 </script>
 
