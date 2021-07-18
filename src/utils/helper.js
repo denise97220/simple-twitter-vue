@@ -2,7 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
-  baseURL: "https://bb4a29077591.ngrok.io/api",
+  baseURL: "https://super-simple-twitter.herokuapp.com/api",
 });
 
 axiosInstance.interceptors.request.use(
