@@ -134,7 +134,7 @@ export default {
   },
   created() {
     this.getChatUser();
-    this.chatRoomId = -1
+    this.$store.commit("setChatRoomId", -1);
   },
   updated() {
     let box = document.getElementById("scroll-box")
